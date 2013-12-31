@@ -9,7 +9,7 @@
 
     <properties>
       <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
-      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://orangelit.com:3306/stocktracker" />
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://orangelit.com:3306/javatest" />
       <property name="javax.persistence.jdbc.user" value="mydbadmin" />
       <property name="javax.persistence.jdbc.password" value="tssrj45" />
 

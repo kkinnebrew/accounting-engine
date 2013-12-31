@@ -2,43 +2,39 @@ package com.orangelit.stocktracker.web.servlets;
 
 import com.google.sitebricks.client.transport.Json;
 import com.google.sitebricks.headless.Reply;
-import com.google.sitebricks.headless.Request;
 import com.google.sitebricks.http.Get;
-import com.orangelit.stocktracker.web.dtos.TestModel;
+import com.orangelit.stocktracker.authentication.managers.AuthenticationManager;
 
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import java.util.Date;
 
 public class AuthenticateService {
 
     // Private Fields
 
-    private String _token;
+    private String token;
 
     @Inject
-    private EntityManager em;
+    private AuthenticationManager manager;
 
     // Endpoints
 
     @Get
-    public Reply<String> validateToken(Request request) {
+    public Reply<String> validateToken() {
 
-        TestModel model = new TestModel(12, "hello", new Date());
+        if (manager.isValidToken(token)) {
+            return Reply.with(token)
+                .as(Json.class)
+                .type("application/json; charset=utf-8");
+        } else {
+            return Reply.with("Invalid Token").status(401);
+        }
 
-        em.getTransaction().begin();
-        em.persist(model);
-        em.getTransaction().commit();
-
-        return Reply.with(_token)
-            .as(Json.class)
-            .type("application/json; charset=utf-8");
     }
 
     // Getters & Setters
 
     public void setToken(String token) {
-        _token = token;
+        this.token = token;
     }
 
 }

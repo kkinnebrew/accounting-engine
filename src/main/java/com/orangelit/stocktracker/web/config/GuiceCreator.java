@@ -8,6 +8,7 @@ import com.google.inject.servlet.GuiceServletContextListener;
 import com.google.sitebricks.SitebricksModule;
 import com.orangelit.stocktracker.web.modules.PersistenceModule;
 import com.orangelit.stocktracker.web.servlets.*;
+import sun.jvm.hotspot.asm.Register;
 
 public class GuiceCreator extends GuiceServletContextListener {
 
@@ -18,6 +19,7 @@ public class GuiceCreator extends GuiceServletContextListener {
             new SitebricksModule() {
                 protected void configureSitebricks() {
 
+                    at("/register").serve(RegisterService.class);
                     at("/login").serve(LoginService.class);
                     at("/authenticate").serve(AuthenticateService.class);
                     at("/logout").serve(LogoutService.class);
