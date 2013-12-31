@@ -4,7 +4,7 @@
 
 <web-app>
 
-  <display-name>Archetype Created Web Application</display-name>
+  <display-name>Stock Tracker</display-name>
 
    <filter>
       <filter-name>webFilter</filter-name>
@@ -17,7 +17,7 @@
   </filter-mapping>
 
   <listener>
-      <listener-class>com.flybynight.helloworld.GuiceCreator</listener-class>
+      <listener-class>com.orangelit.stocktracker.web.config.GuiceCreator</listener-class>
   </listener>
 
 </web-app>
