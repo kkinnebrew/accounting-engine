@@ -24,6 +24,11 @@
       <version>${guice.version}</version>
     </dependency>
     <dependency>
+      <groupId>com.google.inject.extensions</groupId>
+      <artifactId>guice-persist</artifactId>
+      <version>3.0</version>
+    </dependency>
+    <dependency>
       <groupId>com.google.sitebricks</groupId>
       <artifactId>sitebricks</artifactId>
       <version>${sitebricks.version}</version>
@@ -53,6 +58,11 @@
       <groupId>com.jolbox</groupId>
       <artifactId>bonecp</artifactId>
       <version>0.8.0.RELEASE</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-entitymanager</artifactId>
+      <version>4.2.8.Final</version>
     </dependency>
   </dependencies>
   <build>

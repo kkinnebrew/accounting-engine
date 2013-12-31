@@ -3,8 +3,10 @@ package com.orangelit.stocktracker.web.config;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.name.Names;
+import com.google.inject.persist.jpa.JpaPersistModule;
 import com.google.inject.servlet.GuiceServletContextListener;
 import com.google.sitebricks.SitebricksModule;
+import com.orangelit.stocktracker.web.modules.PersistenceModule;
 import com.orangelit.stocktracker.web.servlets.*;
 
 public class GuiceCreator extends GuiceServletContextListener {
@@ -23,7 +25,8 @@ public class GuiceCreator extends GuiceServletContextListener {
                     //Injection value of message
                     bindConstant().annotatedWith(Names.named("message")).to("HelloWorld!!");
                 }
-            }
+            },
+            new PersistenceModule()
 		);
 
 		return injector;
