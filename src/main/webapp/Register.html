@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Stock Tracker | Register</title>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+  <script type="text/javascript">
+
+    $(document).ready(function() {
+
+      var registerButton = $("#registerButton");
+
+      registerButton.on('click', function() {
+        console.log("clicked");
+      });
+
+    });
+
+  </script>
+</head>
+<body>
+<h1>Stock Tracker</h1>
+<h2>Register</h2>
+<form>
+  <fieldset>
+    <label>First Name</label>
+    <input type="text" name="firstName" />
+    <br/>
+    <label>Last Name</label>
+    <input type="text" name="lastName" />
+    <br/>
+    <label>Username</label>
+    <input type="text" name="username" />
+    <br/>
+    <label>Password</label>
+    <input type="password" name="password" />
+    <br/>
+    <label>Confirm Password</label>
+    <input type="password" name="confirmPassword" />
+  </fieldset>
+  <br/>
+  <input id="registerButton" type="button" value="Register" />
+</form>
+</body>
+</html>

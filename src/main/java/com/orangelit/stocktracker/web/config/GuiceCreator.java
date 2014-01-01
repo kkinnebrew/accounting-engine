@@ -10,6 +10,10 @@ import com.orangelit.stocktracker.web.servlets.authentication.LoginService;
 import com.orangelit.stocktracker.web.servlets.authentication.LogoutService;
 import com.orangelit.stocktracker.web.servlets.authentication.RegisterService;
 import com.orangelit.stocktracker.web.servlets.stocktracker.GetPortfoliosService;
+import com.orangelit.stocktracker.web.views.DashboardView;
+import com.orangelit.stocktracker.web.views.HomeView;
+import com.orangelit.stocktracker.web.views.LoginView;
+import com.orangelit.stocktracker.web.views.RegisterView;
 
 public class GuiceCreator extends GuiceServletContextListener {
 
@@ -19,6 +23,11 @@ public class GuiceCreator extends GuiceServletContextListener {
 		Injector injector = Guice.createInjector(
             new SitebricksModule() {
                 protected void configureSitebricks() {
+
+                    scan(HomeView.class.getPackage());
+                    scan(LoginView.class.getPackage());
+                    scan(RegisterView.class.getPackage());
+                    scan(DashboardView.class.getPackage());
 
                     at("/register").serve(RegisterService.class);
                     at("/login").serve(LoginService.class);

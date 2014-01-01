@@ -14,8 +14,6 @@ public class GetPortfoliosService extends BaseAuthenticatedService {
             return Reply.with("Invalid Token").status(401);
         }
 
-
-
         return Reply.with("");
 
     }

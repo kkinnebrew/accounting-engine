@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Stock Tracker | Login</title>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+  <script type="text/javascript">
+
+    $(document).ready(function() {
+
+      var loginButton = $("#loginButton");
+
+      loginButton.on('click', function(e) {
+        console.log("clicked");
+      });
+
+    });
+
+  </script>
+</head>
+<body>
+<h1>Stock Tracker</h1>
+<h2>Login</h2>
+<form>
+  <fieldset>
+    <label>Username</label>
+    <input type="text" name="username" />
+    <br/>
+    <label>Password</label>
+    <input type="password" name="password" />
+  </fieldset>
+  <br/>
+  <input id="loginButton" type="button" value="Login" />
+</form>
+</body>
+</html>
