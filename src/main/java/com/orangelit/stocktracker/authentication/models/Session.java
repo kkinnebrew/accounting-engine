@@ -17,17 +17,19 @@ public class Session {
     public String hostname;
     public Date expires;
 
+    public Session() {}
+
     public Session(String userId, String hostname) {
 
-        sessionId = UUID.randomUUID().toString();
-        userId = userId;
-        hostname = hostname;
+        this.sessionId = UUID.randomUUID().toString();
+        this.userId = userId;
+        this.hostname = hostname;
 
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
         cal.add(Calendar.MINUTE, 30);
 
-        expires = cal.getTime();
+        this.expires = cal.getTime();
 
     }
 

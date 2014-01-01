@@ -1,4 +1,4 @@
-package com.orangelit.stocktracker.web.servlets;
+package com.orangelit.stocktracker.web.servlets.authentication;
 
 import com.google.inject.Inject;
 import com.google.sitebricks.client.transport.Json;
@@ -7,6 +7,8 @@ import com.google.sitebricks.headless.Request;
 import com.google.sitebricks.http.Get;
 import com.orangelit.stocktracker.authentication.exceptions.UnauthorizedException;
 import com.orangelit.stocktracker.authentication.managers.AuthenticationManager;
+
+import javax.servlet.http.HttpServletRequest;
 
 
 public class LoginService {
@@ -17,6 +19,9 @@ public class LoginService {
     private String password;
 
     @Inject
+    HttpServletRequest baseRequest;
+
+    @Inject
     private AuthenticationManager manager;
 
     // Endpoints
@@ -25,7 +30,7 @@ public class LoginService {
     public Reply<String> getToken(Request request) {
 
         try {
-            String token = manager.getToken(username, password);
+            String token = manager.getToken(username, password, baseRequest.getRemoteAddr());
             return Reply.with(token)
                 .as(Json.class)
                 .type("application/json; charset=utf-8");

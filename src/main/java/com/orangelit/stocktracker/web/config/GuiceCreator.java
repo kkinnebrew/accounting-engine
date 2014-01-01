@@ -2,13 +2,14 @@ package com.orangelit.stocktracker.web.config;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.google.inject.name.Names;
-import com.google.inject.persist.jpa.JpaPersistModule;
 import com.google.inject.servlet.GuiceServletContextListener;
 import com.google.sitebricks.SitebricksModule;
 import com.orangelit.stocktracker.web.modules.PersistenceModule;
-import com.orangelit.stocktracker.web.servlets.*;
-import sun.jvm.hotspot.asm.Register;
+import com.orangelit.stocktracker.web.servlets.authentication.AuthenticateService;
+import com.orangelit.stocktracker.web.servlets.authentication.LoginService;
+import com.orangelit.stocktracker.web.servlets.authentication.LogoutService;
+import com.orangelit.stocktracker.web.servlets.authentication.RegisterService;
+import com.orangelit.stocktracker.web.servlets.stocktracker.GetPortfoliosService;
 
 public class GuiceCreator extends GuiceServletContextListener {
 
@@ -24,8 +25,8 @@ public class GuiceCreator extends GuiceServletContextListener {
                     at("/authenticate").serve(AuthenticateService.class);
                     at("/logout").serve(LogoutService.class);
 
-                    //Injection value of message
-                    bindConstant().annotatedWith(Names.named("message")).to("HelloWorld!!");
+                    at("/portfolios").serve(GetPortfoliosService.class);
+
                 }
             },
             new PersistenceModule()
