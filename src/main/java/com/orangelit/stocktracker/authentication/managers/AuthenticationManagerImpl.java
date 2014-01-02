@@ -9,6 +9,8 @@ import com.orangelit.stocktracker.authentication.models.User;
 import com.orangelit.stocktracker.common.exceptions.InvalidInputException;
 
 import javax.persistence.NoResultException;
+import java.util.Calendar;
+import java.util.Date;
 
 public class AuthenticationManagerImpl implements AuthenticationManager {
 
@@ -38,8 +40,15 @@ public class AuthenticationManagerImpl implements AuthenticationManager {
         String token;
 
         try {
+
             User user = userRepository.getUserByCredentials(username, password);
-            token = sessionRepository.generateSession(user, hostname);
+
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(new Date());
+            cal.add(Calendar.MINUTE, 30);
+
+            token = sessionRepository.generateSession(user, hostname, cal.getTime());
+
         } catch(NoResultException e) {
             throw new UnauthorizedException(e.getMessage());
         }
@@ -49,6 +58,9 @@ public class AuthenticationManagerImpl implements AuthenticationManager {
     }
 
     public Boolean isValidToken(String token) {
+        if (token == null) {
+            return false;
+        }
         return sessionRepository.validateSession(token);
     }
 
