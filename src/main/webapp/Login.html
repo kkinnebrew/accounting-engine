@@ -7,10 +7,25 @@
 
     $(document).ready(function() {
 
-      var loginButton = $("#loginButton");
+      var loginButton = $("#login-button");
 
       loginButton.on('click', function(e) {
-        console.log("clicked");
+
+        $.ajax({
+          url: '/api/login',
+          data: {
+            username: $("#username-field").val(),
+            password: $("#password-field").val()
+          },
+          success: function(data) {
+            localStorage.token = data;
+            location.href = "/dashboard";
+          },
+          error: function() {
+            alert("Error logging in");
+          }
+        });
+
       });
 
     });
@@ -23,13 +38,13 @@
 <form>
   <fieldset>
     <label>Username</label>
-    <input type="text" name="username" />
+    <input id="username-field" type="text" name="username" />
     <br/>
     <label>Password</label>
-    <input type="password" name="password" />
+    <input id="password-field" type="password" name="password" />
   </fieldset>
   <br/>
-  <input id="loginButton" type="button" value="Login" />
+  <input id="login-button" type="button" value="Login" />
 </form>
 </body>
 </html>

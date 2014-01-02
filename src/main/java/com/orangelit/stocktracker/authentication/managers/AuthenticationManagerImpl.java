@@ -8,6 +8,8 @@ import com.orangelit.stocktracker.authentication.exceptions.UnauthorizedExceptio
 import com.orangelit.stocktracker.authentication.models.User;
 import com.orangelit.stocktracker.common.exceptions.InvalidInputException;
 
+import javax.persistence.NoResultException;
+
 public class AuthenticationManagerImpl implements AuthenticationManager {
 
     @Inject
@@ -33,8 +35,15 @@ public class AuthenticationManagerImpl implements AuthenticationManager {
 
     public String getToken(String username, String password, String hostname) throws UnauthorizedException {
 
-        User user = userRepository.getUserByCredentials(username, password);
-        String token = sessionRepository.generateSession(user, hostname);
+        String token;
+
+        try {
+            User user = userRepository.getUserByCredentials(username, password);
+            token = sessionRepository.generateSession(user, hostname);
+        } catch(NoResultException e) {
+            throw new UnauthorizedException(e.getMessage());
+        }
+
         return token;
 
     }

@@ -7,10 +7,25 @@
 
     $(document).ready(function() {
 
-      var registerButton = $("#registerButton");
+      var registerButton = $("#register-btn");
 
       registerButton.on('click', function() {
-        console.log("clicked");
+        $.ajax({
+          url: '/api/register',
+          data: {
+            firstName: $('[name="firstName"]').val(),
+            lastName: $('[name="lastName"]').val(),
+            username: $('[name="username"]').val(),
+            password: $('[name="password"]').val(),
+            passwordConfirm: $('[name="confirmPassword"]').val()
+          },
+          success: function(data) {
+            alert("Registration successful");
+          },
+          error: function() {
+            alert("Error logging in");
+          }
+        });
       });
 
     });
@@ -38,7 +53,7 @@
     <input type="password" name="confirmPassword" />
   </fieldset>
   <br/>
-  <input id="registerButton" type="button" value="Register" />
+  <input id="register-btn" type="button" value="Register" />
 </form>
 </body>
 </html>

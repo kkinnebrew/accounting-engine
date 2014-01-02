@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<script type="text/javascript">
+if (!localStorage.token) {
+  location.href = "/login";
+}
+</script>
+<html lang="en">
+<head>
+  <title>Stock Tracker | Dashboard</title>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+  <script type="text/javascript">
+
+    $(document).ready(function() {
+      $.ajax({
+        url: '/api/authenticate',
+        data: {
+          token: localStorage.token
+        },
+        success: function(data) {
+          localStorage.token = data;
+        },
+        error: function() {
+          location.href = "/login";
+        }
+      });
+
+      $("#logout-btn").on('click', function() {
+        $.ajax({
+          url: '/api/logout',
+          data: {
+            token: localStorage.token
+          },
+          success: function(data) {
+            localStorage.removeItem('token');
+            location.href = "/";
+          },
+          error: function() {
+            alert("Error logging out");
+          }
+        });
+      });
+    });
+
+  </script>
+</head>
+<body>
+<h1>Stock Tracker</h1>
+<h2>Dashboard</h2>
+<a id="logout-btn">Logout</a>
+</body>
+</html>

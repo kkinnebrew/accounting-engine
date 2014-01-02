@@ -29,12 +29,12 @@ public class GuiceCreator extends GuiceServletContextListener {
                     scan(RegisterView.class.getPackage());
                     scan(DashboardView.class.getPackage());
 
-                    at("/register").serve(RegisterService.class);
-                    at("/login").serve(LoginService.class);
-                    at("/authenticate").serve(AuthenticateService.class);
-                    at("/logout").serve(LogoutService.class);
+                    at("/api/register").serve(RegisterService.class);
+                    at("/api/login").serve(LoginService.class);
+                    at("/api/authenticate").serve(AuthenticateService.class);
+                    at("/api/logout").serve(LogoutService.class);
 
-                    at("/portfolios").serve(GetPortfoliosService.class);
+                    at("/api/portfolios").serve(GetPortfoliosService.class);
 
                 }
             },

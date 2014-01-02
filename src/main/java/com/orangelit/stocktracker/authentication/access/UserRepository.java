@@ -6,7 +6,6 @@ import com.orangelit.stocktracker.authentication.models.User;
 import com.orangelit.stocktracker.common.access.BaseRepository;
 
 import javax.persistence.Query;
-import java.util.List;
 
 public class UserRepository extends BaseRepository {
 
