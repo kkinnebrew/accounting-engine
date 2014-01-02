@@ -19,10 +19,10 @@ public class SessionEntity {
     @Column(nullable = false)
     public Date expires;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Date created;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Date updated;
 
     @PrePersist

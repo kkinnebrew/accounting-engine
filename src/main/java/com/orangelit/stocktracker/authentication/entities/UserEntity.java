@@ -28,10 +28,10 @@ public class UserEntity {
     @Column(nullable = false)
     public Boolean isActive;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Date created;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Date updated;
 
     @PrePersist

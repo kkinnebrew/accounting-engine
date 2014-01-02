@@ -14,11 +14,13 @@ public class UserPopulator extends BaseRepository {
     private AuthenticationManager authenticationManager;
 
     @Inject
-    public UserPopulator(AuthenticationManager authenticationManager) {
+    public UserPopulator(AuthenticationManager authenticationManager) throws Exception {
         this.authenticationManager = authenticationManager;
-        try {
+//        try {
             loadData();
-        } catch(Exception e) {}
+//        } catch(Exception e) {
+//            System.out.println(e.getMessage());
+//        }
     }
 
     @Transactional
