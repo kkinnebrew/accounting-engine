@@ -4,10 +4,6 @@ import com.google.inject.persist.Transactional;
 import com.orangelit.stocktracker.authentication.models.User;
 import com.orangelit.stocktracker.common.access.BaseRepository;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.text.MessageFormat;
 import java.util.Date;
 import java.util.UUID;
 
