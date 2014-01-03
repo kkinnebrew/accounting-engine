@@ -1,4 +1,4 @@
-package com.orangelit.stocktracker.authentication.entities;
+package com.orangelit.stocktracker.authentication.access;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 

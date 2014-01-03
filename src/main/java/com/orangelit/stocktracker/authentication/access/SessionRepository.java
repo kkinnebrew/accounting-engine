@@ -1,10 +1,13 @@
 package com.orangelit.stocktracker.authentication.access;
 
 import com.google.inject.persist.Transactional;
-import com.orangelit.stocktracker.authentication.entities.SessionEntity;
 import com.orangelit.stocktracker.authentication.models.User;
 import com.orangelit.stocktracker.common.access.BaseRepository;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.UUID;
 
@@ -27,7 +30,25 @@ public class SessionRepository extends BaseRepository {
     }
 
     public Boolean validateSession(String sessionId) {
-        SessionEntity sessionEntity = getEntityManager().find(SessionEntity.class, sessionId);
+        //SessionEntity sessionEntity = getEntityManager().find(SessionEntity.class, sessionId);
+
+        SessionEntity sessionEntity = null;
+
+        try {
+            Statement statement = createStatement();
+            ResultSet results = statement.executeQuery(MessageFormat.format("SELECT * FROM Sessions WHERE sessionId = {0}", sessionId));
+
+            while (results.next()) {
+                System.out.println(results.getString(1));
+                System.out.println(results.getString(2));
+                System.out.println(results.getString(3));
+                System.out.println(results.getString(4));
+            }
+
+        } catch (SQLException ex) {
+            return false;
+        }
+
         if (sessionEntity != null) {
             return sessionEntity.expires.compareTo(new Date()) > 0;
         } else {

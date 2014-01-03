@@ -1,7 +1,6 @@
 package com.orangelit.stocktracker.authentication.access;
 
 import com.google.inject.persist.Transactional;
-import com.orangelit.stocktracker.authentication.entities.UserEntity;
 import com.orangelit.stocktracker.authentication.exceptions.DuplicateUserException;
 import com.orangelit.stocktracker.authentication.models.User;
 import com.orangelit.stocktracker.common.access.BaseRepository;
