@@ -13,14 +13,14 @@ import java.util.List;
 
 public class AccountingManagerImpl implements AccountingManager {
 
-//    @Inject
-//    private AccountRepository accountRepository;
-//
-//    @Inject
-//    private TransactionRepository transactionRepository;
+    @Inject
+    private AccountRepository accountRepository;
 
-//    @Inject
-//    private TransactionLineRepository transactionLineRepository;
+    @Inject
+    private TransactionRepository transactionRepository;
+
+    @Inject
+    private TransactionLineRepository transactionLineRepository;
 
     public List<Transaction> getTransactions(Account account) throws InvalidInputException {
         return getTransactions(account.getAccountId());
@@ -33,8 +33,6 @@ public class AccountingManagerImpl implements AccountingManager {
         }
 
 //        List<Transaction> transaction = transactionRepository.getTransactions(accountId);
-
-
 
         return null;
     }

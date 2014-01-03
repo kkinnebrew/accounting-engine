@@ -2,9 +2,8 @@ package com.orangelit.stocktracker.web.modules;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.persist.jpa.JpaPersistModule;
-import com.orangelit.stocktracker.accounting.access.*;
-import com.orangelit.stocktracker.accounting.managers.AccountingManager;
-import com.orangelit.stocktracker.accounting.managers.AccountingManagerImpl;
+
+import com.orangelit.stocktracker.accounting.mock.EnumPopulator;
 import com.orangelit.stocktracker.authentication.access.SessionRepository;
 import com.orangelit.stocktracker.authentication.access.UserRepository;
 import com.orangelit.stocktracker.authentication.managers.AuthenticationManager;
@@ -24,13 +23,13 @@ public class PersistenceModule extends AbstractModule {
 
         // accounting
 
-        bind(AccountRepository.class).to(AccountRepositoryImpl.class);
+//        bind(AccountRepository.class).to(AccountRepositoryImpl.class);
 //        bind(AccountTypeRepository.class);
 //        bind(TransactionRepository.class);
 //        bind(TransactionLineRepository.class);
 //        bind(TransactionTypeRepository.class);
 
-        bind(AccountingManager.class).to(AccountingManagerImpl.class);
+//        bind(AccountingManager.class).to(AccountingManagerImpl.class);
 
         // authentication
 

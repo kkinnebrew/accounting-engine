@@ -1,6 +1,6 @@
 package com.orangelit.stocktracker.accounting.models;
 
-import com.orangelit.stocktracker.accounting.enumerations.AccountTypeEnum;
+import com.orangelit.stocktracker.accounting.enumerations.AccountType;
 
 import java.util.UUID;
 
@@ -15,7 +15,7 @@ public class Account {
 
     private String _accountId;
     private String _userId;
-    private AccountTypeEnum _accountType;
+    private AccountType _accountType;
     private String _name;
 
     // Constructors
@@ -26,7 +26,7 @@ public class Account {
      * @param accountType
      * @param name
      */
-    public Account(String accountId, String userId, AccountTypeEnum accountType, String name) {
+    public Account(String accountId, String userId, AccountType accountType, String name) {
 
         _accountId = accountId;
         _userId = userId;
@@ -40,7 +40,7 @@ public class Account {
      * @param accountType
      * @param name
      */
-    public Account(String userId, AccountTypeEnum accountType, String name) {
+    public Account(String userId, AccountType accountType, String name) {
         this(UUID.randomUUID().toString(), userId, accountType, name);
     }
 
@@ -54,7 +54,7 @@ public class Account {
         return _userId;
     }
 
-    public AccountTypeEnum getAccountType() {
+    public AccountType getAccountType() {
         return _accountType;
     }
 

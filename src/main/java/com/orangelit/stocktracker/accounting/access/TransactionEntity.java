@@ -1,8 +1,9 @@
 package com.orangelit.stocktracker.accounting.access;
 
-import com.orangelit.stocktracker.accounting.models.TransactionLine;
+import com.orangelit.stocktracker.accounting.enumerations.TransactionType;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -16,11 +17,49 @@ public class TransactionEntity {
         return transactionId;
     }
 
-    private List<TransactionLine> transactionLines;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private TransactionType transactionType;
 
-    @OneToMany(mappedBy = "transactionId")
-    public List<TransactionLine> getTransactionLines() {
+    public TransactionType getTransactionType() {
+        return transactionType;
+    }
+
+    @Column(nullable = false)
+    private Date transactionDate;
+
+    public Date getTransactionDate() {
+        return transactionDate;
+    }
+
+    @Column(nullable = false)
+    private String description;
+
+    public String getDescription() {
+        return description;
+    }
+
+    @OneToMany(mappedBy = "transaction")
+    private List<TransactionLineEntity> transactionLines;
+
+    public List<TransactionLineEntity> getTransactionLines() {
         return transactionLines;
+    }
+
+    @Column(nullable = true)
+    private Date created;
+
+    @PrePersist
+    protected void onCreate() {
+        created = new Date();
+    }
+
+    @Column(nullable = true)
+    private Date updated;
+
+    @PreUpdate
+    protected void onUpdate() {
+        updated = new Date();
     }
 
 }

@@ -1,6 +1,6 @@
 package com.orangelit.stocktracker.accounting.enumerations;
 
-public enum AccountTypeEnum {
+public enum AccountType {
     Cash,
     Investment,
     TradingExpense,

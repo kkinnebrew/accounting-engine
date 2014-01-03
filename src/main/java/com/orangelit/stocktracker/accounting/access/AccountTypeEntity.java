@@ -1,26 +1,32 @@
 package com.orangelit.stocktracker.accounting.access;
 
-import com.orangelit.stocktracker.accounting.enumerations.AccountType;
-
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "Accounts")
-public class AccountEntity {
+@Table(name = "AccountTypes")
+public class AccountTypeEntity {
 
     @Id
-    public String accountId;
+    private String transactionTypeId;
+
+    public String getTransactionTypeId() {
+        return transactionTypeId;
+    }
 
     @Column(nullable = false)
-    public String userId;
+    private String name;
+
+    public String getName() {
+        return name;
+    }
 
     @Column(nullable = false)
-    public String accountName;
+    private Boolean direction;
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    public AccountType accountType;
+    public Boolean getDirection() {
+        return direction;
+    }
 
     @Column(nullable = true)
     private Date created;
