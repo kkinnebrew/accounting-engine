@@ -30,25 +30,7 @@ public class SessionRepository extends BaseRepository {
     }
 
     public Boolean validateSession(String sessionId) {
-        //SessionEntity sessionEntity = getEntityManager().find(SessionEntity.class, sessionId);
-
-        SessionEntity sessionEntity = null;
-
-        try {
-            Statement statement = createStatement();
-            ResultSet results = statement.executeQuery(MessageFormat.format("SELECT * FROM Sessions WHERE sessionId = {0}", sessionId));
-
-            while (results.next()) {
-                System.out.println(results.getString(1));
-                System.out.println(results.getString(2));
-                System.out.println(results.getString(3));
-                System.out.println(results.getString(4));
-            }
-
-        } catch (SQLException ex) {
-            return false;
-        }
-
+        SessionEntity sessionEntity = getEntityManager().find(SessionEntity.class, sessionId);
         if (sessionEntity != null) {
             return sessionEntity.expires.compareTo(new Date()) > 0;
         } else {
