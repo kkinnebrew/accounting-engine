@@ -2,12 +2,12 @@ package com.orangelit.stocktracker.authentication.access;
 
 import com.google.inject.persist.Transactional;
 import com.orangelit.stocktracker.authentication.models.User;
-import com.orangelit.stocktracker.common.access.BaseRepository;
+import com.orangelit.stocktracker.common.access.AbstractRepository;
 
 import java.util.Date;
 import java.util.UUID;
 
-public class SessionRepository extends BaseRepository {
+public class SessionRepository extends AbstractRepository {
 
     @Transactional
     public String generateSession(User user, String hostname, Date expiration) {
