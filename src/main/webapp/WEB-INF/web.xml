@@ -3,7 +3,7 @@
 
   <context-param>
     <param-name>resteasy.guice.modules</param-name>
-    <param-value>com.orangelit.stocktracker.web.modules.HelloModule</param-value>
+    <param-value>com.orangelit.stocktracker.web.modules.WebAppModule</param-value>
   </context-param>
 
   <context-param>

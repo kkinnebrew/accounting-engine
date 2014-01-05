@@ -14,7 +14,7 @@ public interface AuthenticationManager {
                          String passwordConfirm)
         throws InvalidInputException, DuplicateUserException;
 
-    public String getToken(String username, String password, String hostname) throws UnauthorizedException;
+    public User getToken(String username, String password, String hostname) throws UnauthorizedException;
 
     public Boolean isValidToken(String token);
 

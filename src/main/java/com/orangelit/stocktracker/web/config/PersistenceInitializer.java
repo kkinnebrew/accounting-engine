@@ -1,14 +1,14 @@
-package com.orangelit.stocktracker.web1.config;
+package com.orangelit.stocktracker.web.config;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.persist.PersistService;
 
 @Singleton
-public class MyInitializer {
+public class PersistenceInitializer {
 
     @Inject
-    public MyInitializer(final PersistService service) {
+    public PersistenceInitializer(final PersistService service) {
         service.start();
     }
 

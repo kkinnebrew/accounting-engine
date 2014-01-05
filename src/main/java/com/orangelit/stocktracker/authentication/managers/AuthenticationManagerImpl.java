@@ -35,25 +35,25 @@ public class AuthenticationManagerImpl implements AuthenticationManager {
 
     }
 
-    public String getToken(String username, String password, String hostname) throws UnauthorizedException {
+    public User getToken(String username, String password, String hostname) throws UnauthorizedException {
 
-        String token;
+        User user;
 
         try {
 
-            User user = userRepository.getUserByCredentials(username, password);
+            user = userRepository.getUserByCredentials(username, password);
 
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date());
             cal.add(Calendar.MINUTE, 30);
 
-            token = sessionRepository.generateSession(user, hostname, cal.getTime());
+            user.setToken(sessionRepository.generateSession(user, hostname, cal.getTime()));
 
         } catch(NoResultException e) {
             throw new UnauthorizedException(e.getMessage());
         }
 
-        return token;
+        return user;
 
     }
 

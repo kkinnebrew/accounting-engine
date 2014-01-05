@@ -1,6 +1,10 @@
 package com.orangelit.stocktracker.web.resources;
 
+import com.google.inject.Inject;
 import com.googlecode.htmleasy.View;
+import com.orangelit.stocktracker.authentication.exceptions.UnauthorizedException;
+import com.orangelit.stocktracker.authentication.managers.AuthenticationManager;
+import com.orangelit.stocktracker.authentication.models.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
@@ -11,9 +15,12 @@ import java.net.URI;
 @Path("/auth")
 public class AuthenticationResource
 {
+    @Inject
+    private AuthenticationManager authenticationManager;
+
     @GET
     @Path("/login")
-    public View loginView() {
+    public View login() {
         return new View("/login.jsp");
     }
 
@@ -21,17 +28,23 @@ public class AuthenticationResource
     @Path("/login")
     public Response login(@Context HttpServletRequest request, @FormParam("username") String username, @FormParam("password") String password)
     {
-        Response.ResponseBuilder response = Response.seeOther(URI.create("/about/privacy"));
-        System.out.println("ip " + request.getRemoteAddr());
-        request.getSession().setAttribute("user", username);
-        return response.build();
+        try {
+            User user = authenticationManager.getToken(username, password, request.getRemoteAddr());
+            request.getSession().setAttribute("user", user);
+        } catch(UnauthorizedException ex) {
+            return Response.status(401).build();
+        }
+        return Response.seeOther(URI.create("/about/privacy")).build();
     }
 
     @GET
     @Path("/logout")
-    public String logout(@Context HttpServletRequest request)
+    public Response logout(@Context HttpServletRequest request)
     {
-        String username = (String)request.getSession().getAttribute("user");
-        return "Hello " + username;
+        if (request.getSession().getAttribute("user") == null)
+        {
+            request.getSession().removeAttribute("user");
+        }
+        return Response.seeOther(URI.create("/auth/login")).build();
     }
 }

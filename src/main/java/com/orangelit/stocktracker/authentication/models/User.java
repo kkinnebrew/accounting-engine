@@ -9,6 +9,7 @@ public class User {
     public String lastName;
     public String email;
     public Boolean isActive;
+    private String token;
 
     public User() {}
 
@@ -20,6 +21,14 @@ public class User {
         this.email = email;
         this.isActive = isActive;
 
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getToken() {
+        return token;
     }
 
 }
