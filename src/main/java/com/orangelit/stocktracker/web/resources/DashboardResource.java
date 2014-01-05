@@ -26,6 +26,17 @@ public class DashboardResource
         return new View("/dashboard.jsp", request.getSession().getAttribute("user"));
     }
 
+    @GET
+    @Path("/accounting")
+    public View accounting(@Context HttpServletRequest request)
+    {
+        if (request.getSession().getAttribute("user") == null)
+        {
+            throw new RedirectException("/auth/login");
+        }
+        return new View("/accounting.jsp", request.getSession().getAttribute("user"));
+    }
+
     @POST
     @Path("/createTransaction")
     public View createTransaction(@Context HttpServletRequest request,
