@@ -54,7 +54,7 @@
                   </div>
             </div>
           <div>
-          <footer>Copyright &copy; 2014. All Rights Reserved.</footer>
+          <footer style="margin: 2em 0">Copyright &copy; 2014. All Rights Reserved.</footer>
         </div>
         <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
         <script type="text/javascript" src="/js/bootstrap.min.js"></script>
