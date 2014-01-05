@@ -34,7 +34,7 @@ public class AuthenticationResource
         } catch(UnauthorizedException ex) {
             return Response.status(401).build();
         }
-        return Response.seeOther(URI.create("/about/privacy")).build();
+        return Response.seeOther(URI.create("/dashboard")).build();
     }
 
     @GET
@@ -46,5 +46,11 @@ public class AuthenticationResource
             request.getSession().removeAttribute("user");
         }
         return Response.seeOther(URI.create("/auth/login")).build();
+    }
+
+    @GET
+    @Path("/register")
+    public View register() {
+        return new View("/register.jsp");
     }
 }

@@ -39,6 +39,8 @@ public class AccountingManagerImpl implements AccountingManager {
 
     public void createTransaction(Transaction transaction) throws InvalidInputException {
 
+
+
     }
 
     public void batchCreateTransactions(List<Transaction> transactions) throws InvalidInputException {
