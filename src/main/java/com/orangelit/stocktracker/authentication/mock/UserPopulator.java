@@ -5,14 +5,18 @@ import com.google.inject.persist.Transactional;
 import com.orangelit.stocktracker.authentication.managers.AuthenticationManager;
 import com.orangelit.stocktracker.common.access.BaseRepository;
 
-public class UserPopulator extends BaseRepository {
+public class UserPopulator {
 
     private AuthenticationManager authenticationManager;
 
     @Inject
     public UserPopulator(AuthenticationManager authenticationManager) throws Exception {
         this.authenticationManager = authenticationManager;
-        loadData();
+        try {
+            loadData();
+        } catch (Exception e) {
+
+        }
     }
 
     @Transactional
