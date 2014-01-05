@@ -8,6 +8,7 @@
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
 
     <properties>
+
       <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://orangelit.com:3306/javatest?useUnicode=yes&amp;characterEncoding=UTF-8" />
       <property name="javax.persistence.jdbc.user" value="mydbadmin" />
