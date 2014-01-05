@@ -2,9 +2,10 @@ package com.orangelit.stocktracker.accounting.mock;
 
 import com.google.inject.Inject;
 import com.google.inject.persist.Transactional;
+import com.orangelit.stocktracker.common.access.AbstractRepository;
 import com.orangelit.stocktracker.common.access.BaseRepository;
 
-public class EnumPopulator extends BaseRepository {
+public class EnumPopulator extends AbstractRepository {
 
     @Inject
     public EnumPopulator() throws Exception {
