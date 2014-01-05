@@ -1,19 +1,19 @@
-package com.orangelit.stocktracker.web.config;
+package com.orangelit.stocktracker.web1.config;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.GuiceServletContextListener;
 import com.google.sitebricks.SitebricksModule;
-import com.orangelit.stocktracker.web.modules.PersistenceModule;
-import com.orangelit.stocktracker.web.servlets.authentication.AuthenticateService;
-import com.orangelit.stocktracker.web.servlets.authentication.LoginService;
-import com.orangelit.stocktracker.web.servlets.authentication.LogoutService;
-import com.orangelit.stocktracker.web.servlets.authentication.RegisterService;
-import com.orangelit.stocktracker.web.servlets.stocktracker.GetPortfoliosService;
-import com.orangelit.stocktracker.web.views.DashboardView;
-import com.orangelit.stocktracker.web.views.HomeView;
-import com.orangelit.stocktracker.web.views.LoginView;
-import com.orangelit.stocktracker.web.views.RegisterView;
+import com.orangelit.stocktracker.web1.modules.PersistenceModule;
+import com.orangelit.stocktracker.web1.servlets.authentication.AuthenticateService;
+import com.orangelit.stocktracker.web1.servlets.authentication.LoginService;
+import com.orangelit.stocktracker.web1.servlets.authentication.LogoutService;
+import com.orangelit.stocktracker.web1.servlets.authentication.RegisterService;
+import com.orangelit.stocktracker.web1.servlets.stocktracker.GetPortfoliosService;
+import com.orangelit.stocktracker.web1.views.DashboardView;
+import com.orangelit.stocktracker.web1.views.HomeView;
+import com.orangelit.stocktracker.web1.views.LoginView;
+import com.orangelit.stocktracker.web1.views.RegisterView;
 
 public class GuiceCreator extends GuiceServletContextListener {
 

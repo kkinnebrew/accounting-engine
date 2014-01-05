@@ -1,15 +1,14 @@
-package com.orangelit.stocktracker.web.modules;
+package com.orangelit.stocktracker.web1.modules;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.persist.jpa.JpaPersistModule;
 
-import com.orangelit.stocktracker.accounting.mock.EnumPopulator;
 import com.orangelit.stocktracker.authentication.access.SessionRepository;
 import com.orangelit.stocktracker.authentication.access.UserRepository;
 import com.orangelit.stocktracker.authentication.managers.AuthenticationManager;
 import com.orangelit.stocktracker.authentication.managers.AuthenticationManagerImpl;
 import com.orangelit.stocktracker.authentication.mock.UserPopulator;
-import com.orangelit.stocktracker.web.config.MyInitializer;
+import com.orangelit.stocktracker.web1.config.MyInitializer;
 
 public class PersistenceModule extends AbstractModule {
 

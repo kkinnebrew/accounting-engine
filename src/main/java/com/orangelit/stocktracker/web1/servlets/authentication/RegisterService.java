@@ -1,4 +1,4 @@
-package com.orangelit.stocktracker.web.servlets.authentication;
+package com.orangelit.stocktracker.web1.servlets.authentication;
 
 import com.google.inject.Inject;
 import com.google.sitebricks.client.transport.Json;

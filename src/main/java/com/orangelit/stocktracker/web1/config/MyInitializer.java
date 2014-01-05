@@ -1,4 +1,4 @@
-package com.orangelit.stocktracker.web.config;
+package com.orangelit.stocktracker.web1.config;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;

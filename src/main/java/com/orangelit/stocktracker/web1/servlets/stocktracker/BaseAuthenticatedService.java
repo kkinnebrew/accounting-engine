@@ -1,4 +1,4 @@
-package com.orangelit.stocktracker.web.servlets.stocktracker;
+package com.orangelit.stocktracker.web1.servlets.stocktracker;
 
 import com.orangelit.stocktracker.authentication.managers.AuthenticationManager;
 

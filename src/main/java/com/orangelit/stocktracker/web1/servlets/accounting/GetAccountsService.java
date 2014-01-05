@@ -1,4 +1,4 @@
-package com.orangelit.stocktracker.web.servlets.accounting;
+package com.orangelit.stocktracker.web1.servlets.accounting;
 
 import com.google.sitebricks.headless.Reply;
 import com.google.sitebricks.http.Get;

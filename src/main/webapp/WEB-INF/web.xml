@@ -1,23 +1,32 @@
-<!DOCTYPE web-app PUBLIC
- "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
- "http://java.sun.com/dtd/web-app_2_3.dtd">
-
 <web-app>
+  <display-name>Guice Hello</display-name>
 
-  <display-name>Stock Tracker</display-name>
+  <context-param>
+    <param-name>resteasy.guice.modules</param-name>
+    <param-value>com.orangelit.stocktracker.web.modules.HelloModule</param-value>
+  </context-param>
 
-   <filter>
-      <filter-name>webFilter</filter-name>
-      <filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
-  </filter>
-
-  <filter-mapping>
-      <filter-name>webFilter</filter-name>
-      <url-pattern>/*</url-pattern>
-  </filter-mapping>
+  <context-param>
+    <param-name>resteasy.servlet.mapping.prefix</param-name>
+    <param-value>/api</param-value>
+  </context-param>
 
   <listener>
-      <listener-class>com.orangelit.stocktracker.web.config.GuiceCreator</listener-class>
+    <listener-class>
+      org.jboss.resteasy.plugins.guice.GuiceResteasyBootstrapServletContextListener
+    </listener-class>
   </listener>
+
+  <servlet>
+    <servlet-name>resteasy</servlet-name>
+    <servlet-class>
+      com.googlecode.htmleasy.HtmleasyServletDispatcher
+    </servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>resteasy</servlet-name>
+    <url-pattern>/api/*</url-pattern>
+  </servlet-mapping>
 
 </web-app>
