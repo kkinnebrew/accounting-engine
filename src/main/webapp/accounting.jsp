@@ -19,7 +19,7 @@
           <ul class="dropdown-menu" aria-labelledby="themes">
             <li><a tabindex="-1" href="#">Accounts</a></li>
             <li><a tabindex="-1" href="/api/accountTypes">Account Types</a></li>
-            <li><a tabindex="-1" href="#">Transaction Types</a></li>
+            <li><a tabindex="-1" href="/api/transactionTypes">Transaction Types</a></li>
             <li><a tabindex="-1" href="#">Transactions</a></li>
             <li><a tabindex="-1" href="/api/dashboard/accounting">Manage</a></li>
           </ul>

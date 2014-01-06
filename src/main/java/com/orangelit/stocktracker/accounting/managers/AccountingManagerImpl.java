@@ -1,13 +1,11 @@
 package com.orangelit.stocktracker.accounting.managers;
 
 import com.google.inject.Inject;
-import com.orangelit.stocktracker.accounting.access.AccountRepository;
-import com.orangelit.stocktracker.accounting.access.AccountTypeRepository;
-import com.orangelit.stocktracker.accounting.access.TransactionLineRepository;
-import com.orangelit.stocktracker.accounting.access.TransactionRepository;
+import com.orangelit.stocktracker.accounting.access.*;
 import com.orangelit.stocktracker.accounting.models.Account;
 import com.orangelit.stocktracker.accounting.models.AccountType;
 import com.orangelit.stocktracker.accounting.models.Transaction;
+import com.orangelit.stocktracker.accounting.models.TransactionType;
 import com.orangelit.stocktracker.common.exceptions.InvalidInputException;
 import com.orangelit.stocktracker.common.exceptions.ItemNotFoundException;
 import com.orangelit.stocktracker.common.exceptions.PersistenceException;
@@ -25,6 +23,9 @@ public class AccountingManagerImpl implements AccountingManager {
 //
 //    @Inject
 //    private TransactionLineRepository transactionLineRepository;
+
+    @Inject
+    private TransactionTypeRepository transactionTypeRepository;
 
     @Inject
     private AccountTypeRepository accountTypeRepository;
@@ -100,6 +101,26 @@ public class AccountingManagerImpl implements AccountingManager {
     public void removeAccountType(String accountTypeId)
             throws InvalidInputException, PersistenceException {
         accountTypeRepository.remove(accountTypeId);
+    }
+
+    public List<TransactionType> getTransactionTypes() {
+        return transactionTypeRepository.getAll();
+    }
+
+    public TransactionType createTransactionType(String transactionTypeName)
+            throws InvalidInputException, PersistenceException {
+        TransactionType transactionType = new TransactionType(transactionTypeName);
+        return transactionTypeRepository.create(transactionType);
+    }
+
+    public TransactionType updateTransactionType(String transactionTypeId, String transactionTypeName)
+            throws InvalidInputException, PersistenceException {
+        TransactionType transactionType = new TransactionType(transactionTypeId, transactionTypeName);
+        return transactionTypeRepository.update(transactionType, transactionTypeId);
+    }
+
+    public void removeTransactionType(String transactionTypeId) throws InvalidInputException, PersistenceException {
+        transactionTypeRepository.remove(transactionTypeId);
     }
 
 }
