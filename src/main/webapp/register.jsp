@@ -27,7 +27,7 @@
             <div class="row">
               <div class="col-lg-8">
                 <div class="well">
-                  <form class="bs-example form-horizontal" method="POST" action="/api/auth/login">
+                  <form class="bs-example form-horizontal" method="POST" action="/api/auth/register">
                     <fieldset>
                       <legend>Register</legend>
                       <div class="form-group">

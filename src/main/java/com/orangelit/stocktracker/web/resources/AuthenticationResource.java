@@ -2,9 +2,11 @@ package com.orangelit.stocktracker.web.resources;
 
 import com.google.inject.Inject;
 import com.googlecode.htmleasy.View;
+import com.orangelit.stocktracker.authentication.exceptions.DuplicateUserException;
 import com.orangelit.stocktracker.authentication.exceptions.UnauthorizedException;
 import com.orangelit.stocktracker.authentication.managers.AuthenticationManager;
 import com.orangelit.stocktracker.authentication.models.User;
+import com.orangelit.stocktracker.common.exceptions.InvalidInputException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
@@ -52,5 +54,30 @@ public class AuthenticationResource
     @Path("/register")
     public View register() {
         return new View("/register.jsp");
+    }
+
+    @POST
+    @Path("/register")
+    public Response login(@Context HttpServletRequest request,
+                          @FormParam("firstName") String firstName,
+                          @FormParam("lastName") String lastName,
+                          @FormParam("username") String username,
+                          @FormParam("password") String password,
+                          @FormParam("confirmPassword") String confirmPassword)
+    {
+
+        try {
+            User registeredUser = authenticationManager.register(firstName, lastName, username, password, confirmPassword);
+            User user = authenticationManager.getToken(registeredUser.email, password, request.getRemoteAddr());
+            request.getSession().setAttribute("user", user);
+        } catch (InvalidInputException ex) {
+            return Response.status(400).build();
+        } catch (DuplicateUserException ex) {
+            return Response.status(400).build();
+        } catch (UnauthorizedException ex) {
+            return Response.status(403).build();
+        }
+
+        return Response.seeOther(URI.create("/dashboard")).build();
     }
 }
