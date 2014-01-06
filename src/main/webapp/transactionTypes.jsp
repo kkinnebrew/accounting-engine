@@ -1,6 +1,7 @@
 <%@ page import="com.orangelit.stocktracker.web.views.TransactionTypeAdminView" %>
 <%@ page import="com.orangelit.stocktracker.accounting.models.TransactionType" %>
-<% TransactionTypeAdminView model = (TransactionTypeAdminView)request.getAttribute("model"); %>
+<%@ page import="com.orangelit.stocktracker.web.views.TransactionTypeView" %>
+<% TransactionTypeView model = (TransactionTypeView)request.getAttribute("model"); %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
