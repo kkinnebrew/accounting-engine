@@ -9,6 +9,7 @@ import com.orangelit.stocktracker.authentication.models.User;
 import com.orangelit.stocktracker.common.exceptions.InvalidInputException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
@@ -73,7 +74,7 @@ public class AuthenticationResource
         } catch (InvalidInputException ex) {
             return Response.status(400).build();
         } catch (DuplicateUserException ex) {
-            return Response.status(400).build();
+            return Response.ok("User already exists").status(400).build();
         } catch (UnauthorizedException ex) {
             return Response.status(403).build();
         }

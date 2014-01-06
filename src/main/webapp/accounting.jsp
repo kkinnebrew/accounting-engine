@@ -1,5 +1,4 @@
 <%@page import="com.orangelit.stocktracker.authentication.models.User" %>
-<%@page import="com.orangelit.stocktracker.accounting.models.Account" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
