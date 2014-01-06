@@ -52,9 +52,9 @@
 </div>
 <div class="container" style="margin-top: 60px">
   <div class="page-header">
-    <div class="alert alert-dismissable alert-warning hidden">
+    <div class="alert alert-dismissable alert-danger hidden">
       <button type="button" class="close" data-dismiss="alert">x</button>
-      <h4>Warning!</h4>
+      <h4>Error!</h4>
       <p id="errorMessage"></p>
     </div>
     <div class="row">
@@ -76,6 +76,7 @@
             <th>Id</th>
             <th>Name</th>
             <th>Direction</th>
+            <th>Parent Account Type</th>
             <th>Edit</th>
             <th>Delete</th>
           </tr>
@@ -91,6 +92,7 @@
               <td data-name="accountTypeId"><%=accountType.getAccountTypeId()%></td>
               <td data-name="accountTypeName"><%=accountType.getName()%></td>
               <td data-name="direction" data-value="<%=accountType.getDirection()%>"><%=accountType.getDirection() ? "Positive" : "Negative"%></td>
+              <td data-name="parentAccountTypeId" data-value="<%=accountType.getParentAccountType() != null ? accountType.getParentAccountType().getAccountTypeId() : ""%>"><%=accountType.getParentAccountType() != null ? accountType.getParentAccountType().getName() : "-"%></td>
               <td><a href="#" class="edit-btn">Edit</a></td>
               <td><a href="#" class="delete-btn">Delete</a></td>
             </tr
@@ -129,6 +131,19 @@
                 </select>
               </div>
             </div>
+            <div class="form-group">
+              <label class="col-lg-4 control-label">Parent Account Type</label>
+              <div class="col-lg-8">
+                <select class="form-control" name="parentAccountTypeId">
+                  <option value="">-</option>
+                  <% if (!model.accountTypes.isEmpty()) { %>
+                    <% for (AccountType accountType : model.accountTypes) { %>
+                    <option value="<%=accountType.getAccountTypeId()%>"><%=accountType.getName()%></option>
+                    <% } %>
+                  <% } %>
+                </select>
+              </div>
+            </div>
           </fieldset>
         </form>
       </div>
@@ -162,6 +177,19 @@
                 <select class="form-control" name="direction">
                   <option value="true">Positive</option>
                   <option value="false">Negative</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-lg-4 control-label">Parent Account Type</label>
+              <div class="col-lg-8">
+                <select class="form-control" name="parentAccountTypeId">
+                  <option value="">-</option>
+                  <% if (!model.accountTypes.isEmpty()) { %>
+                  <% for (AccountType accountType : model.accountTypes) { %>
+                  <option value="<%=accountType.getAccountTypeId()%>"><%=accountType.getName()%></option>
+                  <% } %>
+                  <% } %>
                 </select>
               </div>
             </div>
@@ -206,17 +234,18 @@
         method: "POST",
         data: {
           accountTypeName: $('#createModal [name="accountTypeName"]').val(),
-          direction: $('#createModal [name="direction"]').val()
+          direction: $('#createModal [name="direction"]').val(),
+          parentAccountTypeId: $('#createModal [name="parentAccountTypeId"]').val()
         },
         success: function() {
           $("#createModal").modal('hide');
           $("#createModal").find('input[name]').val('');
           location.reload();
         },
-        error: function() {
+        error: function(error) {
           $('.alert').removeClass('hidden');
           $("#editModal").modal('hide');
-          $("#errorMessage").text("Error creating account type");
+          $("#errorMessage").text(error.responseText || "Error creating account type");
           $("#createModal").find('input[name]').val('');
         }
       });
@@ -227,7 +256,7 @@
       $(row).find('[data-name]').each(function() {
         var attr = $(this).attr('data-value');
         if (typeof attr !== 'undefined' && attr !== false) {
-          $("#editModal").find('[name="' + $(this).attr('data-value') + '"]').val($(this).text());
+          $("#editModal").find('[name="' + $(this).attr('data-name') + '"]').val(attr);
         } else {
           $("#editModal").find('[name="' + $(this).attr('data-name') + '"]').val($(this).text());
         }
@@ -240,16 +269,17 @@
         data: {
           accountTypeId: $('#editModal [name="accountTypeId"]').val(),
           accountTypeName: $('#editModal [name="accountTypeName"]').val(),
-          direction: $('#editModal [name="direction"]').val()
+          direction: $('#editModal [name="direction"]').val(),
+          parentAccountTypeId: $('#editModal [name="parentAccountTypeId"]').val()
         },
         success: function() {
           $("#editModal").modal('hide');
           location.reload();
         },
-        error: function() {
+        error: function(error) {
           $('.alert').removeClass('hidden');
           $("#editModal").modal('hide');
-          $("#errorMessage").text("Error editing account type");
+          $("#errorMessage").text(error.responseText || "Error editing account type");
         }
       });
     });
@@ -271,10 +301,10 @@
           $("#deleteModal").find('input[name]').val('');
           location.reload();
         },
-        error: function() {
+        error: function(error) {
           $('.alert').removeClass('hidden');
           $("#deleteModal").modal('hide');
-          $("#errorMessage").text("Error deleting account type");
+          $("#errorMessage").text(error.responseText || "Error deleting account type");
           $("#deleteModal").find('input[name]').val('');
         }
       });

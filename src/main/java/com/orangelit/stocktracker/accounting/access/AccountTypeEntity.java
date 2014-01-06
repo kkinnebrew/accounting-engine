@@ -4,6 +4,7 @@ import com.orangelit.stocktracker.common.access.TimestampedEntity;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "AccountTypes")
@@ -40,6 +41,21 @@ public class AccountTypeEntity extends TimestampedEntity {
 
     public void setDirection(Boolean direction) {
         this.direction = direction;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "parentAccountTypeId")
+    private AccountTypeEntity parentAccountType;
+
+    public AccountTypeEntity getParentAccountType() {
+        return parentAccountType;
+    }
+
+    @OneToMany(mappedBy = "parentAccountType")
+    private List<AccountTypeEntity> childAccountTypes;
+
+    public void setParentAccountType(AccountTypeEntity parentAccountType) {
+        this.parentAccountType = parentAccountType;
     }
 
     @Column(nullable = true)

@@ -41,7 +41,8 @@ public class AccountTypeResource
     @Path("/")
     public Response post(@Context HttpServletRequest request,
                              @FormParam("accountTypeName") String accountTypeName,
-                             @FormParam("direction") Boolean direction)
+                             @FormParam("direction") Boolean direction,
+                             @FormParam("parentAccountTypeId") String parentAccountTypeId)
     {
         if (request.getSession().getAttribute("user") == null) {
             throw new RedirectException("/auth/login");
@@ -52,9 +53,9 @@ public class AccountTypeResource
         }
 
         try {
-            accountingManager.createAccountType(accountTypeName, direction);
+            accountingManager.createAccountType(accountTypeName, direction, parentAccountTypeId);
         } catch (Exception ex) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            return Response.ok(ex.getMessage()).status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
 
         return Response.ok().build();
@@ -65,7 +66,8 @@ public class AccountTypeResource
     public Response put(@Context HttpServletRequest request,
                              @FormParam("accountTypeId") String accountTypeId,
                              @FormParam("accountTypeName") String accountTypeName,
-                             @FormParam("direction") Boolean direction)
+                             @FormParam("direction") Boolean direction,
+                             @FormParam("parentAccountTypeId") String parentAccountTypeId)
     {
         if (request.getSession().getAttribute("user") == null) {
             throw new RedirectException("/auth/login");
@@ -76,9 +78,9 @@ public class AccountTypeResource
         }
 
         try {
-            accountingManager.updateAccountType(accountTypeId, accountTypeName, direction);
+            accountingManager.updateAccountType(accountTypeId, accountTypeName, direction, parentAccountTypeId);
         } catch (Exception ex) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            return Response.ok(ex.getMessage()).status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
 
         return Response.ok().build();
@@ -99,7 +101,7 @@ public class AccountTypeResource
         try {
             accountingManager.removeAccountType(accountTypeId);
         } catch (Exception ex) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            return Response.ok(ex.getMessage()).status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
 
         return Response.ok().build();

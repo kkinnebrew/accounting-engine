@@ -20,9 +20,9 @@ public interface AccountingManager {
 
     public List<AccountType> getAccountTypes();
 
-    public AccountType createAccountType(String accountTypeName, Boolean direction) throws InvalidInputException, PersistenceException;
+    public AccountType createAccountType(String accountTypeName, Boolean direction, String parentAccountTypeId) throws InvalidInputException, PersistenceException;
 
-    public AccountType updateAccountType(String accountTypeId, String accountTypeName, Boolean direction) throws InvalidInputException, PersistenceException;
+    public AccountType updateAccountType(String accountTypeId, String accountTypeName, Boolean direction, String parentAccountTypeId) throws InvalidInputException, PersistenceException;
 
     public void removeAccountType(String accountTypeId) throws InvalidInputException, PersistenceException;
 

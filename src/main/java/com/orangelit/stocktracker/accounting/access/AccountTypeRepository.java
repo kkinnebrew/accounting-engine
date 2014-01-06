@@ -7,7 +7,11 @@ public class AccountTypeRepository extends BaseRepository<AccountTypeEntity, Acc
 
     @Override
     protected AccountType mapResult(AccountTypeEntity entity) {
-        return new AccountType(entity.getAccountTypeId(), entity.getName(), entity.getDirection());
+        if (entity.getParentAccountType() != null) {
+            return new AccountType(entity.getAccountTypeId(), entity.getName(), entity.getDirection(), mapResult(entity.getParentAccountType()));
+        } else {
+            return new AccountType(entity.getAccountTypeId(), entity.getName(), entity.getDirection(), null);
+        }
     }
 
     @Override
@@ -16,6 +20,9 @@ public class AccountTypeRepository extends BaseRepository<AccountTypeEntity, Acc
         entity.setAccountTypeId(model.getAccountTypeId());
         entity.setName(model.getName());
         entity.setDirection(model.getDirection());
+        if (model.getParentAccountType() != null) {
+            entity.setParentAccountType(mapInput(model.getParentAccountType()));
+        }
         return entity;
     }
 

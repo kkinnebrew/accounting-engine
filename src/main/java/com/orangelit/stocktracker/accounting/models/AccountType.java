@@ -10,6 +10,7 @@ public class AccountType {
     private String _accountTypeId;
     private String _name;
     private Boolean _direction;
+    private AccountType _parentAccountType;
     private Date _created;
 
     // Constructors
@@ -18,19 +19,20 @@ public class AccountType {
      * @param accountTypeId
      * @param name
      */
-    public AccountType(String accountTypeId, String name, Boolean direction) {
+    public AccountType(String accountTypeId, String name, Boolean direction, AccountType parentAccountType) {
 
         _accountTypeId = accountTypeId;
         _name = name;
         _direction = direction;
+        _parentAccountType = parentAccountType;
 
     }
 
     /**
      * @param name
      */
-    public AccountType(String name, Boolean direction) {
-        this(UUID.randomUUID().toString(), name, direction);
+    public AccountType(String name, Boolean direction, AccountType parentAccountType) {
+        this(UUID.randomUUID().toString(), name, direction, parentAccountType);
     }
 
     // Getters & Setters
@@ -46,5 +48,7 @@ public class AccountType {
     public Boolean getDirection() {
         return _direction;
     }
+
+    public AccountType getParentAccountType() { return _parentAccountType; }
 
 }

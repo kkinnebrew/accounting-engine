@@ -9,6 +9,7 @@ import com.orangelit.stocktracker.accounting.models.Account;
 import com.orangelit.stocktracker.accounting.models.AccountType;
 import com.orangelit.stocktracker.accounting.models.Transaction;
 import com.orangelit.stocktracker.common.exceptions.InvalidInputException;
+import com.orangelit.stocktracker.common.exceptions.ItemNotFoundException;
 import com.orangelit.stocktracker.common.exceptions.PersistenceException;
 import org.apache.commons.lang.StringUtils;
 
@@ -57,17 +58,42 @@ public class AccountingManagerImpl implements AccountingManager {
         return accountTypeRepository.getAll();
     }
 
-    public AccountType createAccountType(String accountTypeName, Boolean direction)
+    public AccountType createAccountType(String accountTypeName, Boolean direction, String parentAccountTypeId)
             throws InvalidInputException, PersistenceException
     {
-        AccountType accountType = new AccountType(accountTypeName, direction);
+        AccountType accountType = null;
+        AccountType parentAccountType = null;
+        if (!StringUtils.isEmpty(parentAccountTypeId)) {
+            try {
+                parentAccountType = accountTypeRepository.get(parentAccountTypeId);
+                accountType = new AccountType(accountTypeName, parentAccountType.getDirection(), parentAccountType);
+            } catch (ItemNotFoundException ex) {
+                throw new InvalidInputException("Cannot find account type with id " + parentAccountTypeId);
+            }
+        } else {
+            accountType = new AccountType(accountTypeName, direction, null);
+        }
         return accountTypeRepository.create(accountType);
     }
 
-    public AccountType updateAccountType(String accountTypeId, String accountTypeName, Boolean direction)
+    public AccountType updateAccountType(String accountTypeId, String accountTypeName, Boolean direction, String parentAccountTypeId)
             throws InvalidInputException, PersistenceException
     {
-        AccountType accountType = new AccountType(accountTypeId, accountTypeName, direction);
+        AccountType accountType = null;
+        AccountType parentAccountType = null;
+        if (!StringUtils.isEmpty(parentAccountTypeId)) {
+            if (parentAccountTypeId.equals(accountTypeId)) {
+                throw new InvalidInputException("AccountType cannot reference itself as parent");
+            }
+            try {
+                parentAccountType = accountTypeRepository.get(parentAccountTypeId);
+                accountType = new AccountType(accountTypeId, accountTypeName, parentAccountType.getDirection(), parentAccountType);
+            } catch (ItemNotFoundException ex) {
+                throw new InvalidInputException("Cannot find account type with id " + parentAccountTypeId);
+            }
+        } else {
+            accountType = new AccountType(accountTypeId, accountTypeName, direction, parentAccountType);
+        }
         return accountTypeRepository.update(accountType, accountTypeId);
     }
 
