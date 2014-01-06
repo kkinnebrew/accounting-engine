@@ -5,7 +5,7 @@ import com.googlecode.htmleasy.RedirectException;
 import com.googlecode.htmleasy.View;
 import com.orangelit.stocktracker.accounting.managers.AccountingManager;
 import com.orangelit.stocktracker.authentication.models.User;
-import com.orangelit.stocktracker.web.views.TransactionTypeAdminView;
+import com.orangelit.stocktracker.web.views.TransactionTypeView;
 import org.apache.commons.lang.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,7 +28,7 @@ public class TransactionTypeResource
             throw new RedirectException("/auth/login");
         }
 
-        TransactionTypeAdminView model = new TransactionTypeAdminView();
+        TransactionTypeView model = new TransactionTypeView();
 
         model.transactionTypes = accountingManager.getTransactionTypes();
         model.user = (User)request.getSession().getAttribute("user");
