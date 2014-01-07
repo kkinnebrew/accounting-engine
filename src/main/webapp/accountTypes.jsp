@@ -24,7 +24,7 @@
         <li class="dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Accounting <span class="caret"></span></a>
           <ul class="dropdown-menu" aria-labelledby="themes">
-            <li><a tabindex="-1" href="#">Accounts</a></li>
+            <li><a tabindex="-1" href="/api/accounts">Accounts</a></li>
             <li><a tabindex="-1" href="/api/accountTypes">Account Types</a></li>
             <li><a tabindex="-1" href="/api/transactionTypes">Transaction Types</a></li>
             <li><a tabindex="-1" href="#">Transactions</a></li>
@@ -84,7 +84,7 @@
           <tbody>
           <% if (model.accountTypes.isEmpty()) { %>
             <tr>
-              <td colspan="5">No results</td>
+              <td colspan="6">No results</td>
             </tr>
           <% } else { %>
             <% for (AccountType accountType : model.accountTypes) { %>

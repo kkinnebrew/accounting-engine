@@ -1,5 +1,6 @@
 package com.orangelit.stocktracker.authentication.models;
 
+import java.text.MessageFormat;
 import java.util.UUID;
 
 public class User {
@@ -29,6 +30,14 @@ public class User {
 
     public String getToken() {
         return token;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public String getFullName() {
+        return MessageFormat.format("{0} {1}", firstName, lastName);
     }
 
 }

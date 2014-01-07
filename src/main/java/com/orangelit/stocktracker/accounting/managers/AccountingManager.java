@@ -35,4 +35,12 @@ public interface AccountingManager {
 
     public void removeTransactionType(String transactionTypeId) throws InvalidInputException, PersistenceException;
 
+    public List<Account> getAccounts();
+
+    public Account createAccount(String accountName, String accountTypeId, String userId) throws InvalidInputException, PersistenceException;
+
+    public Account updateAccount(String accountId, String accountName, String accountTypeId, String userId) throws InvalidInputException, PersistenceException;
+
+    public void removeAccount(String accountId) throws InvalidInputException, PersistenceException;
+
 }

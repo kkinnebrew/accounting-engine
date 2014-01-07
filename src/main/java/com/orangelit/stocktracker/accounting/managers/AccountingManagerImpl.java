@@ -15,8 +15,8 @@ import java.util.List;
 
 public class AccountingManagerImpl implements AccountingManager {
 //
-//    @Inject
-//    private AccountRepository accountRepository;
+    @Inject
+    private AccountRepository accountRepository;
 //
 //    @Inject
 //    private TransactionRepository transactionRepository;
@@ -121,6 +121,34 @@ public class AccountingManagerImpl implements AccountingManager {
 
     public void removeTransactionType(String transactionTypeId) throws InvalidInputException, PersistenceException {
         transactionTypeRepository.remove(transactionTypeId);
+    }
+
+    public List<Account> getAccounts() {
+        return accountRepository.getAll();
+    }
+
+    public Account createAccount(String accountName, String accountTypeId, String userId) throws InvalidInputException, PersistenceException {
+        try {
+            AccountType accountType = accountTypeRepository.get(accountTypeId);
+            Account account = new Account(userId, accountType, accountName);
+            return accountRepository.create(account);
+        } catch (ItemNotFoundException ex) {
+            throw new InvalidInputException("Cannot find account type with id " + accountTypeId);
+        }
+    }
+
+    public Account updateAccount(String accountId, String accountName, String accountTypeId, String userId) throws InvalidInputException, PersistenceException {
+        try {
+            AccountType accountType = accountTypeRepository.get(accountTypeId);
+            Account account = new Account(accountId, userId, accountType, accountName);
+            return accountRepository.update(account, accountId);
+        } catch (ItemNotFoundException ex) {
+            throw new InvalidInputException("Cannot find account type with id " + accountTypeId);
+        }
+    }
+
+    public void removeAccount(String accountId) throws InvalidInputException, PersistenceException {
+        accountRepository.remove(accountId);
     }
 
 }

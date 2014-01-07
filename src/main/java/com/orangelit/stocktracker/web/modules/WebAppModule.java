@@ -4,6 +4,7 @@ import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.persist.jpa.JpaPersistModule;
 import com.googlecode.htmleasy.HtmleasyProviders;
+import com.orangelit.stocktracker.accounting.access.AccountRepository;
 import com.orangelit.stocktracker.accounting.access.AccountTypeRepository;
 import com.orangelit.stocktracker.accounting.access.TransactionTypeRepository;
 import com.orangelit.stocktracker.accounting.managers.AccountingManager;
@@ -28,6 +29,7 @@ public class WebAppModule implements Module
         binder.bind(UserPopulator.class).asEagerSingleton();
 
         binder.bind(AccountTypeRepository.class);
+        binder.bind(AccountRepository.class);
         binder.bind(TransactionTypeRepository.class);
 
         binder.bind(AuthenticationManager.class).to(AuthenticationManagerImpl.class);
@@ -36,6 +38,7 @@ public class WebAppModule implements Module
         binder.bind(AuthenticationResource.class);
         binder.bind(DashboardResource.class);
         binder.bind(AccountingResource.class);
+        binder.bind(AccountResource.class);
         binder.bind(AccountTypeResource.class);
         binder.bind(TransactionTypeResource.class);
     }
