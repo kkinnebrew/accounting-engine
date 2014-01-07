@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.googlecode.htmleasy.RedirectException;
 import com.googlecode.htmleasy.View;
 import com.orangelit.stocktracker.accounting.managers.AccountingManager;
+import com.orangelit.stocktracker.accounting.models.AccountType;
 import com.orangelit.stocktracker.authentication.models.User;
 import com.orangelit.stocktracker.web.views.AccountTypeAdminView;
 import org.apache.commons.lang.StringUtils;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import java.util.Collections;
 
 @Path("/accountTypes")
 public class AccountTypeResource
@@ -31,6 +33,11 @@ public class AccountTypeResource
         AccountTypeAdminView model = new AccountTypeAdminView();
 
         model.accountTypes = accountingManager.getAccountTypes();
+//        Collections.sort(model.accountTypes, (AccountType accountType) -> {
+//
+//        });
+
+//        model.accountTypes.sortBy
         model.user = (User)request.getSession().getAttribute("user");
 
         return new View("/accountTypes.jsp", model);
