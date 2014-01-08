@@ -11,18 +11,16 @@ import com.orangelit.stocktracker.common.exceptions.ItemNotFoundException;
 import com.orangelit.stocktracker.common.exceptions.PersistenceException;
 import org.apache.commons.lang.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AccountingManagerImpl implements AccountingManager {
 //
     @Inject
     private AccountRepository accountRepository;
-//
-//    @Inject
-//    private TransactionRepository transactionRepository;
-//
-//    @Inject
-//    private TransactionLineRepository transactionLineRepository;
+
+    @Inject
+    private TransactionRepository transactionRepository;
 
     @Inject
     private TransactionTypeRepository transactionTypeRepository;
@@ -40,9 +38,7 @@ public class AccountingManagerImpl implements AccountingManager {
             throw new InvalidInputException("Invalid account Id");
         }
 
-//        List<Transaction> transaction = transactionRepository.getTransactions(accountId);
-
-        return null;
+        return transactionRepository.getTransactionsForAccount(accountId);
     }
 
     public void createTransaction(Transaction transaction) throws InvalidInputException {
@@ -125,6 +121,10 @@ public class AccountingManagerImpl implements AccountingManager {
 
     public List<Account> getAccounts() {
         return accountRepository.getAll();
+    }
+
+    public Account getAccount(String accountId) throws ItemNotFoundException {
+        return accountRepository.get(accountId);
     }
 
     public Account createAccount(String accountName, String accountTypeId, String userId) throws InvalidInputException, PersistenceException {

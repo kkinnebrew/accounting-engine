@@ -1,7 +1,5 @@
 package com.orangelit.stocktracker.accounting.models;
 
-import com.orangelit.stocktracker.accounting.enumerations.TransactionType;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;

@@ -41,5 +41,7 @@ public class WebAppModule implements Module
         binder.bind(AccountResource.class);
         binder.bind(AccountTypeResource.class);
         binder.bind(TransactionTypeResource.class);
+        binder.bind(TransactionResource.class);
+
     }
 }

@@ -14,35 +14,25 @@ public class TransactionLine {
     // Private Fields
 
     private String _transactionLineId;
-    private String _transactionId;
-    private String _accountId;
+    private Transaction _transaction;
+    private Account _account;
     private BigDecimal _debitAmount;
     private BigDecimal _creditAmount;
 
     // Constructors
 
     /**
-     * @param transactionId
-     * @param accountId
-     * @param debitAmount
-     * @param creditAmount
-     */
-    public TransactionLine(String transactionId, String accountId, BigDecimal debitAmount, BigDecimal creditAmount) {
-        this(UUID.randomUUID().toString(), transactionId, accountId, debitAmount, creditAmount);
-    }
-
-    /**
      * @param transactionLineId
-     * @param transactionId
-     * @param accountId
+     * @param transaction
+     * @param account
      * @param debitAmount
      * @param creditAmount
      */
-    public TransactionLine(String transactionLineId, String transactionId, String accountId, BigDecimal debitAmount, BigDecimal creditAmount) {
+    public TransactionLine(String transactionLineId, Transaction transaction, Account account, BigDecimal debitAmount, BigDecimal creditAmount) {
 
         _transactionLineId = transactionLineId;
-        _transactionId = transactionId;
-        _accountId = accountId;
+        _transaction = transaction;
+        _account = account;
         _debitAmount = debitAmount != null ? debitAmount : BigDecimal.ZERO;
         _creditAmount = creditAmount != null ? creditAmount : BigDecimal.ZERO;
 
@@ -50,12 +40,12 @@ public class TransactionLine {
 
     /**
      * @param transaction
-     * @param accountId
+     * @param account
      * @param debitAmount
      * @param creditAmount
      */
-    public TransactionLine(Transaction transaction, String accountId, BigDecimal debitAmount, BigDecimal creditAmount) {
-        this(UUID.randomUUID().toString(), transaction.getTransactionId(), accountId, debitAmount, creditAmount);
+    public TransactionLine(Transaction transaction, Account account, BigDecimal debitAmount, BigDecimal creditAmount) {
+        this(UUID.randomUUID().toString(), transaction, account, debitAmount, creditAmount);
     }
 
     // Getters & Setters
@@ -64,12 +54,12 @@ public class TransactionLine {
         return _transactionLineId;
     }
 
-    public String getTransactionId() {
-        return _transactionId;
+    public Transaction getTransaction() {
+        return _transaction;
     }
 
-    public String getAccountId() {
-        return _accountId;
+    public Account getAccount() {
+        return _account;
     }
 
     public BigDecimal getDebitAmount() {

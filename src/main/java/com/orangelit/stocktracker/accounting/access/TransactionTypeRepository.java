@@ -7,20 +7,28 @@ public class TransactionTypeRepository extends BaseRepository<TransactionTypeEnt
 
     @Override
     protected TransactionType mapResult(TransactionTypeEntity entity) {
-        return new TransactionType(entity.getTransactionTypeId(), entity.getName());
+        return TransactionTypeRepository.mapResultStatic(entity);
     }
 
     @Override
     protected TransactionTypeEntity mapInput(TransactionType model) {
-        TransactionTypeEntity entity = new TransactionTypeEntity();
-        entity.setTransactionTypeId(model.getTransactionTypeId());
-        entity.setName(model.getName());
-        return entity;
+        return TransactionTypeRepository.mapInputStatic(model);
     }
 
     @Override
     protected Class<TransactionTypeEntity> getEntityClass() {
         return TransactionTypeEntity.class;
+    }
+
+    protected static TransactionType mapResultStatic(TransactionTypeEntity entity) {
+        return new TransactionType(entity.getTransactionTypeId(), entity.getName());
+    }
+
+    protected static TransactionTypeEntity mapInputStatic(TransactionType model) {
+        TransactionTypeEntity entity = new TransactionTypeEntity();
+        entity.setTransactionTypeId(model.getTransactionTypeId());
+        entity.setName(model.getName());
+        return entity;
     }
 
 }

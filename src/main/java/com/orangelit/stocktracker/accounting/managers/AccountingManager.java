@@ -5,6 +5,7 @@ import com.orangelit.stocktracker.accounting.models.AccountType;
 import com.orangelit.stocktracker.accounting.models.Transaction;
 import com.orangelit.stocktracker.accounting.models.TransactionType;
 import com.orangelit.stocktracker.common.exceptions.InvalidInputException;
+import com.orangelit.stocktracker.common.exceptions.ItemNotFoundException;
 import com.orangelit.stocktracker.common.exceptions.PersistenceException;
 
 import java.util.List;
@@ -36,6 +37,8 @@ public interface AccountingManager {
     public void removeTransactionType(String transactionTypeId) throws InvalidInputException, PersistenceException;
 
     public List<Account> getAccounts();
+
+    public Account getAccount(String accountId) throws ItemNotFoundException;
 
     public Account createAccount(String accountName, String accountTypeId, String userId) throws InvalidInputException, PersistenceException;
 

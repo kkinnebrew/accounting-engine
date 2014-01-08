@@ -1,6 +1,6 @@
 package com.orangelit.stocktracker.accounting.access;
 
-import com.orangelit.stocktracker.accounting.enumerations.TransactionType;
+import com.orangelit.stocktracker.common.access.TimestampedEntity;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -8,7 +8,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "Transactions")
-public class TransactionEntity {
+public class TransactionEntity extends TimestampedEntity {
 
     @Id
     private String transactionId;
@@ -17,12 +17,20 @@ public class TransactionEntity {
         return transactionId;
     }
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private TransactionType transactionType;
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
+    }
 
-    public TransactionType getTransactionType() {
+    @ManyToOne
+    @JoinColumn(name = "transactionTypeId")
+    private TransactionTypeEntity transactionType;
+
+    public TransactionTypeEntity getTransactionType() {
         return transactionType;
+    }
+
+    public void setTransactionType(TransactionTypeEntity transactionType) {
+        this.transactionType = transactionType;
     }
 
     @Column(nullable = false)
@@ -32,11 +40,19 @@ public class TransactionEntity {
         return transactionDate;
     }
 
+    public void setTransactionDate(Date transactionDate) {
+        this.transactionDate = transactionDate;
+    }
+
     @Column(nullable = false)
     private String description;
 
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @OneToMany(mappedBy = "transaction")
@@ -46,12 +62,26 @@ public class TransactionEntity {
         return transactionLines;
     }
 
+    public void setTransactionLines(List<TransactionLineEntity> transactionLines) {
+        this.transactionLines = transactionLines;
+    }
+
     @Column(nullable = true)
     private Date created;
 
     @PrePersist
     protected void onCreate() {
         created = new Date();
+    }
+
+    @Override
+    public Date getCreated() {
+        return created;
+    }
+
+    @Override
+    public void setCreated(Date created) {
+        this.created = created;
     }
 
     @Column(nullable = true)

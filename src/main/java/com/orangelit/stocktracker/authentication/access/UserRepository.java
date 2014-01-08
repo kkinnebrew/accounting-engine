@@ -46,7 +46,7 @@ public class UserRepository extends AbstractRepository {
         return mapUser(userEntity);
     }
 
-    public com.orangelit.stocktracker.authentication.models.User getUserByCredentials(String email, String password) {
+    public User getUserByCredentials(String email, String password) {
 
         Query query = getEntityManager().createNativeQuery("select * from Users WHERE email = ? AND password = ?", UserEntity.class);
         query.setParameter(1, email);

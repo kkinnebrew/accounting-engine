@@ -1,6 +1,9 @@
-<%@ page import="com.orangelit.stocktracker.web.views.AccountTypeAdminView" %>
-<%@ page import="com.orangelit.stocktracker.accounting.models.AccountType" %>
-<% AccountTypeAdminView model = (AccountTypeAdminView)request.getAttribute("model"); %>
+<%@ page import="com.orangelit.stocktracker.web.views.TransactionAdminView" %>
+<%@ page import="com.orangelit.stocktracker.web.dtos.AccountTransactionDTO" %>
+<%@ page import="com.orangelit.stocktracker.accounting.models.TransactionType" %>
+<%@ page import="com.orangelit.stocktracker.accounting.models.Account" %>
+<%@ page import="java.text.DateFormat" %>
+<% TransactionAdminView model = (TransactionAdminView)request.getAttribute("model"); %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -58,7 +61,7 @@
       <p id="errorMessage"></p>
     </div>
     <div class="row">
-      <div class="col-lg-10"><h2 style="margin-top: 6px; margin-bottom: 24px;">Account Types</h2></div>
+      <div class="col-lg-10"><h2 style="margin-top: 6px; margin-bottom: 24px;">Transactions - <%=model.account.getAccountName()%></h2></div>
       <div class="col-lg-2" style="text-align: right"><button type="button" class="btn btn-success create-btn">Create New</button></div>
     </div>
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id commodo quam, quis venenatis quam. Mauris
@@ -66,6 +69,17 @@
       Morbi eget purus a enim pharetra placerat. Vivamus eget felis urna. Ut fermentum sollicitudin nisl vitae laoreet.
       Sed ac turpis aliquet, lobortis lacus a, condimentum arcu. Morbi congue commodo felis, eu sollicitudin odio
       consectetur eu. Proin pharetra interdum nisi quis luctus. Integer facilisis sit amet velit sed hendrerit.</p>
+    <select class="accountChooser">
+      <% if (!model.accounts.isEmpty()) { %>
+      <% for (Account account : model.accounts) { %>
+      <% if (account.getAccountId().equals(model.account.getAccountId())) { %>
+      <option selected="selected" value="<%=account.getAccountId()%>"><%=account.getAccountName()%></option>
+      <% } else { %>
+      <option value="<%=account.getAccountId()%>"><%=account.getAccountName()%></option>
+      <% } %>
+      <% } %>
+      <% } %>
+    </select>
   </div>
   <div class="bs-docs-section">
     <div class="row">
@@ -73,30 +87,32 @@
         <table class="table table-striped table-bordered table-hover">
           <thead>
           <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Direction</th>
-            <th>Parent Account Type</th>
+            <th>Date</th>
+            <th>Transaction Type</th>
+            <th>Account</th>
+            <th>Amount</th>
+            <th>Balance</th>
             <th>Edit</th>
-            <th>Delete</th>
+            <th>Remove</th>
           </tr>
           </thead>
           <tbody>
-          <% if (model.accountTypes.isEmpty()) { %>
-            <tr>
-              <td colspan="6">No results</td>
-            </tr>
+          <% if (model.transactions.isEmpty()) { %>
+          <tr>
+            <td colspan="7">No results</td>
+          </tr>
           <% } else { %>
-            <% for (AccountType accountType : model.accountTypes) { %>
-            <tr>
-              <td data-name="accountTypeId"><%=accountType.getAccountTypeId()%></td>
-              <td data-name="accountTypeName"><%=accountType.getName()%></td>
-              <td data-name="direction" data-value="<%=accountType.getDirection()%>"><%=accountType.getDirection() ? "Positive" : "Negative"%></td>
-              <td data-name="parentAccountTypeId" data-value="<%=accountType.getParentAccountType() != null ? accountType.getParentAccountType().getAccountTypeId() : ""%>"><%=accountType.getParentAccountType() != null ? accountType.getParentAccountType().getName() : "-"%></td>
-              <td><a href="#" class="edit-btn">Edit</a></td>
-              <td><a href="#" class="delete-btn">Delete</a></td>
-            </tr
-            <% } %>
+          <% for (AccountTransactionDTO transaction : model.transactions) { %>
+          <tr itemid="<%=transaction.getTransactionId()%>">
+            <td><%=transaction.getTransactionDate()%></td>
+            <td><%=transaction.getTransactionType().getName()%></td>
+            <td><%=transaction.getAccount().getAccountName()%></td>
+            <td><%=transaction.getAmount()%></td>
+            <td><%=transaction.getBalance()%></td>
+            <td><a href="#" class="edit-btn">Edit</a></td>
+            <td><a href="#" class="delete-btn">Delete</a></td>
+          </tr
+          <% } %>
           <% } %>
           </tbody>
         </table>
@@ -110,36 +126,25 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">Create Account Type</h4>
+        <h4 class="modal-title">Create Account</h4>
       </div>
       <div class="modal-body">
         <form class="bs-example form-horizontal">
-          <input type="hidden" name="accountTypeId" />
           <fieldset>
             <div class="form-group">
-              <label class="col-lg-4 control-label">Account Type Name</label>
+              <label class="col-lg-4 control-label">Account Name</label>
               <div class="col-lg-8">
-                <input type="text" class="form-control" name="accountTypeName" placeholder="Account Type Name">
+                <input type="text" class="form-control" name="accountName" placeholder="Account Name">
               </div>
             </div>
             <div class="form-group">
-              <label class="col-lg-4 control-label">Direction</label>
+              <label class="col-lg-4 control-label">Account Type</label>
               <div class="col-lg-8">
-                <select class="form-control" name="direction">
-                  <option value="true">Positive</option>
-                  <option value="false">Negative</option>
-                </select>
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-lg-4 control-label">Parent Account Type</label>
-              <div class="col-lg-8">
-                <select class="form-control" name="parentAccountTypeId">
-                  <option value="">-</option>
-                  <% if (!model.accountTypes.isEmpty()) { %>
-                    <% for (AccountType accountType : model.accountTypes) { %>
-                    <option value="<%=accountType.getAccountTypeId()%>"><%=accountType.getName()%></option>
-                    <% } %>
+                <select class="form-control" name="accountTypeId">
+                  <% if (!model.transactionTypes.isEmpty()) { %>
+                  <% for (TransactionType transactionType : model.transactionTypes) { %>
+                  <option value="<%=transactionType.getTransactionTypeId()%>"><%=transactionType.getName()%></option>
+                  <% } %>
                   <% } %>
                 </select>
               </div>
@@ -159,35 +164,25 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">Edit Account Type</h4>
+        <h4 class="modal-title">Edit Account</h4>
       </div>
       <div class="modal-body">
-        <form class="bs-example form-horizontal" method="PUT" action="/api/accounting/editAccountType">
-          <input type="hidden" name="accountTypeId" />
+        <form class="bs-example form-horizontal">
+          <input type="hidden" name="accountId" />
           <fieldset>
             <div class="form-group">
-              <label class="col-lg-4 control-label">Account Type Name</label>
+              <label class="col-lg-4 control-label">Account Name</label>
               <div class="col-lg-8">
-                <input type="text" class="form-control" name="accountTypeName" placeholder="Account Type Name">
+                <input type="text" class="form-control" name="accountName" placeholder="Account Name">
               </div>
             </div>
             <div class="form-group">
-              <label class="col-lg-4 control-label">Direction</label>
+              <label class="col-lg-4 control-label">Account Type</label>
               <div class="col-lg-8">
-                <select class="form-control" name="direction">
-                  <option value="true">Positive</option>
-                  <option value="false">Negative</option>
-                </select>
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-lg-4 control-label">Parent Account Type</label>
-              <div class="col-lg-8">
-                <select class="form-control" name="parentAccountTypeId">
-                  <option value="">-</option>
-                  <% if (!model.accountTypes.isEmpty()) { %>
-                  <% for (AccountType accountType : model.accountTypes) { %>
-                  <option value="<%=accountType.getAccountTypeId()%>"><%=accountType.getName()%></option>
+                <select class="form-control" name="accountTypeId">
+                  <% if (!model.accounts.isEmpty()) { %>
+                  <% for (Account account : model.accounts) { %>
+                  <option value="<%=account.getAccountId()%>"><%=account.getAccountName()%></option>
                   <% } %>
                   <% } %>
                 </select>
@@ -206,10 +201,10 @@
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <input type="hidden" name="accountTypeId" />
+      <input type="hidden" name="accountId" />
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">Delete Account Type</h4>
+        <h4 class="modal-title">Delete Account</h4>
       </div>
       <div class="modal-body">
         <p>Are you sure you want to delete this item?</p>
@@ -228,14 +223,16 @@
     $(".create-btn").on('click', function() {
       $("#createModal").modal();
     });
+    $(".accountChooser").on('change', function() {
+      location.href = "/api/transactions/" + $(".accountChooser").val();
+    });
     $("#createModal .btn-primary").on('click', function() {
       $.ajax({
-        url: "/api/accountTypes",
+        url: "/api/accounts",
         method: "POST",
         data: {
-          accountTypeName: $('#createModal [name="accountTypeName"]').val(),
-          direction: $('#createModal [name="direction"]').val(),
-          parentAccountTypeId: $('#createModal [name="parentAccountTypeId"]').val()
+          accountName: $('#createModal [name="accountName"]').val(),
+          accountTypeId: $('#createModal [name="accountTypeId"]').val()
         },
         success: function() {
           $("#createModal").modal('hide');
@@ -245,7 +242,7 @@
         error: function(error) {
           $('.alert').removeClass('hidden');
           $("#editModal").modal('hide');
-          $("#errorMessage").text(error.responseText || "Error creating account type");
+          $("#errorMessage").text(error.responseText || "Error creating account");
           $("#createModal").find('input[name]').val('');
         }
       });
@@ -264,13 +261,12 @@
     });
     $("#editModal .btn-primary").on('click', function() {
       $.ajax({
-        url: "/api/accountTypes",
+        url: "/api/accounts",
         method: "PUT",
         data: {
-          accountTypeId: $('#editModal [name="accountTypeId"]').val(),
-          accountTypeName: $('#editModal [name="accountTypeName"]').val(),
-          direction: $('#editModal [name="direction"]').val(),
-          parentAccountTypeId: $('#editModal [name="parentAccountTypeId"]').val()
+          accountId: $('#editModal [name="accountId"]').val(),
+          accountName: $('#editModal [name="accountName"]').val(),
+          accountTypeId: $('#editModal [name="accountTypeId"]').val()
         },
         success: function() {
           $("#editModal").modal('hide');
@@ -279,22 +275,22 @@
         error: function(error) {
           $('.alert').removeClass('hidden');
           $("#editModal").modal('hide');
-          $("#errorMessage").text(error.responseText || "Error editing account type");
+          $("#errorMessage").text(error.responseText || "Error editing account");
         }
       });
     });
     $(".delete-btn").on('click', function() {
       var row = $(this).closest('tr');
-      var id = row.find('[data-name="accountTypeId"]').text();
-      $('#deleteModal').find('[name="accountTypeId"]').val(id);
+      var id = row.find('[data-name="accountId"]').text();
+      $('#deleteModal').find('[name="accountId"]').val(id);
       $("#deleteModal").modal();
     });
     $("#deleteModal .btn-primary").on('click', function() {
       $.ajax({
-        url: "/api/accountTypes/delete",
+        url: "/api/accounts/delete",
         method: "GET",
         data: {
-          accountTypeId: $('#deleteModal [name="accountTypeId"]').val()
+          accountId: $('#deleteModal [name="accountId"]').val()
         },
         success: function() {
           $("#deleteModal").modal('hide');
@@ -304,7 +300,7 @@
         error: function(error) {
           $('.alert').removeClass('hidden');
           $("#deleteModal").modal('hide');
-          $("#errorMessage").text(error.responseText || "Error deleting account type");
+          $("#errorMessage").text(error.responseText || "Error deleting account");
           $("#deleteModal").find('input[name]').val('');
         }
       });

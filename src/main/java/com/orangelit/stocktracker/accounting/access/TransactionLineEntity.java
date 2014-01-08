@@ -15,12 +15,20 @@ public class TransactionLineEntity {
         return transactionLineId;
     }
 
+    public void setTransactionLineId(String transactionLineId) {
+        this.transactionLineId = transactionLineId;
+    }
+
     @ManyToOne
     @JoinColumn(name = "accountId")
     private AccountEntity account;
 
     public AccountEntity getAccount() {
         return account;
+    }
+
+    public void setAccount(AccountEntity account) {
+        this.account = account;
     }
 
     @Column(nullable = false, precision = 19, scale = 4)
@@ -30,6 +38,10 @@ public class TransactionLineEntity {
         return debitAmount;
     }
 
+    public void setDebitAmount(BigDecimal debitAmount) {
+        this.debitAmount = debitAmount;
+    }
+
     @Column(nullable = false, precision = 19, scale = 4)
     private BigDecimal creditAmount;
 
@@ -37,12 +49,31 @@ public class TransactionLineEntity {
         return creditAmount;
     }
 
+    public void setCreditAmount(BigDecimal creditAmount) {
+        this.creditAmount = creditAmount;
+    }
+
+//    @Column(nullable = false)
+//    private String transactionId;
+//
+//    public String getTransactionId() {
+//        return transactionId;
+//    }
+//
+//    public void setTransactionId(String transactionId) {
+//        this.transactionId = transactionId;
+//    }
+
     @ManyToOne
     @JoinColumn(name = "transactionId")
     private TransactionEntity transaction;
 
     public TransactionEntity getTransaction() {
         return transaction;
+    }
+
+    public void setTransaction(TransactionEntity entity) {
+        this.transaction = transaction;
     }
 
     @Column(nullable = true)

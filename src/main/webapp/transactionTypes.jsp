@@ -27,7 +27,7 @@
             <li><a tabindex="-1" href="/api/accounts">Accounts</a></li>
             <li><a tabindex="-1" href="/api/accountTypes">Account Types</a></li>
             <li><a tabindex="-1" href="/api/transactionTypes">Transaction Types</a></li>
-            <li><a tabindex="-1" href="#">Transactions</a></li>
+            <li><a tabindex="-1" href="/api/transactions">Transactions</a></li>
             <li><a tabindex="-1" href="/api/dashboard/accounting">Manage</a></li>
           </ul>
         </li>
@@ -173,7 +173,7 @@
     </div>
   </div>
 </div>
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
 <script type="text/javascript" src="/js/bootstrap.min.js"></script>
 <script type="text/javascript">
   $(document).ready(function() {
