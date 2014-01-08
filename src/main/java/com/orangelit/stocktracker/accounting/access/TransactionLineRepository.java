@@ -1,8 +1,24 @@
 package com.orangelit.stocktracker.accounting.access;
 
 import com.orangelit.stocktracker.accounting.models.TransactionLine;
+import com.orangelit.stocktracker.common.access.BaseRepository;
 
-public class TransactionLineRepository {
+public class TransactionLineRepository extends BaseRepository<TransactionLineEntity, TransactionLine> {
+
+    @Override
+    protected TransactionLine mapResult(TransactionLineEntity entity) {
+        return TransactionLineRepository.mapResultStatic(entity);
+    }
+
+    @Override
+    protected TransactionLineEntity mapInput(TransactionLine model) {
+        return TransactionLineRepository.mapInputStatic(model);
+    }
+
+    @Override
+    protected Class<TransactionLineEntity> getEntityClass() {
+        return TransactionLineEntity.class;
+    }
 
     protected static TransactionLine mapResultStatic(TransactionLineEntity entity) {
         return new TransactionLine(entity.getTransactionLineId(), TransactionRepository.mapResultStatic(entity.getTransaction(), false), AccountRepository.mapResultStatic(entity.getAccount()), entity.getDebitAmount(), entity.getCreditAmount());

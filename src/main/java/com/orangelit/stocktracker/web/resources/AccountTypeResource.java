@@ -14,6 +14,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import java.util.Collections;
+import java.util.Comparator;
 
 @Path("/accountTypes")
 public class AccountTypeResource
@@ -33,11 +34,23 @@ public class AccountTypeResource
         AccountTypeAdminView model = new AccountTypeAdminView();
 
         model.accountTypes = accountingManager.getAccountTypes();
-//        Collections.sort(model.accountTypes, (AccountType accountType) -> {
-//
-//        });
 
-//        model.accountTypes.sortBy
+        Collections.sort(model.accountTypes, new Comparator<AccountType>() {
+            @Override
+            public int compare(AccountType o1, AccountType o2) {
+                return o1.getName().compareTo(o2.getName());
+            }
+        });
+
+        Collections.sort(model.accountTypes, new Comparator<AccountType>() {
+            @Override
+            public int compare(AccountType o1, AccountType o2) {
+                String o1Type = o1.getParentAccountType() != null ? o1.getParentAccountType().getName() : "";
+                String o2Type = o1.getParentAccountType() != null ? o1.getParentAccountType().getName() : "";
+                return o1Type.compareTo(o2Type);
+            }
+        });
+
         model.user = (User)request.getSession().getAttribute("user");
 
         return new View("/accountTypes.jsp", model);

@@ -2,16 +2,15 @@ package com.orangelit.stocktracker.accounting.managers;
 
 import com.google.inject.Inject;
 import com.orangelit.stocktracker.accounting.access.*;
-import com.orangelit.stocktracker.accounting.models.Account;
-import com.orangelit.stocktracker.accounting.models.AccountType;
-import com.orangelit.stocktracker.accounting.models.Transaction;
-import com.orangelit.stocktracker.accounting.models.TransactionType;
+import com.orangelit.stocktracker.accounting.models.*;
 import com.orangelit.stocktracker.common.exceptions.InvalidInputException;
 import com.orangelit.stocktracker.common.exceptions.ItemNotFoundException;
 import com.orangelit.stocktracker.common.exceptions.PersistenceException;
 import org.apache.commons.lang.StringUtils;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class AccountingManagerImpl implements AccountingManager {
@@ -21,6 +20,9 @@ public class AccountingManagerImpl implements AccountingManager {
 
     @Inject
     private TransactionRepository transactionRepository;
+
+    @Inject
+    private TransactionLineRepository transactionLineRepository;
 
     @Inject
     private TransactionTypeRepository transactionTypeRepository;
@@ -150,5 +152,36 @@ public class AccountingManagerImpl implements AccountingManager {
     public void removeAccount(String accountId) throws InvalidInputException, PersistenceException {
         accountRepository.remove(accountId);
     }
+
+    public void createTransfer(String fromAccountId, String toAccountId, String transactionTypeId, Date transactionDate, BigDecimal amount, String description) throws InvalidInputException, PersistenceException {
+
+        try {
+            TransactionType transactionType = transactionTypeRepository.get(transactionTypeId);
+            Account fromAccount = accountRepository.get(fromAccountId);
+            Account toAccount = accountRepository.get(toAccountId);
+
+            Transaction transaction = new Transaction(transactionDate, transactionType, description);
+
+            if (fromAccount.getAccountType().getDirection()) {
+                transaction.addLine(new TransactionLine(transaction, fromAccount, BigDecimal.ZERO, amount));
+                transaction.addLine(new TransactionLine(transaction, toAccount, amount, BigDecimal.ZERO));
+            } else {
+                transaction.addLine(new TransactionLine(transaction, fromAccount, amount, BigDecimal.ZERO));
+                transaction.addLine(new TransactionLine(transaction, toAccount, BigDecimal.ZERO, amount));
+            }
+
+            transactionRepository.create(transaction);
+
+            for (TransactionLine line : transaction.getTransactionLines()) {
+                transactionLineRepository.create(line);
+            }
+        } catch (ItemNotFoundException ex) {
+            throw new InvalidInputException("Cannot find account type with id " + transactionTypeId);
+        } catch (Exception e) {
+            throw new InvalidInputException("Cannot find account type with id " + transactionTypeId);
+        }
+
+    }
+
 
 }

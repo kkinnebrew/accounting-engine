@@ -1,12 +1,16 @@
 package com.orangelit.stocktracker.accounting.access;
 
+import com.orangelit.stocktracker.common.access.TimestampedEntity;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
 @Table(name = "TransactionLines")
-public class TransactionLineEntity {
+public class TransactionLineEntity extends TimestampedEntity {
 
     @Id
     private String transactionLineId;
@@ -53,26 +57,16 @@ public class TransactionLineEntity {
         this.creditAmount = creditAmount;
     }
 
-//    @Column(nullable = false)
-//    private String transactionId;
-//
-//    public String getTransactionId() {
-//        return transactionId;
-//    }
-//
-//    public void setTransactionId(String transactionId) {
-//        this.transactionId = transactionId;
-//    }
-
     @ManyToOne
     @JoinColumn(name = "transactionId")
+    @Cascade({CascadeType.REFRESH})
     private TransactionEntity transaction;
 
     public TransactionEntity getTransaction() {
         return transaction;
     }
 
-    public void setTransaction(TransactionEntity entity) {
+    public void setTransaction(TransactionEntity transaction) {
         this.transaction = transaction;
     }
 
@@ -82,6 +76,16 @@ public class TransactionLineEntity {
     @PrePersist
     protected void onCreate() {
         created = new Date();
+    }
+
+    @Override
+    public Date getCreated() {
+        return created;
+    }
+
+    @Override
+    public void setCreated(Date created) {
+        this.created = created;
     }
 
     @Column(nullable = true)

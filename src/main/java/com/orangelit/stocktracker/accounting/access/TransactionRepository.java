@@ -3,13 +3,9 @@ package com.orangelit.stocktracker.accounting.access;
 import com.orangelit.stocktracker.accounting.models.Transaction;
 import com.orangelit.stocktracker.accounting.models.TransactionLine;
 import com.orangelit.stocktracker.common.access.BaseRepository;
-import org.hibernate.ejb.criteria.CriteriaQueryCompiler;
-import org.hibernate.ejb.criteria.ParameterRegistry;
-import org.hibernate.ejb.criteria.expression.ExpressionImpl;
 
 import javax.persistence.Query;
 import javax.persistence.criteria.*;
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -52,6 +48,8 @@ public class TransactionRepository extends BaseRepository<TransactionEntity, Tra
         TransactionEntity entity = new TransactionEntity();
         entity.setTransactionId(model.getTransactionId());
         entity.setTransactionDate(model.getTransactionDate());
+        entity.setDescription(model.getDescription());
+        entity.setTransactionType(TransactionTypeRepository.mapInputStatic(model.getTransactionType()));
         List<TransactionLineEntity> lines = new LinkedList<TransactionLineEntity>();
         if (mapChildren) {
             for (TransactionLine line : model.getTransactionLines()) {

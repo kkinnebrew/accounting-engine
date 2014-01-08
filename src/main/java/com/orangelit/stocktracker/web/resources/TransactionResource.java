@@ -12,17 +12,14 @@ import com.orangelit.stocktracker.common.exceptions.InvalidInputException;
 import com.orangelit.stocktracker.common.exceptions.ItemNotFoundException;
 import com.orangelit.stocktracker.web.dtos.AccountTransactionDTO;
 import com.orangelit.stocktracker.web.views.TransactionAdminView;
+import org.apache.commons.lang.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
 import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @Path("/transactions")
 public class TransactionResource {
@@ -31,8 +28,8 @@ public class TransactionResource {
     private AccountingManager accountingManager;
 
     @GET
-    @Path("/{accountId}")
-    public View get(@Context HttpServletRequest request, @PathParam("accountId") String accountId) throws ItemNotFoundException, InvalidInputException
+    @Path("/")
+    public View get(@Context HttpServletRequest request, @QueryParam("accountId") String accountId) throws ItemNotFoundException, InvalidInputException
     {
         if (request.getSession().getAttribute("user") == null)
         {
@@ -40,10 +37,15 @@ public class TransactionResource {
         }
 
         TransactionAdminView model = new TransactionAdminView();
+        model.accounts = accountingManager.getAccounts();
+
+        if (StringUtils.isEmpty(accountId) && model.accounts.size() > 0) {
+            throw new RedirectException("/transactions?accountId=" + model.accounts.get(0).getAccountId());
+        }
+
         Account account = accountingManager.getAccount(accountId);
 
         model.account = account;
-        model.accounts = accountingManager.getAccounts();
         model.transactionTypes = accountingManager.getTransactionTypes();
         model.user = (User)request.getSession().getAttribute("user");
         model.transactions = new LinkedList<AccountTransactionDTO>();
@@ -60,8 +62,10 @@ public class TransactionResource {
         BigDecimal balance = BigDecimal.ZERO;
 
         for (Transaction transaction : transactions) {
+            List<Account> accounts = new LinkedList<Account>();
             for (TransactionLine line : transaction.getTransactionLines()) {
                 if (!line.getAccount().getAccountId().equals(accountId)) {
+                    accounts.add(line.getAccount());
                     continue;
                 }
                 BigDecimal amount = BigDecimal.ZERO;
@@ -93,6 +97,33 @@ public class TransactionResource {
 
         return new View("/transactions.jsp", model);
 
+    }
+
+    @POST
+    @Path("/transfer")
+    public Response post(@Context HttpServletRequest request,
+                         @FormParam("fromAccountId") String fromAccountId,
+                         @FormParam("toAccountId") String toAccountId,
+                         @FormParam("transactionTypeId") String transactionTypeId,
+                         @FormParam("transactionDate") Date transactionDate,
+                         @FormParam("amount") BigDecimal amount,
+                         @FormParam("description") String description)
+    {
+        if (request.getSession().getAttribute("user") == null) {
+            throw new RedirectException("/auth/login");
+        }
+
+        if (StringUtils.isEmpty(fromAccountId) || StringUtils.isEmpty(toAccountId) || StringUtils.isEmpty(transactionTypeId) || StringUtils.isEmpty(description) || amount.compareTo(BigDecimal.ZERO) <= 0) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+        try {
+            accountingManager.createTransfer(fromAccountId, toAccountId, transactionTypeId, transactionDate, amount, description);
+        } catch (Exception ex) {
+            return Response.ok(ex.getMessage()).status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+
+        return Response.ok().build();
     }
 
 }

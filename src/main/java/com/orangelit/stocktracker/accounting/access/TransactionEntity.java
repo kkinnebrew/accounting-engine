@@ -1,6 +1,8 @@
 package com.orangelit.stocktracker.accounting.access;
 
 import com.orangelit.stocktracker.common.access.TimestampedEntity;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
 import java.util.Date;

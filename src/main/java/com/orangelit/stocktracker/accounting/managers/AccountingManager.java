@@ -8,6 +8,8 @@ import com.orangelit.stocktracker.common.exceptions.InvalidInputException;
 import com.orangelit.stocktracker.common.exceptions.ItemNotFoundException;
 import com.orangelit.stocktracker.common.exceptions.PersistenceException;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 public interface AccountingManager {
@@ -45,5 +47,7 @@ public interface AccountingManager {
     public Account updateAccount(String accountId, String accountName, String accountTypeId, String userId) throws InvalidInputException, PersistenceException;
 
     public void removeAccount(String accountId) throws InvalidInputException, PersistenceException;
+
+    public void createTransfer(String fromAccountId, String toAccountId, String transactionTypeId, Date transactionDate, BigDecimal amount, String description) throws InvalidInputException, PersistenceException;
 
 }

@@ -2,7 +2,6 @@
 <%@ page import="com.orangelit.stocktracker.web.dtos.AccountTransactionDTO" %>
 <%@ page import="com.orangelit.stocktracker.accounting.models.TransactionType" %>
 <%@ page import="com.orangelit.stocktracker.accounting.models.Account" %>
-<%@ page import="java.text.DateFormat" %>
 <% TransactionAdminView model = (TransactionAdminView)request.getAttribute("model"); %>
 <!DOCTYPE html>
 <html lang="en">
@@ -92,14 +91,14 @@
             <th>Account</th>
             <th>Amount</th>
             <th>Balance</th>
-            <th>Edit</th>
-            <th>Remove</th>
+            <%--<th>Edit</th>--%>
+            <%--<th>Remove</th>--%>
           </tr>
           </thead>
           <tbody>
           <% if (model.transactions.isEmpty()) { %>
           <tr>
-            <td colspan="7">No results</td>
+            <td colspan="5">No results</td>
           </tr>
           <% } else { %>
           <% for (AccountTransactionDTO transaction : model.transactions) { %>
@@ -109,8 +108,8 @@
             <td><%=transaction.getAccount().getAccountName()%></td>
             <td><%=transaction.getAmount()%></td>
             <td><%=transaction.getBalance()%></td>
-            <td><a href="#" class="edit-btn">Edit</a></td>
-            <td><a href="#" class="delete-btn">Delete</a></td>
+            <%--<td><a href="#" class="edit-btn">Edit</a></td>--%>
+            <%--<td><a href="#" class="delete-btn">Delete</a></td>--%>
           </tr
           <% } %>
           <% } %>
@@ -126,27 +125,51 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">Create Account</h4>
+        <h4 class="modal-title">Create Transfer</h4>
       </div>
       <div class="modal-body">
         <form class="bs-example form-horizontal">
           <fieldset>
             <div class="form-group">
-              <label class="col-lg-4 control-label">Account Name</label>
+              <label class="col-lg-4 control-label">Transfer To Account</label>
               <div class="col-lg-8">
-                <input type="text" class="form-control" name="accountName" placeholder="Account Name">
+                <select class="form-control" name="accountId">
+                  <% if (!model.accounts.isEmpty()) { %>
+                  <% for (Account account : model.accounts) { %>
+                  <option value="<%=account.getAccountId()%>"><%=account.getAccountName()%></option>
+                  <% } %>
+                  <% } %>
+                </select>
               </div>
             </div>
             <div class="form-group">
-              <label class="col-lg-4 control-label">Account Type</label>
+              <label class="col-lg-4 control-label">Transaction Type</label>
               <div class="col-lg-8">
-                <select class="form-control" name="accountTypeId">
+                <select class="form-control" name="transactionTypeId">
                   <% if (!model.transactionTypes.isEmpty()) { %>
                   <% for (TransactionType transactionType : model.transactionTypes) { %>
                   <option value="<%=transactionType.getTransactionTypeId()%>"><%=transactionType.getName()%></option>
                   <% } %>
                   <% } %>
                 </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-lg-4 control-label">Transaction Date</label>
+              <div class="col-lg-8">
+                <input type="text" class="form-control" name="transactionDate" placeholder="Transaction Date">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-lg-4 control-label">Amount</label>
+              <div class="col-lg-8">
+                <input type="text" class="form-control" name="amount" placeholder="Amount">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-lg-4 control-label">Description</label>
+              <div class="col-lg-8">
+                <input type="text" class="form-control" name="description" placeholder="Description">
               </div>
             </div>
           </fieldset>
@@ -224,15 +247,19 @@
       $("#createModal").modal();
     });
     $(".accountChooser").on('change', function() {
-      location.href = "/api/transactions/" + $(".accountChooser").val();
+      location.href = "/api/transactions?accountId=" + $(".accountChooser").val();
     });
     $("#createModal .btn-primary").on('click', function() {
       $.ajax({
-        url: "/api/accounts",
+        url: "/api/transactions/transfer",
         method: "POST",
         data: {
-          accountName: $('#createModal [name="accountName"]').val(),
-          accountTypeId: $('#createModal [name="accountTypeId"]').val()
+          fromAccountId: $(".accountChooser").val(),
+          toAccountId: $('#createModal [name="accountId"]').val(),
+          transactionTypeId: $('#createModal [name="transactionTypeId"]').val(),
+          transactionDate: $('#createModal [name="transactionDate"]').val(),
+          amount: $('#createModal [name="amount"]').val(),
+          description: $('#createModal [name="description"]').val()
         },
         success: function() {
           $("#createModal").modal('hide');
@@ -242,7 +269,7 @@
         error: function(error) {
           $('.alert').removeClass('hidden');
           $("#editModal").modal('hide');
-          $("#errorMessage").text(error.responseText || "Error creating account");
+          $("#errorMessage").text(error.responseText || "Error creating transfer");
           $("#createModal").find('input[name]').val('');
         }
       });
