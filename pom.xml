@@ -80,15 +80,25 @@
       <artifactId>resteasy-guice</artifactId>
       <version>3.0.6.Final</version>
     </dependency>
-    <!--<dependency>-->
-      <!--<groupId>org.jboss.resteasy</groupId>-->
-      <!--<artifactId>resteasy-jaxb-provider</artifactId>-->
-      <!--<version>3.0.6.Final</version>-->
-    <!--</dependency>-->
+    <dependency>
+      <groupId>org.jbehave</groupId>
+      <artifactId>jbehave-maven-plugin</artifactId>
+      <version>3.9</version>
+    </dependency>
     <dependency>
       <groupId>com.googlecode.htmleasy</groupId>
       <artifactId>htmleasy</artifactId>
       <version>0.7</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jbehave</groupId>
+      <artifactId>jbehave-core</artifactId>
+      <version>3.9</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jmock</groupId>
+      <artifactId>jmock-junit4</artifactId>
+      <version>2.6.0</version>
     </dependency>
   </dependencies>
   <build>

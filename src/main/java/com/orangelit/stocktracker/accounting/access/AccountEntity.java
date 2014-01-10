@@ -4,7 +4,6 @@ import com.orangelit.stocktracker.common.access.TimestampedEntity;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "Accounts")
