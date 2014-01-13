@@ -121,4 +121,25 @@ public class TransactionResource {
         return Response.ok().build();
     }
 
+    @GET
+    @Path("/delete")
+    public Response delete(@Context HttpServletRequest request, @QueryParam("transactionId") String transactionId)
+    {
+        if (request.getSession().getAttribute("user") == null) {
+            throw new RedirectException("/auth/login");
+        }
+
+        if (StringUtils.isEmpty(transactionId)) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+        try {
+            accountingManager.removeTransaction(transactionId);
+        } catch (Exception ex) {
+            return Response.ok(ex.getMessage()).status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+
+        return Response.ok().build();
+    }
+
 }

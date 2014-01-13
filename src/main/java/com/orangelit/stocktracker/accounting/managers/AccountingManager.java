@@ -50,4 +50,6 @@ public interface AccountingManager {
 
     public void createTransfer(String fromAccountId, String toAccountId, String transactionTypeId, Date transactionDate, BigDecimal amount, String description) throws InvalidInputException, PersistenceException;
 
+    public void removeTransaction(String transactionId) throws InvalidInputException, ItemNotFoundException, PersistenceException;
+
 }

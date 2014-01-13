@@ -31,7 +31,7 @@ public class TransactionRepository extends BaseRepository<TransactionEntity, Tra
     }
 
     protected static Transaction mapResultStatic(TransactionEntity entity, Boolean mapChildren) {
-        Transaction transaction = new Transaction(entity.getTransactionDate(), TransactionTypeRepository.mapResultStatic(entity.getTransactionType()), entity.getDescription());
+        Transaction transaction = new Transaction(entity.getTransactionId(), entity.getTransactionDate(), TransactionTypeRepository.mapResultStatic(entity.getTransactionType()), entity.getDescription());
         if (mapChildren) {
             for (TransactionLineEntity lineEntity : entity.getTransactionLines()) {
                 transaction.addLine(TransactionLineRepository.mapResultStatic(lineEntity));

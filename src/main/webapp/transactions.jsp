@@ -92,24 +92,24 @@
             <th>Amount</th>
             <th>Balance</th>
             <%--<th>Edit</th>--%>
-            <%--<th>Remove</th>--%>
+            <th>Remove</th>
           </tr>
           </thead>
           <tbody>
           <% if (model.transactions.isEmpty()) { %>
           <tr>
-            <td colspan="5">No results</td>
+            <td colspan="6">No results</td>
           </tr>
           <% } else { %>
           <% for (AccountTransactionDTO transaction : model.transactions) { %>
-          <tr itemid="<%=transaction.getTransactionId()%>">
+          <tr>
             <td><%=transaction.getTransactionDate()%></td>
             <td><%=transaction.getTransactionType().getName()%></td>
             <td><%=transaction.getAccount().getAccountName()%></td>
             <td><%=transaction.getAmount()%></td>
             <td><%=transaction.getBalance()%></td>
             <%--<td><a href="#" class="edit-btn">Edit</a></td>--%>
-            <%--<td><a href="#" class="delete-btn">Delete</a></td>--%>
+            <td><a href="#" class="delete-btn" itemid="<%=transaction.getTransactionId()%>">Delete</a></td>
           </tr
           <% } %>
           <% } %>
@@ -224,10 +224,10 @@
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <input type="hidden" name="accountId" />
+      <input type="hidden" name="transactionId" />
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">Delete Account</h4>
+        <h4 class="modal-title">Delete Transaction</h4>
       </div>
       <div class="modal-body">
         <p>Are you sure you want to delete this item?</p>
@@ -306,18 +306,17 @@
         }
       });
     });
-    $(".delete-btn").on('click', function() {
-      var row = $(this).closest('tr');
-      var id = row.find('[data-name="accountId"]').text();
-      $('#deleteModal').find('[name="accountId"]').val(id);
+    $(".delete-btn").on('click', function(e) {
+      var id = $(e.currentTarget).attr('itemid');
+      $('#deleteModal').find('[name="transactionId"]').val(id);
       $("#deleteModal").modal();
     });
     $("#deleteModal .btn-primary").on('click', function() {
       $.ajax({
-        url: "/api/accounts/delete",
+        url: "/api/transactions/delete",
         method: "GET",
         data: {
-          accountId: $('#deleteModal [name="accountId"]').val()
+          transactionId: $('#deleteModal [name="transactionId"]').val()
         },
         success: function() {
           $("#deleteModal").modal('hide');
@@ -327,7 +326,7 @@
         error: function(error) {
           $('.alert').removeClass('hidden');
           $("#deleteModal").modal('hide');
-          $("#errorMessage").text(error.responseText || "Error deleting account");
+          $("#errorMessage").text(error.responseText || "Error deleting transaction");
           $("#deleteModal").find('input[name]').val('');
         }
       });

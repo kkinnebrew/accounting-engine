@@ -9,6 +9,8 @@ import com.orangelit.stocktracker.common.exceptions.PersistenceException;
 import org.apache.commons.lang.StringUtils;
 
 import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -53,7 +55,14 @@ public class AccountingManagerImpl implements AccountingManager {
     }
 
     public List<AccountType> getAccountTypes() {
-        return accountTypeRepository.getAll();
+        List<AccountType> accountTypes = accountTypeRepository.getAll();
+        Collections.sort(accountTypes, new Comparator<AccountType>() {
+            @Override
+            public int compare(AccountType o1, AccountType o2) {
+                return o1.getName().compareTo(o2.getName());
+            }
+        });
+        return accountTypes;
     }
 
     public AccountType createAccountType(String accountTypeName, Boolean direction, String parentAccountTypeId)
@@ -101,7 +110,14 @@ public class AccountingManagerImpl implements AccountingManager {
     }
 
     public List<TransactionType> getTransactionTypes() {
-        return transactionTypeRepository.getAll();
+        List<TransactionType> types = transactionTypeRepository.getAll();
+        Collections.sort(types, new Comparator<TransactionType>() {
+            @Override
+            public int compare(TransactionType o1, TransactionType o2) {
+                return o1.getName().compareTo(o2.getName());
+            }
+        });
+        return types;
     }
 
     public TransactionType createTransactionType(String transactionTypeName)
@@ -121,7 +137,14 @@ public class AccountingManagerImpl implements AccountingManager {
     }
 
     public List<Account> getAccounts() {
-        return accountRepository.getAll();
+        List<Account> accounts = accountRepository.getAll();
+        Collections.sort(accounts, new Comparator<Account>() {
+            @Override
+            public int compare(Account o1, Account o2) {
+                return o1.getAccountName().compareTo(o2.getAccountName());
+            }
+        });
+        return accounts;
     }
 
     public Account getAccount(String accountId) throws ItemNotFoundException {
@@ -161,13 +184,8 @@ public class AccountingManagerImpl implements AccountingManager {
 
             Transaction transaction = new Transaction(transactionDate, transactionType, description);
 
-//            if (fromAccount.getAccountType().getDirection()) {
             transaction.addLine(new TransactionLine(transaction, fromAccount, BigDecimal.ZERO, amount));
             transaction.addLine(new TransactionLine(transaction, toAccount, amount, BigDecimal.ZERO));
-//            } else {
-//                transaction.addLine(new TransactionLine(transaction, fromAccount, amount, BigDecimal.ZERO));
-//                transaction.addLine(new TransactionLine(transaction, toAccount, BigDecimal.ZERO, amount));
-//            }
 
             transactionRepository.create(transaction);
 
@@ -179,6 +197,18 @@ public class AccountingManagerImpl implements AccountingManager {
         } catch (Exception e) {
             throw new InvalidInputException("Cannot find account type with id " + transactionTypeId);
         }
+
+    }
+
+    public void removeTransaction(String transactionId) throws InvalidInputException, ItemNotFoundException, PersistenceException {
+
+        Transaction transaction = transactionRepository.get(transactionId);
+
+        for (TransactionLine line : transaction.getTransactionLines()) {
+            transactionLineRepository.remove(line.getTransactionLineId());
+        }
+
+        transactionRepository.remove(transactionId);
 
     }
 
