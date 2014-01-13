@@ -66,6 +66,10 @@ public class TransactionResource {
             for (TransactionLine line : transaction.getTransactionLines()) {
                 if (!line.getAccount().getAccountId().equals(accountId)) {
                     accounts.add(line.getAccount());
+                }
+            }
+            for (TransactionLine line : transaction.getTransactionLines()) {
+                if (!line.getAccount().getAccountId().equals(accountId)) {
                     continue;
                 }
                 BigDecimal amount = BigDecimal.ZERO;
@@ -81,7 +85,8 @@ public class TransactionResource {
                         transaction.getTransactionId(),
                         transaction.getTransactionDate(),
                         transaction.getTransactionType(),
-                        line.getAccount(),
+                        accounts,
+                        transaction.getDescription(),
                         amount,
                         balance)
                 );

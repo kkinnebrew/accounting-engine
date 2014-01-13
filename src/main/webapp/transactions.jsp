@@ -99,6 +99,7 @@
             <th>Date</th>
             <th>Transaction Type</th>
             <th>Account</th>
+            <th>Description</th>
             <th class="text-right">Amount</th>
             <th class="text-right">Balance</th>
             <%--<th>Edit</th>--%>
@@ -108,7 +109,7 @@
           <tbody>
           <% if (model.transactions.isEmpty()) { %>
           <tr>
-            <td colspan="6">No results</td>
+            <td colspan="7">No results</td>
           </tr>
           <% } else { %>
           <% DecimalFormat df = new DecimalFormat("#,##0.00"); %>
@@ -117,7 +118,8 @@
           <tr>
             <td><%=dateFormat.format(transaction.getTransactionDate())%></td>
             <td><%=transaction.getTransactionType().getName()%></td>
-            <td><%=transaction.getAccount().getAccountName()%></td>
+            <td><%=transaction.getAccountsString()%></td>
+            <td><%=transaction.getDescription()%></td>
             <td class="text-right"><%=df.format(transaction.getAmount().setScale(2))%></td>
             <td class="text-right"><%=df.format(transaction.getBalance().setScale(2))%></td>
             <%--<td><a href="#" class="edit-btn">Edit</a></td>--%>

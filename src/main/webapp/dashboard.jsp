@@ -33,6 +33,9 @@
         <li>
           <a href="#">Performance</a>
         </li>
+        <li>
+          <a href="#">Beer</a>
+        </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li><a href="#"><%=((User)request.getAttribute("model")).firstName %> <%=((User)request.getAttribute("model")).lastName %></a></li>
