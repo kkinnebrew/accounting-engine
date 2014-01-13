@@ -143,9 +143,21 @@
         <form class="bs-example form-horizontal">
           <fieldset>
             <div class="form-group">
+              <label class="col-lg-4 control-label">Transfer From Account</label>
+              <div class="col-lg-8">
+                <select class="form-control" name="fromAccountId">
+                  <% if (!model.accounts.isEmpty()) { %>
+                  <% for (Account account : model.accounts) { %>
+                  <option value="<%=account.getAccountId()%>"><%=account.getAccountName()%></option>
+                  <% } %>
+                  <% } %>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
               <label class="col-lg-4 control-label">Transfer To Account</label>
               <div class="col-lg-8">
-                <select class="form-control" name="accountId">
+                <select class="form-control" name="toAccountId">
                   <% if (!model.accounts.isEmpty()) { %>
                   <% for (Account account : model.accounts) { %>
                   <option value="<%=account.getAccountId()%>"><%=account.getAccountName()%></option>
@@ -228,8 +240,8 @@
         url: "/api/transactions/transfer",
         method: "POST",
         data: {
-          fromAccountId: $(".accountChooser").val(),
-          toAccountId: $('#createModal [name="accountId"]').val(),
+          fromAccountId: $('#createModal [name="fromAccountId"]').val(),
+          toAccountId: $('#createModal [name="toAccountId"]').val(),
           transactionTypeId: $('#createModal [name="transactionTypeId"]').val(),
           transactionDate: $('#createModal [name="transactionDate"]').val(),
           amount: $('#createModal [name="amount"]').val(),
@@ -254,8 +266,8 @@
         url: "/api/transactions/transfer",
         method: "POST",
         data: {
-          fromAccountId: $(".accountChooser").val(),
-          toAccountId: $('#createModal [name="accountId"]').val(),
+          fromAccountId: $('#createModal [name="fromAccountId"]').val(),
+          toAccountId: $('#createModal [name="toAccountId"]').val(),
           transactionTypeId: $('#createModal [name="transactionTypeId"]').val(),
           transactionDate: $('#createModal [name="transactionDate"]').val(),
           amount: $('#createModal [name="amount"]').val(),
