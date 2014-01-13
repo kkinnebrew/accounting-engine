@@ -3,8 +3,6 @@
 <%@ page import="com.orangelit.stocktracker.accounting.models.TransactionType" %>
 <%@ page import="com.orangelit.stocktracker.accounting.models.Account" %>
 <%@ page import="java.text.DecimalFormat" %>
-<%@ page import="java.util.Calendar" %>
-<%@ page import="freemarker.template.SimpleDate" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <% TransactionAdminView model = (TransactionAdminView)request.getAttribute("model"); %>
 <!DOCTYPE html>
