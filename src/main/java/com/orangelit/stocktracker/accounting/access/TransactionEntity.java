@@ -25,6 +25,7 @@ public class TransactionEntity extends TimestampedEntity {
 
     @ManyToOne
     @JoinColumn(name = "transactionTypeId")
+    @Cascade({CascadeType.REFRESH})
     private TransactionTypeEntity transactionType;
 
     public TransactionTypeEntity getTransactionType() {
@@ -58,6 +59,7 @@ public class TransactionEntity extends TimestampedEntity {
     }
 
     @OneToMany(mappedBy = "transaction")
+    @Cascade({CascadeType.REFRESH})
     private List<TransactionLineEntity> transactionLines;
 
     public List<TransactionLineEntity> getTransactionLines() {

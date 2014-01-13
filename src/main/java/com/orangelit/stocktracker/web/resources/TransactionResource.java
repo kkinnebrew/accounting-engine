@@ -88,12 +88,7 @@ public class TransactionResource {
             }
         }
 
-        Collections.sort(model.transactions, new Comparator<AccountTransactionDTO>() {
-            @Override
-            public int compare(AccountTransactionDTO o1, AccountTransactionDTO o2) {
-                return o2.getTransactionDate().compareTo(o1.getTransactionDate());
-            }
-        });
+        Collections.reverse(model.transactions);
 
         return new View("/transactions.jsp", model);
 

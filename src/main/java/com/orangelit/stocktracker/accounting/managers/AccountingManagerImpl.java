@@ -9,12 +9,11 @@ import com.orangelit.stocktracker.common.exceptions.PersistenceException;
 import org.apache.commons.lang.StringUtils;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class AccountingManagerImpl implements AccountingManager {
-//
+
     @Inject
     private AccountRepository accountRepository;
 
@@ -162,13 +161,13 @@ public class AccountingManagerImpl implements AccountingManager {
 
             Transaction transaction = new Transaction(transactionDate, transactionType, description);
 
-            if (fromAccount.getAccountType().getDirection()) {
-                transaction.addLine(new TransactionLine(transaction, fromAccount, BigDecimal.ZERO, amount));
-                transaction.addLine(new TransactionLine(transaction, toAccount, amount, BigDecimal.ZERO));
-            } else {
-                transaction.addLine(new TransactionLine(transaction, fromAccount, amount, BigDecimal.ZERO));
-                transaction.addLine(new TransactionLine(transaction, toAccount, BigDecimal.ZERO, amount));
-            }
+//            if (fromAccount.getAccountType().getDirection()) {
+            transaction.addLine(new TransactionLine(transaction, fromAccount, BigDecimal.ZERO, amount));
+            transaction.addLine(new TransactionLine(transaction, toAccount, amount, BigDecimal.ZERO));
+//            } else {
+//                transaction.addLine(new TransactionLine(transaction, fromAccount, amount, BigDecimal.ZERO));
+//                transaction.addLine(new TransactionLine(transaction, toAccount, BigDecimal.ZERO, amount));
+//            }
 
             transactionRepository.create(transaction);
 
