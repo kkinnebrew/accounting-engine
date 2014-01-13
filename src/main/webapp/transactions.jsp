@@ -191,46 +191,8 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary">Create</button>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">Edit Account</h4>
-      </div>
-      <div class="modal-body">
-        <form class="bs-example form-horizontal">
-          <input type="hidden" name="accountId" />
-          <fieldset>
-            <div class="form-group">
-              <label class="col-lg-4 control-label">Account Name</label>
-              <div class="col-lg-8">
-                <input type="text" class="form-control" name="accountName" placeholder="Account Name">
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-lg-4 control-label">Account Type</label>
-              <div class="col-lg-8">
-                <select class="form-control" name="accountTypeId">
-                  <% if (!model.accounts.isEmpty()) { %>
-                  <% for (Account account : model.accounts) { %>
-                  <option value="<%=account.getAccountId()%>"><%=account.getAccountName()%></option>
-                  <% } %>
-                  <% } %>
-                </select>
-              </div>
-            </div>
-          </fieldset>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-primary save-btn">Save</button>
+        <button type="button" class="btn btn-primary save-close-btn">Save and Close</button>
       </div>
     </div>
   </div>
@@ -263,7 +225,7 @@
     $(".accountChooser").on('change', function() {
       location.href = "/api/transactions?accountId=" + $(".accountChooser").val();
     });
-    $("#createModal .btn-primary").on('click', function() {
+    $("#createModal .save-close-btn").on('click', function() {
       $.ajax({
         url: "/api/transactions/transfer",
         method: "POST",
@@ -288,35 +250,27 @@
         }
       });
     });
-    $(".edit-btn").on('click', function() {
-      $("#editModal").modal();
-      var row = $(this).closest('tr');
-      $(row).find('[data-name]').each(function() {
-        var attr = $(this).attr('data-value');
-        if (typeof attr !== 'undefined' && attr !== false) {
-          $("#editModal").find('[name="' + $(this).attr('data-name') + '"]').val(attr);
-        } else {
-          $("#editModal").find('[name="' + $(this).attr('data-name') + '"]').val($(this).text());
-        }
-      });
-    });
-    $("#editModal .btn-primary").on('click', function() {
+    $("#createModal .save-btn").on('click', function() {
+      $("#createModal .save-btn").addClass('inactive');
       $.ajax({
-        url: "/api/accounts",
-        method: "PUT",
+        url: "/api/transactions/transfer",
+        method: "POST",
         data: {
-          accountId: $('#editModal [name="accountId"]').val(),
-          accountName: $('#editModal [name="accountName"]').val(),
-          accountTypeId: $('#editModal [name="accountTypeId"]').val()
+          fromAccountId: $(".accountChooser").val(),
+          toAccountId: $('#createModal [name="accountId"]').val(),
+          transactionTypeId: $('#createModal [name="transactionTypeId"]').val(),
+          transactionDate: $('#createModal [name="transactionDate"]').val(),
+          amount: $('#createModal [name="amount"]').val(),
+          description: $('#createModal [name="description"]').val()
         },
         success: function() {
-          $("#editModal").modal('hide');
-          location.reload();
+          $('.alert').addClass('hidden');
+          $("#createModal .save-btn").removeClass('inactive');
         },
         error: function(error) {
           $('.alert').removeClass('hidden');
-          $("#editModal").modal('hide');
-          $("#errorMessage").text(error.responseText || "Error editing account");
+          $("#errorMessage").text(error.responseText || "Error creating transfer");
+          $("#createModal .save-btn").removeClass('inactive');
         }
       });
     });
