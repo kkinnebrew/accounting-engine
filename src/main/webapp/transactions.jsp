@@ -2,6 +2,10 @@
 <%@ page import="com.orangelit.stocktracker.web.dtos.AccountTransactionDTO" %>
 <%@ page import="com.orangelit.stocktracker.accounting.models.TransactionType" %>
 <%@ page import="com.orangelit.stocktracker.accounting.models.Account" %>
+<%@ page import="java.text.DecimalFormat" %>
+<%@ page import="java.util.Calendar" %>
+<%@ page import="freemarker.template.SimpleDate" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 <% TransactionAdminView model = (TransactionAdminView)request.getAttribute("model"); %>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,6 +16,12 @@
   <style type="text/css">
     .hidden {
       display: none;
+    }
+    .text-center {
+      text-align: center;
+    }
+    .text-right {
+      text-align: right;
     }
   </style>
 </head>
@@ -89,10 +99,10 @@
             <th>Date</th>
             <th>Transaction Type</th>
             <th>Account</th>
-            <th>Amount</th>
-            <th>Balance</th>
+            <th class="text-right">Amount</th>
+            <th class="text-right">Balance</th>
             <%--<th>Edit</th>--%>
-            <th>Remove</th>
+            <th class="text-center">Remove</th>
           </tr>
           </thead>
           <tbody>
@@ -101,15 +111,17 @@
             <td colspan="6">No results</td>
           </tr>
           <% } else { %>
+          <% DecimalFormat df = new DecimalFormat("#,##0.00"); %>
+          <% SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d, y"); %>
           <% for (AccountTransactionDTO transaction : model.transactions) { %>
           <tr>
-            <td><%=transaction.getTransactionDate()%></td>
+            <td><%=dateFormat.format(transaction.getTransactionDate())%></td>
             <td><%=transaction.getTransactionType().getName()%></td>
             <td><%=transaction.getAccount().getAccountName()%></td>
-            <td><%=transaction.getAmount()%></td>
-            <td><%=transaction.getBalance()%></td>
+            <td class="text-right"><%=df.format(transaction.getAmount().setScale(2))%></td>
+            <td class="text-right"><%=df.format(transaction.getBalance().setScale(2))%></td>
             <%--<td><a href="#" class="edit-btn">Edit</a></td>--%>
-            <td><a href="#" class="delete-btn" itemid="<%=transaction.getTransactionId()%>">Delete</a></td>
+            <td class="text-center"><a href="#" class="delete-btn" itemid="<%=transaction.getTransactionId()%>">Delete</a></td>
           </tr
           <% } %>
           <% } %>
