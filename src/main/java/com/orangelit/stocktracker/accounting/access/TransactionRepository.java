@@ -62,10 +62,6 @@ public class TransactionRepository extends BaseRepository<TransactionEntity, Tra
 
     public List<Transaction> getTransactionsForAccount(String accountId) {
 
-        CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
-
-        // TODO: Use criteria builder
-
         Query query = getEntityManager().createNativeQuery("select T.*, TL.*, TT.* from Transactions T INNER JOIN TransactionLines TL ON T.transactionId = TL.transactionId INNER JOIN TransactionTypes TT ON TT.transactionTypeId = T.transactionTypeId WHERE TL.accountId = ?", TransactionEntity.class);
         query.setParameter(1, accountId);
 

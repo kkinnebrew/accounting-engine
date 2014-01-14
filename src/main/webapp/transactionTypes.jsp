@@ -87,7 +87,7 @@
           <% } else { %>
           <% for (TransactionType transactionType : model.transactionTypes) { %>
           <tr>
-            <td data-name="transactionTypeId"><%=transactionType.getTransactionTypeId()%></td>
+            <td data-name="transactionTypeId" data-value="<%=transactionType.getTransactionTypeId()%>"><a href="#">View</a></td>
             <td data-name="transactionTypeName"><%=transactionType.getName()%></td>
             <td><a href="#" class="edit-btn">Edit</a></td>
             <td><a href="#" class="delete-btn">Delete</a></td>

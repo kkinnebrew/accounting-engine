@@ -5,11 +5,13 @@ import com.orangelit.stocktracker.accounting.models.TransactionType;
 import com.orangelit.stocktracker.authentication.models.User;
 import com.orangelit.stocktracker.web.dtos.AccountTransactionDTO;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class TransactionAdminView {
     public User user;
     public Account account;
+    public BigDecimal balance;
     public List<AccountTransactionDTO> transactions;
     public List<TransactionType> transactionTypes;
     public List<Account> accounts;

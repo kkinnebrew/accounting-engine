@@ -1,7 +1,9 @@
 <%@ page import="com.orangelit.stocktracker.web.views.AccountAdminView" %>
-<%@ page import="com.orangelit.stocktracker.accounting.models.Account" %>
 <%@ page import="com.orangelit.stocktracker.accounting.models.AccountType" %>
+<%@ page import="com.orangelit.stocktracker.web.dtos.AccountDTO" %>
+<%@ page import="java.text.DecimalFormat" %>
 <% AccountAdminView model = (AccountAdminView)request.getAttribute("model"); %>
+<% DecimalFormat dfs = new DecimalFormat("$#,##0.00"); %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,6 +13,12 @@
   <style type="text/css">
     .hidden {
       display: none;
+    }
+    .text-center {
+      text-align: center;
+    }
+    .text-right {
+      text-align: right;
     }
   </style>
 </head>
@@ -78,8 +86,9 @@
             <th>Name</th>
             <th>Account Type</th>
             <th>User</th>
-            <th>Edit</th>
-            <th>Delete</th>
+            <th class="text-right">Balance</th>
+            <th class="text-center">Edit</th>
+            <th class="text-center">Delete</th>
           </tr>
           </thead>
           <tbody>
@@ -88,14 +97,15 @@
             <td colspan="6">No results</td>
           </tr>
           <% } else { %>
-          <% for (Account account : model.accounts) { %>
-          <tr>
-            <td data-name="accountId"><%=account.getAccountId()%></td>
+          <% for (AccountDTO account : model.accounts) { %>
+          <tr itemid="<%=account.getAccountId()%>">
+            <td data-name="accountId" data-value="<%=account.getAccountId()%>"><a href="/api/transactions?accountId=<%=account.getAccountId()%>">View</a></td>
             <td data-name="accountName"><%=account.getAccountName()%></td>
-            <td data-name="accountTypeId" data-value="<%=account.getAccountType().getAccountTypeId()%>"><%=account.getAccountType().getName()%></td>
-            <td data-name="userId" data-value="<%=account.getUserId()%>"><%=account.getUserId()%></td>
-            <td><a href="#" class="edit-btn">Edit</a></td>
-            <td><a href="#" class="delete-btn">Delete</a></td>
+            <td data-name="accountTypeId" data-value="<%=account.getAccountTypeId()%>"><%=account.getAccountTypeName()%></td>
+            <td data-name="userId" data-value="<%=account.getUserId()%>"><a href="#">User</a></td>
+            <td class="text-right"><%=dfs.format(account.getBalance().setScale(2))%></td>
+            <td class="text-center"><a href="#" class="edit-btn">Edit</a></td>
+            <td class="text-center"><a href="#" class="delete-btn">Delete</a></td>
           </tr
           <% } %>
           <% } %>

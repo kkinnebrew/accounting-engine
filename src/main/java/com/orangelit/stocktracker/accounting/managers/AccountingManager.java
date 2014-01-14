@@ -14,15 +14,13 @@ import java.util.List;
 
 public interface AccountingManager {
 
-    public List<Transaction> getTransactions(Account account) throws InvalidInputException;
-
     public List<Transaction> getTransactions(String accountId) throws InvalidInputException;
 
-    public void createTransaction(Transaction transaction) throws InvalidInputException;
-
-    public void batchCreateTransactions(List<Transaction> transactions) throws InvalidInputException;
+    public List<Transaction> getTransactionsForAccountType(String accountTypeId) throws InvalidInputException;
 
     public List<AccountType> getAccountTypes();
+
+    public AccountType getAccountType(String accountId)  throws ItemNotFoundException;
 
     public AccountType createAccountType(String accountTypeName, Boolean direction, String parentAccountTypeId) throws InvalidInputException, PersistenceException;
 
@@ -51,5 +49,13 @@ public interface AccountingManager {
     public void createTransfer(String fromAccountId, String toAccountId, String transactionTypeId, Date transactionDate, BigDecimal amount, String description) throws InvalidInputException, PersistenceException;
 
     public void removeTransaction(String transactionId) throws InvalidInputException, ItemNotFoundException, PersistenceException;
+
+    public BigDecimal getBalanceForAccount(String accountId) throws ItemNotFoundException, InvalidInputException;
+
+    public BigDecimal getBalanceForAccount(Account account) throws ItemNotFoundException, InvalidInputException;
+
+    public BigDecimal getBalanceForAccountType(String accountTypeId) throws ItemNotFoundException, InvalidInputException;
+
+    public BigDecimal getBalanceForAccountType(AccountType accountType) throws ItemNotFoundException, InvalidInputException;
 
 }

@@ -5,6 +5,8 @@
 <%@ page import="java.text.DecimalFormat" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <% TransactionAdminView model = (TransactionAdminView)request.getAttribute("model"); %>
+<% DecimalFormat df = new DecimalFormat("#,##0.00"); %>
+<% DecimalFormat dfs = new DecimalFormat("$#,##0.00"); %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -71,6 +73,9 @@
       <div class="col-lg-10"><h2 style="margin-top: 6px; margin-bottom: 24px;">Transactions - <%=model.account.getAccountName()%></h2></div>
       <div class="col-lg-2" style="text-align: right"><button type="button" class="btn btn-success create-btn">Create New</button></div>
     </div>
+    <div class="row">
+      <div class="col-lg-12"><h3 style="margin-top: 6px; margin-bottom: 24px;">Balance: <%=dfs.format(model.balance.setScale(2))%></h3></div>
+    </div>
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id commodo quam, quis venenatis quam. Mauris
       placerat rutrum sem in auctor. Suspendisse potenti. Mauris sed leo pharetra, luctus velit non, venenatis dui.
       Morbi eget purus a enim pharetra placerat. Vivamus eget felis urna. Ut fermentum sollicitudin nisl vitae laoreet.
@@ -110,7 +115,6 @@
             <td colspan="7">No results</td>
           </tr>
           <% } else { %>
-          <% DecimalFormat df = new DecimalFormat("#,##0.00"); %>
           <% SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d, y"); %>
           <% for (AccountTransactionDTO transaction : model.transactions) { %>
           <tr>
@@ -143,9 +147,21 @@
         <form class="bs-example form-horizontal">
           <fieldset>
             <div class="form-group">
-              <label class="col-lg-4 control-label">Transfer To Account</label>
+              <label class="col-lg-4 control-label">Debit Account</label>
               <div class="col-lg-8">
-                <select class="form-control" name="accountId">
+                <select class="form-control" name="debitAccountId">
+                  <% if (!model.accounts.isEmpty()) { %>
+                  <% for (Account account : model.accounts) { %>
+                  <option value="<%=account.getAccountId()%>"><%=account.getAccountName()%></option>
+                  <% } %>
+                  <% } %>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-lg-4 control-label">Credit Account</label>
+              <div class="col-lg-8">
+                <select class="form-control" name="creditAccountId">
                   <% if (!model.accounts.isEmpty()) { %>
                   <% for (Account account : model.accounts) { %>
                   <option value="<%=account.getAccountId()%>"><%=account.getAccountName()%></option>
@@ -228,8 +244,8 @@
         url: "/api/transactions/transfer",
         method: "POST",
         data: {
-          fromAccountId: $(".accountChooser").val(),
-          toAccountId: $('#createModal [name="accountId"]').val(),
+          debitAccountId: $('#createModal [name="debitAccountId"]').val(),
+          creditAccountId: $('#createModal [name="creditAccountId"]').val(),
           transactionTypeId: $('#createModal [name="transactionTypeId"]').val(),
           transactionDate: $('#createModal [name="transactionDate"]').val(),
           amount: $('#createModal [name="amount"]').val(),
@@ -254,8 +270,8 @@
         url: "/api/transactions/transfer",
         method: "POST",
         data: {
-          fromAccountId: $(".accountChooser").val(),
-          toAccountId: $('#createModal [name="accountId"]').val(),
+          debitAccountId: $('#createModal [name="debitAccountId"]').val(),
+          creditAccountId: $('#createModal [name="creditAccountId"]').val(),
           transactionTypeId: $('#createModal [name="transactionTypeId"]').val(),
           transactionDate: $('#createModal [name="transactionDate"]').val(),
           amount: $('#createModal [name="amount"]').val(),

@@ -45,6 +45,7 @@ public class TransactionResource {
 
         Account account = accountingManager.getAccount(accountId);
 
+        model.balance = accountingManager.getBalanceForAccount(accountId);
         model.account = account;
         model.transactionTypes = accountingManager.getTransactionTypes();
         model.user = (User)request.getSession().getAttribute("user");
@@ -102,23 +103,37 @@ public class TransactionResource {
     @POST
     @Path("/transfer")
     public Response post(@Context HttpServletRequest request,
-                         @FormParam("fromAccountId") String fromAccountId,
-                         @FormParam("toAccountId") String toAccountId,
+                         @FormParam("debitAccountId") String debitAccountId,
+                         @FormParam("creditAccountId") String creditAccountId,
                          @FormParam("transactionTypeId") String transactionTypeId,
                          @FormParam("transactionDate") Date transactionDate,
-                         @FormParam("amount") BigDecimal amount,
+                         @FormParam("amount") String amount,
                          @FormParam("description") String description)
     {
         if (request.getSession().getAttribute("user") == null) {
             throw new RedirectException("/auth/login");
         }
 
-        if (StringUtils.isEmpty(fromAccountId) || StringUtils.isEmpty(toAccountId) || StringUtils.isEmpty(transactionTypeId) || StringUtils.isEmpty(description) || amount.compareTo(BigDecimal.ZERO) <= 0) {
+        if (StringUtils.isEmpty(debitAccountId) || StringUtils.isEmpty(creditAccountId) || StringUtils.isEmpty(transactionTypeId) || StringUtils.isEmpty(description) || StringUtils.isEmpty(amount)) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+        if (amount.contains(",")) {
+            amount = amount.replace(",", "");
+        }
+
+        if (amount.contains("$")) {
+            amount = amount.replace("$", "");
+        }
+
+        BigDecimal parsedAmount = new BigDecimal(amount);
+
+        if (parsedAmount.compareTo(BigDecimal.ZERO) <= 0) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
         try {
-            accountingManager.createTransfer(fromAccountId, toAccountId, transactionTypeId, transactionDate, amount, description);
+            accountingManager.createTransfer(debitAccountId, creditAccountId, transactionTypeId, transactionDate, parsedAmount, description);
         } catch (Exception ex) {
             return Response.ok(ex.getMessage()).status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }

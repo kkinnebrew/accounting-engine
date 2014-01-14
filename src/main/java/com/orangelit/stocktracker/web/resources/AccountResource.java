@@ -4,7 +4,11 @@ import com.google.inject.Inject;
 import com.googlecode.htmleasy.RedirectException;
 import com.googlecode.htmleasy.View;
 import com.orangelit.stocktracker.accounting.managers.AccountingManager;
+import com.orangelit.stocktracker.accounting.models.Account;
 import com.orangelit.stocktracker.authentication.models.User;
+import com.orangelit.stocktracker.common.exceptions.InvalidInputException;
+import com.orangelit.stocktracker.common.exceptions.ItemNotFoundException;
+import com.orangelit.stocktracker.web.dtos.AccountDTO;
 import com.orangelit.stocktracker.web.views.AccountAdminView;
 import org.apache.commons.lang.StringUtils;
 
@@ -12,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.List;
 
 @Path("/accounts")
 public class AccountResource
@@ -30,8 +36,21 @@ public class AccountResource
 
         AccountAdminView model = new AccountAdminView();
 
+
+        List<AccountDTO> accountDTOs = new ArrayList<AccountDTO>();
+
+        for (Account account : accountingManager.getAccounts()) {
+            try {
+            accountDTOs.add(new AccountDTO(account, accountingManager.getBalanceForAccount(account)));
+            } catch (InvalidInputException e) {
+                System.out.println("Invalid input");
+            } catch (ItemNotFoundException e) {
+                System.out.println("Item not found");
+            }
+        }
+
         model.accountTypes = accountingManager.getAccountTypes();
-        model.accounts = accountingManager.getAccounts();
+        model.accounts = accountDTOs;
         model.user = (User)request.getSession().getAttribute("user");
 
         return new View("/accounts.jsp", model);

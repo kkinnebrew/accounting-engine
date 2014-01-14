@@ -6,6 +6,7 @@ import com.googlecode.htmleasy.View;
 import com.orangelit.stocktracker.accounting.managers.AccountingManager;
 import com.orangelit.stocktracker.accounting.models.AccountType;
 import com.orangelit.stocktracker.authentication.models.User;
+import com.orangelit.stocktracker.web.dtos.AccountTypeDTO;
 import com.orangelit.stocktracker.web.views.AccountTypeAdminView;
 import org.apache.commons.lang.StringUtils;
 
@@ -13,8 +14,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 @Path("/accountTypes")
 public class AccountTypeResource
@@ -33,20 +37,30 @@ public class AccountTypeResource
 
         AccountTypeAdminView model = new AccountTypeAdminView();
 
-        model.accountTypes = accountingManager.getAccountTypes();
+        List<AccountTypeDTO> accountTypeDTOs = new ArrayList<AccountTypeDTO>();
 
-        Collections.sort(model.accountTypes, new Comparator<AccountType>() {
+        for (AccountType accountType : accountingManager.getAccountTypes()) {
+            try {
+                accountTypeDTOs.add(new AccountTypeDTO(accountType, BigDecimal.ZERO));
+            } catch(Exception e) {
+                System.out.println("Error getting balance");
+            }
+        }
+
+        model.accountTypes = accountTypeDTOs;
+
+        Collections.sort(model.accountTypes, new Comparator<AccountTypeDTO>() {
             @Override
-            public int compare(AccountType o1, AccountType o2) {
-                return o1.getName().compareTo(o2.getName());
+            public int compare(AccountTypeDTO o1, AccountTypeDTO o2) {
+                return o1.getAccountTypeName().compareTo(o2.getAccountTypeName());
             }
         });
 
-        Collections.sort(model.accountTypes, new Comparator<AccountType>() {
+        Collections.sort(model.accountTypes, new Comparator<AccountTypeDTO>() {
             @Override
-            public int compare(AccountType o1, AccountType o2) {
-                String o1Type = o1.getParentAccountType() != null ? o1.getParentAccountType().getName() : "";
-                String o2Type = o1.getParentAccountType() != null ? o1.getParentAccountType().getName() : "";
+            public int compare(AccountTypeDTO o1, AccountTypeDTO o2) {
+                String o1Type = o1.getAccountTypeName() != null ? o1.getAccountTypeName() : "";
+                String o2Type = o1.getAccountTypeName() != null ? o1.getAccountTypeName() : "";
                 return o1Type.compareTo(o2Type);
             }
         });
