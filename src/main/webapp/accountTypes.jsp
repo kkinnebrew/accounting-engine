@@ -1,6 +1,8 @@
 <%@ page import="com.orangelit.stocktracker.web.views.AccountTypeAdminView" %>
-<%@ page import="com.orangelit.stocktracker.accounting.models.AccountType" %>
+<%@ page import="com.orangelit.stocktracker.web.dtos.AccountTypeDTO" %>
+<%@ page import="java.text.DecimalFormat" %>
 <% AccountTypeAdminView model = (AccountTypeAdminView)request.getAttribute("model"); %>
+<% DecimalFormat dfs = new DecimalFormat("$#,##0.00"); %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -77,6 +79,7 @@
             <th>Name</th>
             <th>Direction</th>
             <th>Parent Account Type</th>
+            <th>Balance</th>
             <th>Edit</th>
             <th>Delete</th>
           </tr>
@@ -84,15 +87,16 @@
           <tbody>
           <% if (model.accountTypes.isEmpty()) { %>
             <tr>
-              <td colspan="6">No results</td>
+              <td colspan="7">No results</td>
             </tr>
           <% } else { %>
-            <% for (AccountType accountType : model.accountTypes) { %>
+            <% for (AccountTypeDTO accountType : model.accountTypes) { %>
             <tr>
-              <td data-name="accountTypeId"><%=accountType.getAccountTypeId()%></td>
-              <td data-name="accountTypeName"><%=accountType.getName()%></td>
+              <td data-name="accountTypeId" data-value="<%=accountType.getAccountTypeId()%>"><a href="#">View</a></td>
+              <td data-name="accountTypeName"><%=accountType.getAccountTypeName()%></td>
               <td data-name="direction" data-value="<%=accountType.getDirection()%>"><%=accountType.getDirection() ? "Positive" : "Negative"%></td>
-              <td data-name="parentAccountTypeId" data-value="<%=accountType.getParentAccountType() != null ? accountType.getParentAccountType().getAccountTypeId() : ""%>"><%=accountType.getParentAccountType() != null ? accountType.getParentAccountType().getName() : "-"%></td>
+              <td data-name="parentAccountTypeId" data-value="<%=accountType.getParentAccountTypeId()%>"><%=accountType.getParentAccountTypeName()%></td>
+              <td><%=dfs.format(accountType.getBalance().setScale(2))%></td>
               <td><a href="#" class="edit-btn">Edit</a></td>
               <td><a href="#" class="delete-btn">Delete</a></td>
             </tr
@@ -137,8 +141,8 @@
                 <select class="form-control" name="parentAccountTypeId">
                   <option value="">-</option>
                   <% if (!model.accountTypes.isEmpty()) { %>
-                    <% for (AccountType accountType : model.accountTypes) { %>
-                    <option value="<%=accountType.getAccountTypeId()%>"><%=accountType.getName()%></option>
+                    <% for (AccountTypeDTO accountType : model.accountTypes) { %>
+                    <option value="<%=accountType.getAccountTypeId()%>"><%=accountType.getAccountTypeName()%></option>
                     <% } %>
                   <% } %>
                 </select>
@@ -186,8 +190,8 @@
                 <select class="form-control" name="parentAccountTypeId">
                   <option value="">-</option>
                   <% if (!model.accountTypes.isEmpty()) { %>
-                  <% for (AccountType accountType : model.accountTypes) { %>
-                  <option value="<%=accountType.getAccountTypeId()%>"><%=accountType.getName()%></option>
+                  <% for (AccountTypeDTO accountType : model.accountTypes) { %>
+                  <option value="<%=accountType.getAccountTypeId()%>"><%=accountType.getAccountTypeName()%></option>
                   <% } %>
                   <% } %>
                 </select>
