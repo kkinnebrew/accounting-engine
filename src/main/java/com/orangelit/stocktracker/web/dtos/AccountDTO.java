@@ -9,6 +9,8 @@ public class AccountDTO {
     private String accountId;
     private String accountName;
     private BigDecimal balance;
+    private String accountCategoryId;
+    private String accountCategoryName;
     private String accountTypeId;
     private String accountTypeName;
     private String userId;
@@ -17,6 +19,8 @@ public class AccountDTO {
         this.accountId = account.getAccountId();
         this.accountName = account.getAccountName();
         this.balance = balance;
+        this.accountCategoryId = account.getAccountType().getAccountCategory().getAccountCategoryId();
+        this.accountCategoryName = account.getAccountType().getAccountCategory().getName();
         this.accountTypeId = account.getAccountType().getAccountTypeId();
         this.accountTypeName = account.getAccountType().getName();
         this.userId = account.getUserId();
@@ -32,6 +36,14 @@ public class AccountDTO {
 
     public BigDecimal getBalance() {
         return balance;
+    }
+
+    public String getAccountCategoryId() {
+        return accountCategoryId;
+    }
+
+    public String getAccountCategoryName() {
+        return accountCategoryName;
     }
 
     public String getAccountTypeId() {

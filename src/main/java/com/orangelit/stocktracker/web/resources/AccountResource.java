@@ -36,15 +36,20 @@ public class AccountResource
 
         AccountAdminView model = new AccountAdminView();
 
-
         List<AccountDTO> accountDTOs = new ArrayList<AccountDTO>();
 
-        for (Account account : accountingManager.getAccounts()) {
-            try {
-            accountDTOs.add(new AccountDTO(account, accountingManager.getBalanceForAccount(account)));
-            } catch (InvalidInputException e) {
+        for (Account account : accountingManager.getAccounts())
+        {
+            try
+            {
+                accountDTOs.add(new AccountDTO(account, accountingManager.getBalanceForAccount(account)));
+            }
+            catch (InvalidInputException e)
+            {
                 System.out.println("Invalid input");
-            } catch (ItemNotFoundException e) {
+            }
+            catch (ItemNotFoundException e)
+            {
                 System.out.println("Item not found");
             }
         }
@@ -54,7 +59,6 @@ public class AccountResource
         model.user = (User)request.getSession().getAttribute("user");
 
         return new View("/accounts.jsp", model);
-
     }
 
     @POST
@@ -65,17 +69,22 @@ public class AccountResource
     {
         User user = (User)request.getSession().getAttribute("user");
 
-        if (user == null) {
+        if (user == null)
+        {
             throw new RedirectException("/auth/login");
         }
 
-        if (StringUtils.isEmpty(accountName) || StringUtils.isEmpty(accountTypeId)) {
+        if (StringUtils.isEmpty(accountName) || StringUtils.isEmpty(accountTypeId))
+        {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
-        try {
+        try
+        {
             accountingManager.createAccount(accountName, accountTypeId, user.getUserId());
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             return Response.ok(ex.getMessage()).status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
 
@@ -91,17 +100,22 @@ public class AccountResource
     {
         User user = (User)request.getSession().getAttribute("user");
 
-        if (user == null) {
+        if (user == null)
+        {
             throw new RedirectException("/auth/login");
         }
 
-        if (StringUtils.isEmpty(accountId) || StringUtils.isEmpty(accountName) || StringUtils.isEmpty(accountTypeId)) {
+        if (StringUtils.isEmpty(accountId) || StringUtils.isEmpty(accountName) || StringUtils.isEmpty(accountTypeId))
+        {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
-        try {
+        try
+        {
             accountingManager.updateAccount(accountId, accountName, accountTypeId, user.getUserId());
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             return Response.ok(ex.getMessage()).status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
 
@@ -112,17 +126,22 @@ public class AccountResource
     @Path("/delete")
     public Response delete(@Context HttpServletRequest request, @QueryParam("accountId") String accountId)
     {
-        if (request.getSession().getAttribute("user") == null) {
+        if (request.getSession().getAttribute("user") == null)
+        {
             throw new RedirectException("/auth/login");
         }
 
-        if (StringUtils.isEmpty(accountId)) {
+        if (StringUtils.isEmpty(accountId))
+        {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
-        try {
+        try
+        {
             accountingManager.removeAccount(accountId);
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             return Response.ok(ex.getMessage()).status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
 

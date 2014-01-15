@@ -1,6 +1,7 @@
 package com.orangelit.stocktracker.accounting.managers;
 
 import com.google.inject.Inject;
+import com.google.inject.servlet.SessionScoped;
 import com.orangelit.stocktracker.accounting.access.*;
 import com.orangelit.stocktracker.accounting.models.*;
 import com.orangelit.stocktracker.common.exceptions.InvalidInputException;
@@ -30,6 +31,13 @@ public class AccountingManagerImpl implements AccountingManager {
 
     @Inject
     private AccountTypeRepository accountTypeRepository;
+
+    @Inject
+    private AccountCategoryRepository accountCategoryRepository;
+
+    public List<AccountCategory> getAccountCategories() {
+        return accountCategoryRepository.getAll();
+    }
 
     public List<Transaction> getTransactions(String accountId) throws InvalidInputException {
 
@@ -65,41 +73,61 @@ public class AccountingManagerImpl implements AccountingManager {
        return accountTypeRepository.get(accountId);
     }
 
-    public AccountType createAccountType(String accountTypeName, Boolean direction, String parentAccountTypeId)
+    public AccountType createAccountType(String accountTypeName, String accountCategoryId, String parentAccountTypeId)
             throws InvalidInputException, PersistenceException
     {
         AccountType accountType = null;
         AccountType parentAccountType = null;
+        AccountCategory accountCategory = null;
+        if (StringUtils.isEmpty(accountCategoryId)) {
+            throw new InvalidInputException("Cannot find account category");
+        } else {
+            try {
+                accountCategory = accountCategoryRepository.get(accountCategoryId);
+            } catch (ItemNotFoundException ex) {
+                throw new InvalidInputException("Cannot find account category");
+            }
+        }
         if (!StringUtils.isEmpty(parentAccountTypeId)) {
             try {
                 parentAccountType = accountTypeRepository.get(parentAccountTypeId);
-                accountType = new AccountType(accountTypeName, parentAccountType.getDirection(), parentAccountType);
+                accountType = new AccountType(accountTypeName, accountCategory, parentAccountType);
             } catch (ItemNotFoundException ex) {
                 throw new InvalidInputException("Cannot find account type with id " + parentAccountTypeId);
             }
         } else {
-            accountType = new AccountType(accountTypeName, direction, null);
+            accountType = new AccountType(accountTypeName, accountCategory, null);
         }
         return accountTypeRepository.create(accountType);
     }
 
-    public AccountType updateAccountType(String accountTypeId, String accountTypeName, Boolean direction, String parentAccountTypeId)
+    public AccountType updateAccountType(String accountTypeId, String accountTypeName, String accountCategoryId, String parentAccountTypeId)
             throws InvalidInputException, PersistenceException
     {
         AccountType accountType = null;
         AccountType parentAccountType = null;
+        AccountCategory accountCategory = null;
+        if (StringUtils.isEmpty(accountCategoryId)) {
+            throw new InvalidInputException("Cannot find account category");
+        } else {
+            try {
+                accountCategory = accountCategoryRepository.get(accountCategoryId);
+            } catch (ItemNotFoundException ex) {
+                throw new InvalidInputException("Cannot find account category");
+            }
+        }
         if (!StringUtils.isEmpty(parentAccountTypeId)) {
             if (parentAccountTypeId.equals(accountTypeId)) {
                 throw new InvalidInputException("AccountType cannot reference itself as parent");
             }
             try {
                 parentAccountType = accountTypeRepository.get(parentAccountTypeId);
-                accountType = new AccountType(accountTypeId, accountTypeName, parentAccountType.getDirection(), parentAccountType);
+                accountType = new AccountType(accountTypeId, accountTypeName, accountCategory, parentAccountType);
             } catch (ItemNotFoundException ex) {
                 throw new InvalidInputException("Cannot find account type with id " + parentAccountTypeId);
             }
         } else {
-            accountType = new AccountType(accountTypeId, accountTypeName, direction, parentAccountType);
+            accountType = new AccountType(accountTypeId, accountTypeName, accountCategory, parentAccountType);
         }
         return accountTypeRepository.update(accountType, accountTypeId);
     }
@@ -232,7 +260,7 @@ public class AccountingManagerImpl implements AccountingManager {
                 if (!transactionLine.getAccount().getAccountId().equals(account.getAccountId())) {
                     continue;
                 }
-                if (account.getAccountType().getDirection()) {
+                if (account.getAccountType().getAccountCategory().getDirection()) {
                     balance = balance.add(transactionLine.getDebitAmount());
                     balance = balance.subtract(transactionLine.getCreditAmount());
                 } else {
@@ -261,7 +289,7 @@ public class AccountingManagerImpl implements AccountingManager {
                 if (!transactionLine.getAccount().getAccountId().equals(transactionLine.getAccount().getAccountId())) {
                     continue;
                 }
-                if (transactionLine.getAccount().getAccountType().getDirection()) {
+                if (transactionLine.getAccount().getAccountType().getAccountCategory().getDirection()) {
                     balance = balance.add(transactionLine.getDebitAmount());
                     balance = balance.subtract(transactionLine.getCreditAmount());
                 } else {

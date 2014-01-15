@@ -9,7 +9,6 @@ import com.orangelit.stocktracker.authentication.models.User;
 import com.orangelit.stocktracker.common.exceptions.InvalidInputException;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;

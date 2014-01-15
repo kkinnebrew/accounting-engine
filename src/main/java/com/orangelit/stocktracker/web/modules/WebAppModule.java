@@ -3,10 +3,9 @@ package com.orangelit.stocktracker.web.modules;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.persist.jpa.JpaPersistModule;
+import com.google.inject.servlet.SessionScoped;
 import com.googlecode.htmleasy.HtmleasyProviders;
-import com.orangelit.stocktracker.accounting.access.AccountRepository;
-import com.orangelit.stocktracker.accounting.access.AccountTypeRepository;
-import com.orangelit.stocktracker.accounting.access.TransactionTypeRepository;
+import com.orangelit.stocktracker.accounting.access.*;
 import com.orangelit.stocktracker.accounting.managers.AccountingManager;
 import com.orangelit.stocktracker.accounting.managers.AccountingManagerImpl;
 import com.orangelit.stocktracker.authentication.managers.AuthenticationManager;
@@ -31,6 +30,9 @@ public class WebAppModule implements Module
         binder.bind(AccountTypeRepository.class);
         binder.bind(AccountRepository.class);
         binder.bind(TransactionTypeRepository.class);
+        binder.bind(TransactionRepository.class);
+        binder.bind(TransactionLineRepository.class);
+        binder.bind(AccountCategoryRepository.class);
 
         binder.bind(AuthenticationManager.class).to(AuthenticationManagerImpl.class);
         binder.bind(AccountingManager.class).to(AccountingManagerImpl.class);

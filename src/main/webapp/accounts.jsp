@@ -2,6 +2,8 @@
 <%@ page import="com.orangelit.stocktracker.accounting.models.AccountType" %>
 <%@ page import="com.orangelit.stocktracker.web.dtos.AccountDTO" %>
 <%@ page import="java.text.DecimalFormat" %>
+<%@ page import="java.math.BigDecimal" %>
+<%@ page import="sun.net.www.content.audio.basic" %>
 <% AccountAdminView model = (AccountAdminView)request.getAttribute("model"); %>
 <% DecimalFormat dfs = new DecimalFormat("$#,##0.00"); %>
 <!DOCTYPE html>
@@ -94,9 +96,10 @@
           <tbody>
           <% if (model.accounts.isEmpty()) { %>
           <tr>
-            <td colspan="6">No results</td>
+            <td colspan="7">No results</td>
           </tr>
           <% } else { %>
+          <% BigDecimal balance = BigDecimal.ZERO; %>
           <% for (AccountDTO account : model.accounts) { %>
           <tr itemid="<%=account.getAccountId()%>">
             <td data-name="accountId" data-value="<%=account.getAccountId()%>"><a href="/api/transactions?accountId=<%=account.getAccountId()%>">View</a></td>
@@ -106,8 +109,18 @@
             <td class="text-right"><%=dfs.format(account.getBalance().setScale(2))%></td>
             <td class="text-center"><a href="#" class="edit-btn">Edit</a></td>
             <td class="text-center"><a href="#" class="delete-btn">Delete</a></td>
-          </tr
+          </tr>
+          <% if (account.getAccountCategoryName().equals("Asset")) { %>
+            <% balance = balance.add(account.getBalance()); %>
+          <% } else if (account.getAccountCategoryName().equals("Liability")) { %>
+            <% balance = balance.subtract(account.getBalance()); %>
           <% } %>
+          <% } %>
+          <tr>
+            <td colspan="4" class="text-right">Total Balance</td>
+            <td class="text-right"><%=dfs.format(balance.setScale(2))%></td>
+            <td colspan="2"></td>
+          </tr>
           <% } %>
           </tbody>
         </table>

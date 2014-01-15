@@ -1,6 +1,7 @@
 <%@ page import="com.orangelit.stocktracker.web.views.AccountTypeAdminView" %>
 <%@ page import="com.orangelit.stocktracker.web.dtos.AccountTypeDTO" %>
 <%@ page import="java.text.DecimalFormat" %>
+<%@ page import="com.orangelit.stocktracker.accounting.models.AccountCategory" %>
 <% AccountTypeAdminView model = (AccountTypeAdminView)request.getAttribute("model"); %>
 <% DecimalFormat dfs = new DecimalFormat("$#,##0.00"); %>
 <!DOCTYPE html>
@@ -77,7 +78,7 @@
           <tr>
             <th>Id</th>
             <th>Name</th>
-            <th>Direction</th>
+            <th>Account Category</th>
             <th>Parent Account Type</th>
             <th>Balance</th>
             <th>Edit</th>
@@ -94,7 +95,7 @@
             <tr>
               <td data-name="accountTypeId" data-value="<%=accountType.getAccountTypeId()%>"><a href="#">View</a></td>
               <td data-name="accountTypeName"><%=accountType.getAccountTypeName()%></td>
-              <td data-name="direction" data-value="<%=accountType.getDirection()%>"><%=accountType.getDirection() ? "Positive" : "Negative"%></td>
+              <td data-name="accountCategoryId" data-value="<%=accountType.getAccountCategoryId()%>"><%=accountType.getAccountCategoryName()%></td>
               <td data-name="parentAccountTypeId" data-value="<%=accountType.getParentAccountTypeId()%>"><%=accountType.getParentAccountTypeName()%></td>
               <td><%=dfs.format(accountType.getBalance().setScale(2))%></td>
               <td><a href="#" class="edit-btn">Edit</a></td>
@@ -127,11 +128,14 @@
               </div>
             </div>
             <div class="form-group">
-              <label class="col-lg-4 control-label">Direction</label>
+              <label class="col-lg-4 control-label">Account Category</label>
               <div class="col-lg-8">
-                <select class="form-control" name="direction">
-                  <option value="true">Positive</option>
-                  <option value="false">Negative</option>
+                <select class="form-control" name="accountCategoryId">
+                  <% if (!model.accountCategories.isEmpty()) { %>
+                  <% for (AccountCategory accountCategory : model.accountCategories) { %>
+                  <option value="<%=accountCategory.getAccountCategoryId()%>"><%=accountCategory.getName()%></option>
+                  <% } %>
+                  <% } %>
                 </select>
               </div>
             </div>
@@ -176,11 +180,14 @@
               </div>
             </div>
             <div class="form-group">
-              <label class="col-lg-4 control-label">Direction</label>
+              <label class="col-lg-4 control-label">Account Category</label>
               <div class="col-lg-8">
-                <select class="form-control" name="direction">
-                  <option value="true">Positive</option>
-                  <option value="false">Negative</option>
+                <select class="form-control" name="accountCategoryId">
+                  <% if (!model.accountCategories.isEmpty()) { %>
+                  <% for (AccountCategory accountCategory : model.accountCategories) { %>
+                  <option value="<%=accountCategory.getAccountCategoryId()%>"><%=accountCategory.getName()%></option>
+                  <% } %>
+                  <% } %>
                 </select>
               </div>
             </div>
@@ -238,7 +245,7 @@
         method: "POST",
         data: {
           accountTypeName: $('#createModal [name="accountTypeName"]').val(),
-          direction: $('#createModal [name="direction"]').val(),
+          accountCategoryId: $('#createModal [name="accountCategoryId"]').val(),
           parentAccountTypeId: $('#createModal [name="parentAccountTypeId"]').val()
         },
         success: function() {
@@ -273,7 +280,7 @@
         data: {
           accountTypeId: $('#editModal [name="accountTypeId"]').val(),
           accountTypeName: $('#editModal [name="accountTypeName"]').val(),
-          direction: $('#editModal [name="direction"]').val(),
+          accountCategoryId: $('#editModal [name="accountCategoryId"]').val(),
           parentAccountTypeId: $('#editModal [name="parentAccountTypeId"]').val()
         },
         success: function() {
