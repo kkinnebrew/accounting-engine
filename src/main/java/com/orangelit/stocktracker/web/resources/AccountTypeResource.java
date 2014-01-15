@@ -48,6 +48,7 @@ public class AccountTypeResource
         }
 
         model.accountTypes = accountTypeDTOs;
+        model.accountCategories = accountingManager.getAccountCategories();
 
         Collections.sort(model.accountTypes, new Comparator<AccountTypeDTO>() {
             @Override
@@ -75,19 +76,19 @@ public class AccountTypeResource
     @Path("/")
     public Response post(@Context HttpServletRequest request,
                              @FormParam("accountTypeName") String accountTypeName,
-                             @FormParam("direction") Boolean direction,
+                             @FormParam("direction") String accountCategoryId,
                              @FormParam("parentAccountTypeId") String parentAccountTypeId)
     {
         if (request.getSession().getAttribute("user") == null) {
             throw new RedirectException("/auth/login");
         }
 
-        if (StringUtils.isEmpty(accountTypeName) || direction == null) {
+        if (StringUtils.isEmpty(accountTypeName) || StringUtils.isEmpty(accountCategoryId)) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
         try {
-            accountingManager.createAccountType(accountTypeName, direction, parentAccountTypeId);
+            accountingManager.createAccountType(accountTypeName, accountCategoryId, parentAccountTypeId);
         } catch (Exception ex) {
             return Response.ok(ex.getMessage()).status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
@@ -100,19 +101,19 @@ public class AccountTypeResource
     public Response put(@Context HttpServletRequest request,
                              @FormParam("accountTypeId") String accountTypeId,
                              @FormParam("accountTypeName") String accountTypeName,
-                             @FormParam("direction") Boolean direction,
+                             @FormParam("accountCategoryId") String accountCategoryId,
                              @FormParam("parentAccountTypeId") String parentAccountTypeId)
     {
         if (request.getSession().getAttribute("user") == null) {
             throw new RedirectException("/auth/login");
         }
 
-        if (StringUtils.isEmpty(accountTypeId) || StringUtils.isEmpty(accountTypeName) || direction == null) {
+        if (StringUtils.isEmpty(accountTypeId) || StringUtils.isEmpty(accountTypeName) || StringUtils.isEmpty(accountCategoryId)) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
         try {
-            accountingManager.updateAccountType(accountTypeId, accountTypeName, direction, parentAccountTypeId);
+            accountingManager.updateAccountType(accountTypeId, accountTypeName, accountCategoryId, parentAccountTypeId);
         } catch (Exception ex) {
             return Response.ok(ex.getMessage()).status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }

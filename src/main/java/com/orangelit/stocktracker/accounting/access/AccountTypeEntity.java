@@ -32,15 +32,16 @@ public class AccountTypeEntity extends TimestampedEntity {
         this.name = name;
     }
 
-    @Column(nullable = false)
-    private Boolean direction;
+    @ManyToOne
+    @JoinColumn(name = "accountCategoryId")
+    public AccountCategoryEntity accountCategory;
 
-    public Boolean getDirection() {
-        return direction;
+    public AccountCategoryEntity getAccountCategory() {
+        return accountCategory;
     }
 
-    public void setDirection(Boolean direction) {
-        this.direction = direction;
+    public void setAccountCategory(AccountCategoryEntity accountCategory) {
+        this.accountCategory = accountCategory;
     }
 
     @ManyToOne
@@ -51,12 +52,12 @@ public class AccountTypeEntity extends TimestampedEntity {
         return parentAccountType;
     }
 
-    @OneToMany(mappedBy = "parentAccountType")
-    private List<AccountTypeEntity> childAccountTypes;
-
     public void setParentAccountType(AccountTypeEntity parentAccountType) {
         this.parentAccountType = parentAccountType;
     }
+
+    @OneToMany(mappedBy = "parentAccountType")
+    private List<AccountTypeEntity> childAccountTypes;
 
     @Column(nullable = true)
     private Date created;

@@ -1,9 +1,6 @@
 package com.orangelit.stocktracker.accounting.managers;
 
-import com.orangelit.stocktracker.accounting.models.Account;
-import com.orangelit.stocktracker.accounting.models.AccountType;
-import com.orangelit.stocktracker.accounting.models.Transaction;
-import com.orangelit.stocktracker.accounting.models.TransactionType;
+import com.orangelit.stocktracker.accounting.models.*;
 import com.orangelit.stocktracker.common.exceptions.InvalidInputException;
 import com.orangelit.stocktracker.common.exceptions.ItemNotFoundException;
 import com.orangelit.stocktracker.common.exceptions.PersistenceException;
@@ -14,6 +11,8 @@ import java.util.List;
 
 public interface AccountingManager {
 
+    public List<AccountCategory> getAccountCategories();
+
     public List<Transaction> getTransactions(String accountId) throws InvalidInputException;
 
     public List<Transaction> getTransactionsForAccountType(String accountTypeId) throws InvalidInputException;
@@ -22,9 +21,9 @@ public interface AccountingManager {
 
     public AccountType getAccountType(String accountId)  throws ItemNotFoundException;
 
-    public AccountType createAccountType(String accountTypeName, Boolean direction, String parentAccountTypeId) throws InvalidInputException, PersistenceException;
+    public AccountType createAccountType(String accountTypeName, String accountCategoryId, String parentAccountTypeId) throws InvalidInputException, PersistenceException;
 
-    public AccountType updateAccountType(String accountTypeId, String accountTypeName, Boolean direction, String parentAccountTypeId) throws InvalidInputException, PersistenceException;
+    public AccountType updateAccountType(String accountTypeId, String accountTypeName, String accountCategoryId, String parentAccountTypeId) throws InvalidInputException, PersistenceException;
 
     public void removeAccountType(String accountTypeId) throws InvalidInputException, PersistenceException;
 

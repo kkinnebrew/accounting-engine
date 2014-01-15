@@ -9,7 +9,8 @@ public class AccountTypeDTO {
     private String accountTypeId;
     private String accountTypeName;
     private BigDecimal balance;
-    private Boolean direction;
+    private String accountCategoryId;
+    private String accountCategoryName;
     private String parentAccountTypeId;
     private String parentAccountTypeName;
 
@@ -17,7 +18,8 @@ public class AccountTypeDTO {
         this.accountTypeId = accountType.getAccountTypeId();
         this.accountTypeName = accountType.getName();
         this.balance = balance;
-        this.direction = accountType.getDirection();
+        this.accountCategoryId = accountType.getAccountCategory().getAccountCategoryId();
+        this.accountCategoryName = accountType.getAccountCategory().getName();
         this.parentAccountTypeId = accountType.getParentAccountType() != null ? accountType.getParentAccountType().getAccountTypeId() : null;
         this.parentAccountTypeName = accountType.getParentAccountType() != null ? accountType.getParentAccountType().getName() : "-";
     }
@@ -34,8 +36,12 @@ public class AccountTypeDTO {
         return balance;
     }
 
-    public Boolean getDirection() {
-        return direction;
+    public String getAccountCategoryId() {
+        return accountCategoryId;
+    }
+
+    public String getAccountCategoryName() {
+        return accountCategoryName;
     }
 
     public String getParentAccountTypeId() {

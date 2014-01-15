@@ -74,7 +74,7 @@ public class TransactionResource {
                     continue;
                 }
                 BigDecimal amount = BigDecimal.ZERO;
-                if (account.getAccountType().getDirection()) {
+                if (account.getAccountType().getAccountCategory().getDirection()) {
                     amount = amount.add(line.getDebitAmount());
                     amount = amount.subtract(line.getCreditAmount());
                 } else {

@@ -22,9 +22,9 @@ public class AccountTypeRepository extends BaseRepository<AccountTypeEntity, Acc
 
     protected static AccountType mapResultStatic(AccountTypeEntity entity) {
         if (entity.getParentAccountType() != null) {
-            return new AccountType(entity.getAccountTypeId(), entity.getName(), entity.getDirection(), mapResultStatic(entity.getParentAccountType()));
+            return new AccountType(entity.getAccountTypeId(), entity.getName(), AccountCategoryRepository.mapResultStatic(entity.getAccountCategory()), mapResultStatic(entity.getParentAccountType()));
         } else {
-            return new AccountType(entity.getAccountTypeId(), entity.getName(), entity.getDirection(), null);
+            return new AccountType(entity.getAccountTypeId(), entity.getName(), AccountCategoryRepository.mapResultStatic(entity.getAccountCategory()), null);
         }
     }
 
@@ -32,7 +32,7 @@ public class AccountTypeRepository extends BaseRepository<AccountTypeEntity, Acc
         AccountTypeEntity entity = new AccountTypeEntity();
         entity.setAccountTypeId(model.getAccountTypeId());
         entity.setName(model.getName());
-        entity.setDirection(model.getDirection());
+        entity.setAccountCategory(AccountCategoryRepository.mapInputStatic(model.getAccountCategory()));
         if (model.getParentAccountType() != null) {
             entity.setParentAccountType(mapInputStatic(model.getParentAccountType()));
         }

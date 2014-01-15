@@ -152,7 +152,11 @@
                 <select class="form-control" name="debitAccountId">
                   <% if (!model.accounts.isEmpty()) { %>
                   <% for (Account account : model.accounts) { %>
+                  <% if (account.getAccountId().equals(model.account.getAccountId())) { %>
+                  <option selected="selected" value="<%=account.getAccountId()%>"><%=account.getAccountName()%></option>
+                  <% } else { %>
                   <option value="<%=account.getAccountId()%>"><%=account.getAccountName()%></option>
+                  <% } %>
                   <% } %>
                   <% } %>
                 </select>
@@ -164,7 +168,11 @@
                 <select class="form-control" name="creditAccountId">
                   <% if (!model.accounts.isEmpty()) { %>
                   <% for (Account account : model.accounts) { %>
+                  <% if (account.getAccountId().equals(model.account.getAccountId())) { %>
+                  <option selected="selected" value="<%=account.getAccountId()%>"><%=account.getAccountName()%></option>
+                  <% } else { %>
                   <option value="<%=account.getAccountId()%>"><%=account.getAccountName()%></option>
+                  <% } %>
                   <% } %>
                   <% } %>
                 </select>
