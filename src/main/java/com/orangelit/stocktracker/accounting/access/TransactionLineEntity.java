@@ -23,7 +23,7 @@ public class TransactionLineEntity extends TimestampedEntity {
         this.transactionLineId = transactionLineId;
     }
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "accountId")
     private AccountEntity account;
 
@@ -57,7 +57,7 @@ public class TransactionLineEntity extends TimestampedEntity {
         this.creditAmount = creditAmount;
     }
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "transactionId")
     @Cascade({CascadeType.REFRESH})
     private TransactionEntity transaction;

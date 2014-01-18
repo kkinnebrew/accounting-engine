@@ -1,7 +1,6 @@
 package com.orangelit.stocktracker.accounting.managers;
 
 import com.google.inject.Inject;
-import com.google.inject.servlet.SessionScoped;
 import com.orangelit.stocktracker.accounting.access.*;
 import com.orangelit.stocktracker.accounting.models.*;
 import com.orangelit.stocktracker.common.exceptions.InvalidInputException;

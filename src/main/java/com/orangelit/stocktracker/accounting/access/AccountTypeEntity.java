@@ -32,7 +32,7 @@ public class AccountTypeEntity extends TimestampedEntity {
         this.name = name;
     }
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "accountCategoryId")
     public AccountCategoryEntity accountCategory;
 
@@ -44,7 +44,7 @@ public class AccountTypeEntity extends TimestampedEntity {
         this.accountCategory = accountCategory;
     }
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parentAccountTypeId")
     private AccountTypeEntity parentAccountType;
 

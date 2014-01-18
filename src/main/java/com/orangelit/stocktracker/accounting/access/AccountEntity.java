@@ -42,7 +42,7 @@ public class AccountEntity extends TimestampedEntity {
         this.userId = userId;
     }
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "accountTypeId")
     private AccountTypeEntity accountType;
 

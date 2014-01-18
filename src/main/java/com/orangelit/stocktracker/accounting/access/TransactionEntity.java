@@ -23,7 +23,7 @@ public class TransactionEntity extends TimestampedEntity {
         this.transactionId = transactionId;
     }
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "transactionTypeId")
     @Cascade({CascadeType.REFRESH})
     private TransactionTypeEntity transactionType;
