@@ -12,8 +12,26 @@ import java.util.List;
 @Table(name = "Transactions")
 public class TransactionEntity extends TimestampedEntity {
 
+    // Private Fields
+
     @Id
     private String transactionId;
+
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "transactionTypeId") @Cascade({CascadeType.REFRESH})
+    private TransactionTypeEntity transactionType;
+
+    @Column(nullable = false)
+    private Date transactionDate;
+
+    @Column(nullable = false)
+    private String description;
+
+    @OneToMany(mappedBy = "transaction")
+    @Cascade({CascadeType.REFRESH})
+    private List<TransactionLineEntity> transactionLines;
+
+
+    // Getters & Setters
 
     public String getTransactionId() {
         return transactionId;
@@ -23,11 +41,6 @@ public class TransactionEntity extends TimestampedEntity {
         this.transactionId = transactionId;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "transactionTypeId")
-    @Cascade({CascadeType.REFRESH})
-    private TransactionTypeEntity transactionType;
-
     public TransactionTypeEntity getTransactionType() {
         return transactionType;
     }
@@ -35,9 +48,6 @@ public class TransactionEntity extends TimestampedEntity {
     public void setTransactionType(TransactionTypeEntity transactionType) {
         this.transactionType = transactionType;
     }
-
-    @Column(nullable = false)
-    private Date transactionDate;
 
     public Date getTransactionDate() {
         return transactionDate;
@@ -47,9 +57,6 @@ public class TransactionEntity extends TimestampedEntity {
         this.transactionDate = transactionDate;
     }
 
-    @Column(nullable = false)
-    private String description;
-
     public String getDescription() {
         return description;
     }
@@ -58,42 +65,12 @@ public class TransactionEntity extends TimestampedEntity {
         this.description = description;
     }
 
-    @OneToMany(mappedBy = "transaction")
-    @Cascade({CascadeType.REFRESH})
-    private List<TransactionLineEntity> transactionLines;
-
     public List<TransactionLineEntity> getTransactionLines() {
         return transactionLines;
     }
 
     public void setTransactionLines(List<TransactionLineEntity> transactionLines) {
         this.transactionLines = transactionLines;
-    }
-
-    @Column(nullable = true)
-    private Date created;
-
-    @PrePersist
-    protected void onCreate() {
-        created = new Date();
-    }
-
-    @Override
-    public Date getCreated() {
-        return created;
-    }
-
-    @Override
-    public void setCreated(Date created) {
-        this.created = created;
-    }
-
-    @Column(nullable = true)
-    private Date updated;
-
-    @PreUpdate
-    protected void onUpdate() {
-        updated = new Date();
     }
 
 }

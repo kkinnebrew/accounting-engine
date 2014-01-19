@@ -3,6 +3,7 @@ package com.orangelit.stocktracker.web.modules;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.persist.jpa.JpaPersistModule;
+import com.google.inject.servlet.ServletScopes;
 import com.google.inject.servlet.SessionScoped;
 import com.googlecode.htmleasy.HtmleasyProviders;
 import com.orangelit.stocktracker.accounting.access.*;
@@ -10,7 +11,7 @@ import com.orangelit.stocktracker.accounting.managers.AccountingManager;
 import com.orangelit.stocktracker.accounting.managers.AccountingManagerImpl;
 import com.orangelit.stocktracker.authentication.managers.AuthenticationManager;
 import com.orangelit.stocktracker.authentication.managers.AuthenticationManagerImpl;
-import com.orangelit.stocktracker.authentication.mock.UserPopulator;
+import com.orangelit.stocktracker.authentication.generators.UserPopulator;
 import com.orangelit.stocktracker.web.config.PersistenceInitializer;
 import com.orangelit.stocktracker.web.resources.*;
 

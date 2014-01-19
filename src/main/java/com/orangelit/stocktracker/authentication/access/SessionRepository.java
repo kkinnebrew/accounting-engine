@@ -14,21 +14,21 @@ public class SessionRepository extends AbstractRepository {
 
         SessionEntity sessionEntity = new SessionEntity();
 
-        sessionEntity.sessionId = UUID.randomUUID().toString();
-        sessionEntity.userId = user.userId;
-        sessionEntity.hostname = hostname;
-        sessionEntity.expires = expiration;
+        sessionEntity.setSessionId(UUID.randomUUID().toString());
+        sessionEntity.setUserId(user.getUserId());
+        sessionEntity.setHostname(hostname);
+        sessionEntity.setExpires(expiration);
 
         getEntityManager().persist(sessionEntity);
 
-        return sessionEntity.sessionId;
+        return sessionEntity.getSessionId();
 
     }
 
     public Boolean validateSession(String sessionId) {
         SessionEntity sessionEntity = getEntityManager().find(SessionEntity.class, sessionId);
         if (sessionEntity != null) {
-            return sessionEntity.expires.compareTo(new Date()) > 0;
+            return sessionEntity.getExpires().compareTo(new Date()) > 0;
         } else {
             return false;
         }

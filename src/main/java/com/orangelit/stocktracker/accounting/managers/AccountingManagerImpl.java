@@ -1,7 +1,6 @@
 package com.orangelit.stocktracker.accounting.managers;
 
 import com.google.inject.Inject;
-import com.google.inject.servlet.SessionScoped;
 import com.orangelit.stocktracker.accounting.access.*;
 import com.orangelit.stocktracker.accounting.models.*;
 import com.orangelit.stocktracker.common.exceptions.InvalidInputException;
@@ -38,6 +37,12 @@ public class AccountingManagerImpl implements AccountingManager {
     public List<AccountCategory> getAccountCategories() {
         return accountCategoryRepository.getAll();
     }
+
+    public AccountCategory createAccountCategory(String name, Boolean direction) throws PersistenceException {
+        AccountCategory model = new AccountCategory(name, direction);
+        return accountCategoryRepository.create(model);
+    }
+
 
     public List<Transaction> getTransactions(String accountId) throws InvalidInputException {
 
@@ -164,8 +169,8 @@ public class AccountingManagerImpl implements AccountingManager {
         transactionTypeRepository.remove(transactionTypeId);
     }
 
-    public List<Account> getAccounts() {
-        List<Account> accounts = accountRepository.getAll();
+    public List<Account> getAccounts(String userId) {
+        List<Account> accounts = accountRepository.getAccountsForUser(userId);
         Collections.sort(accounts, new Comparator<Account>() {
             @Override
             public int compare(Account o1, Account o2) {

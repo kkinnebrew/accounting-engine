@@ -5,12 +5,17 @@ import java.util.UUID;
 
 public class User {
 
-    public String userId;
-    public String firstName;
-    public String lastName;
-    public String email;
-    public Boolean isActive;
+    // Private Fields
+
+    private String userId;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private Boolean isActive;
     private String token;
+
+
+    // Constructors
 
     public User() {}
 
@@ -24,16 +29,55 @@ public class User {
 
     }
 
+
+    // Getters & Setters
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
+
     public void setToken(String token) {
         this.token = token;
     }
 
     public String getToken() {
         return token;
-    }
-
-    public String getUserId() {
-        return userId;
     }
 
     public String getFullName() {

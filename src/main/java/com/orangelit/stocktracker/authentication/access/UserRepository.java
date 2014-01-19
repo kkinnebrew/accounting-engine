@@ -22,12 +22,12 @@ public class UserRepository extends AbstractRepository {
 
         UserEntity userEntity = new UserEntity();
 
-        userEntity.userId = UUID.randomUUID().toString();
-        userEntity.firstName = firstName;
-        userEntity.lastName = lastName;
-        userEntity.email = email;
-        userEntity.password = password;
-        userEntity.isActive = true;
+        userEntity.setUserId(UUID.randomUUID().toString());
+        userEntity.setFirstName(firstName);
+        userEntity.setLastName(lastName);
+        userEntity.setEmail(email);
+        userEntity.setPassword(password);
+        userEntity.setIsActive(true);
 
         getEntityManager().persist(userEntity);
 
@@ -61,11 +61,11 @@ public class UserRepository extends AbstractRepository {
 
         User user = new User();
 
-        user.userId = userEntity.userId;
-        user.firstName = userEntity.firstName;
-        user.lastName = userEntity.lastName;
-        user.email = userEntity.email;
-        user.isActive = userEntity.isActive;
+        user.setUserId(userEntity.getUserId());
+        user.setFirstName(userEntity.getFirstName());
+        user.setLastName(userEntity.getLastName());
+        user.setEmail(userEntity.getEmail());
+        user.setIsActive(userEntity.getIsActive());
 
         return user;
 

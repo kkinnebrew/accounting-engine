@@ -13,6 +13,8 @@ public interface AccountingManager {
 
     public List<AccountCategory> getAccountCategories();
 
+    public AccountCategory createAccountCategory(String name, Boolean direction) throws PersistenceException;
+
     public List<Transaction> getTransactions(String accountId) throws InvalidInputException;
 
     public List<Transaction> getTransactionsForAccountType(String accountTypeId) throws InvalidInputException;
@@ -35,7 +37,7 @@ public interface AccountingManager {
 
     public void removeTransactionType(String transactionTypeId) throws InvalidInputException, PersistenceException;
 
-    public List<Account> getAccounts();
+    public List<Account> getAccounts(String userId);
 
     public Account getAccount(String accountId) throws ItemNotFoundException;
 
