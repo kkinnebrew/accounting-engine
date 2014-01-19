@@ -81,7 +81,7 @@ public class User {
     }
 
     public String getFullName() {
-        return MessageFormat.format("{0} {1}", firstName, lastName);
+        return MessageFormat.format("{0} {1}", getFirstName(), getLastName());
     }
 
 }

@@ -16,6 +16,8 @@ import java.util.List;
 
 public class AccountingManagerImpl implements AccountingManager {
 
+    // Private Fields
+
     @Inject
     private AccountRepository accountRepository;
 
@@ -34,6 +36,8 @@ public class AccountingManagerImpl implements AccountingManager {
     @Inject
     private AccountCategoryRepository accountCategoryRepository;
 
+    // Implementation
+
     public List<AccountCategory> getAccountCategories() {
         return accountCategoryRepository.getAll();
     }
@@ -42,26 +46,6 @@ public class AccountingManagerImpl implements AccountingManager {
         AccountCategory model = new AccountCategory(name, direction);
         return accountCategoryRepository.create(model);
     }
-
-
-    public List<Transaction> getTransactions(String accountId) throws InvalidInputException {
-
-        if (StringUtils.isEmpty(accountId)) {
-            throw new InvalidInputException("Invalid account Id");
-        }
-
-        return transactionRepository.getTransactionsForAccount(accountId);
-    }
-
-    public List<Transaction> getTransactionsForAccountType(String accountTypeId) throws InvalidInputException {
-
-        if (StringUtils.isEmpty(accountTypeId)) {
-            throw new InvalidInputException("Invalid account Id");
-        }
-
-        return null;//transactionRepository.getTransactionsForAccountType(accountTypeId);
-    }
-
 
     public List<AccountType> getAccountTypes() {
         List<AccountType> accountTypes = accountTypeRepository.getAll();
@@ -74,16 +58,16 @@ public class AccountingManagerImpl implements AccountingManager {
         return accountTypes;
     }
 
-    public AccountType getAccountType(String accountId) throws ItemNotFoundException {
-       return accountTypeRepository.get(accountId);
+    public AccountType getAccountType(String accountTypeId) throws ItemNotFoundException {
+       return accountTypeRepository.get(accountTypeId);
     }
 
     public AccountType createAccountType(String accountTypeName, String accountCategoryId, String parentAccountTypeId)
             throws InvalidInputException, PersistenceException
     {
-        AccountType accountType = null;
-        AccountType parentAccountType = null;
-        AccountCategory accountCategory = null;
+        AccountType accountType;
+        AccountType parentAccountType;
+        AccountCategory accountCategory;
         if (StringUtils.isEmpty(accountCategoryId)) {
             throw new InvalidInputException("Cannot find account category");
         } else {
@@ -107,32 +91,29 @@ public class AccountingManagerImpl implements AccountingManager {
     }
 
     public AccountType updateAccountType(String accountTypeId, String accountTypeName, String accountCategoryId, String parentAccountTypeId)
-            throws InvalidInputException, PersistenceException
-    {
-        AccountType accountType = null;
-        AccountType parentAccountType = null;
-        AccountCategory accountCategory = null;
+            throws InvalidInputException, PersistenceException {
+
+        AccountType accountType;
+        AccountCategory accountCategory;
         if (StringUtils.isEmpty(accountCategoryId)) {
             throw new InvalidInputException("Cannot find account category");
-        } else {
-            try {
-                accountCategory = accountCategoryRepository.get(accountCategoryId);
-            } catch (ItemNotFoundException ex) {
-                throw new InvalidInputException("Cannot find account category");
-            }
+        } else try {
+            accountCategory = accountCategoryRepository.get(accountCategoryId);
+        } catch (ItemNotFoundException ex) {
+            throw new InvalidInputException("Cannot find account category");
         }
         if (!StringUtils.isEmpty(parentAccountTypeId)) {
             if (parentAccountTypeId.equals(accountTypeId)) {
                 throw new InvalidInputException("AccountType cannot reference itself as parent");
             }
             try {
-                parentAccountType = accountTypeRepository.get(parentAccountTypeId);
+                AccountType parentAccountType = accountTypeRepository.get(parentAccountTypeId);
                 accountType = new AccountType(accountTypeId, accountTypeName, accountCategory, parentAccountType);
             } catch (ItemNotFoundException ex) {
                 throw new InvalidInputException("Cannot find account type with id " + parentAccountTypeId);
             }
         } else {
-            accountType = new AccountType(accountTypeId, accountTypeName, accountCategory, parentAccountType);
+            accountType = new AccountType(accountTypeId, accountTypeName, accountCategory, null);
         }
         return accountTypeRepository.update(accountType, accountTypeId);
     }
@@ -186,7 +167,7 @@ public class AccountingManagerImpl implements AccountingManager {
 
     public Account createAccount(String accountName, String accountTypeId, String userId) throws InvalidInputException, PersistenceException {
         try {
-            AccountType accountType = accountTypeRepository.get(accountTypeId);
+            AccountType accountType = getAccountType(accountTypeId);
             Account account = new Account(userId, accountType, accountName);
             return accountRepository.create(account);
         } catch (ItemNotFoundException ex) {
@@ -208,10 +189,19 @@ public class AccountingManagerImpl implements AccountingManager {
         accountRepository.remove(accountId);
     }
 
+    public List<Transaction> getTransactions(String accountId) throws InvalidInputException {
+
+        if (StringUtils.isEmpty(accountId)) {
+            throw new InvalidInputException("Invalid account Id");
+        }
+
+        return transactionRepository.getTransactionsForAccount(accountId);
+    }
+
     public void createTransfer(String debitAccountId, String creditAccountId, String transactionTypeId, Date transactionDate, BigDecimal amount, String description) throws InvalidInputException, PersistenceException {
 
-        try
-        {
+        try {
+
             TransactionType transactionType = transactionTypeRepository.get(transactionTypeId);
             Account debitAccount = accountRepository.get(debitAccountId);
             Account creditAccount = accountRepository.get(creditAccountId);
@@ -223,15 +213,15 @@ public class AccountingManagerImpl implements AccountingManager {
 
             transactionRepository.create(transaction);
 
-            for (TransactionLine line : transaction.getTransactionLines())
-            {
+            for (TransactionLine line : transaction.getTransactionLines()) {
                 transactionLineRepository.create(line);
             }
-        }
-        catch (ItemNotFoundException ex) {
-            throw new InvalidInputException("Cannot find account type with id " + transactionTypeId);
-        }
-        catch (Exception e) {
+
+            if (!transaction.isValid()) {
+                System.out.println("Invalid transaction");
+            }
+
+        } catch (ItemNotFoundException ex) {
             throw new InvalidInputException("Cannot find account type with id " + transactionTypeId);
         }
 
@@ -278,33 +268,4 @@ public class AccountingManagerImpl implements AccountingManager {
         return balance;
     }
 
-    public BigDecimal getBalanceForAccountType(String accountTypeId) throws ItemNotFoundException, InvalidInputException {
-        AccountType accountType = getAccountType(accountTypeId);
-        return getBalanceForAccountType(accountType);
-    }
-
-    public BigDecimal getBalanceForAccountType(AccountType accountType) throws ItemNotFoundException, InvalidInputException {
-
-        List<Transaction> transactions = getTransactionsForAccountType(accountType.getAccountTypeId());
-
-        BigDecimal balance = BigDecimal.ZERO;
-
-        for (Transaction transaction : transactions) {
-            for (TransactionLine transactionLine : transaction.getTransactionLines()) {
-                if (!transactionLine.getAccount().getAccountId().equals(transactionLine.getAccount().getAccountId())) {
-                    continue;
-                }
-                if (transactionLine.getAccount().getAccountType().getAccountCategory().getDirection()) {
-                    balance = balance.add(transactionLine.getDebitAmount());
-                    balance = balance.subtract(transactionLine.getCreditAmount());
-                } else {
-                    balance = balance.subtract(transactionLine.getDebitAmount());
-                    balance = balance.add(transactionLine.getCreditAmount());
-                }
-            }
-        }
-
-        return balance;
-
-    }
 }

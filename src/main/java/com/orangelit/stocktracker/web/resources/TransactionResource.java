@@ -42,8 +42,8 @@ public class TransactionResource {
         TransactionAdminView model = new TransactionAdminView();
         model.accounts = accountingManager.getAccounts(user.getUserId());
         model.user = (User)request.getSession().getAttribute("user");
-        model.transactions = new LinkedList<AccountTransactionDTO>();
-        model.transactionTypes = new LinkedList<TransactionType>();
+        model.transactions = new LinkedList<>();
+        model.transactionTypes = new LinkedList<>();
 
         if (StringUtils.isEmpty(accountId) && model.accounts.size() > 0) {
             throw new RedirectException("/transactions?accountId=" + model.accounts.get(0).getAccountId());
@@ -69,7 +69,7 @@ public class TransactionResource {
         BigDecimal balance = BigDecimal.ZERO;
 
         for (Transaction transaction : transactions) {
-            List<Account> accounts = new LinkedList<Account>();
+            List<Account> accounts = new LinkedList<>();
             for (TransactionLine line : transaction.getTransactionLines()) {
                 if (!line.getAccount().getAccountId().equals(accountId)) {
                     accounts.add(line.getAccount());

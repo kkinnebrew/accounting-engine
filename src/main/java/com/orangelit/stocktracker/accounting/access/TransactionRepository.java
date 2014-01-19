@@ -5,7 +5,6 @@ import com.orangelit.stocktracker.accounting.models.TransactionLine;
 import com.orangelit.stocktracker.common.access.BaseRepository;
 
 import javax.persistence.Query;
-import javax.persistence.criteria.*;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -50,7 +49,7 @@ public class TransactionRepository extends BaseRepository<TransactionEntity, Tra
         entity.setTransactionDate(model.getTransactionDate());
         entity.setDescription(model.getDescription());
         entity.setTransactionType(TransactionTypeRepository.mapInputStatic(model.getTransactionType()));
-        List<TransactionLineEntity> lines = new LinkedList<TransactionLineEntity>();
+        List<TransactionLineEntity> lines = new LinkedList<>();
         if (mapChildren) {
             for (TransactionLine line : model.getTransactionLines()) {
                 lines.add(TransactionLineRepository.mapInputStatic(line));
@@ -65,11 +64,11 @@ public class TransactionRepository extends BaseRepository<TransactionEntity, Tra
         Query query = getEntityManager().createNativeQuery("select T.*, TL.*, TT.* from Transactions T INNER JOIN TransactionLines TL ON T.transactionId = TL.transactionId INNER JOIN TransactionTypes TT ON TT.transactionTypeId = T.transactionTypeId WHERE TL.accountId = ?", TransactionEntity.class);
         query.setParameter(1, accountId);
 
-        List<TransactionEntity> results = query.getResultList();
-        List<Transaction> transactions = new LinkedList<Transaction>();
+        List results = query.getResultList();
+        List<Transaction> transactions = new LinkedList<>();
 
-        for (TransactionEntity entity : results) {
-            transactions.add(mapResult(entity));
+        for (Object entity : results) {
+            transactions.add(mapResult((TransactionEntity)entity));
         }
 
         return transactions;

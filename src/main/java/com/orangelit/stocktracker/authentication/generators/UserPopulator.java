@@ -6,7 +6,6 @@ import com.orangelit.stocktracker.accounting.managers.AccountingManager;
 import com.orangelit.stocktracker.accounting.models.AccountCategory;
 import com.orangelit.stocktracker.accounting.models.AccountType;
 import com.orangelit.stocktracker.authentication.managers.AuthenticationManager;
-import com.orangelit.stocktracker.authentication.models.User;
 
 public class UserPopulator {
 
@@ -19,15 +18,13 @@ public class UserPopulator {
         this.accountingManager = accountingManager;
         try {
             loadData();
-        } catch (Exception e) {
-
-        }
+        } catch (Exception ignored) {}
     }
 
     @Transactional
     public void loadData() throws Exception {
 
-        User user = authenticationManager.register("Kevin", "Kinnebrew", "kevin.kinnebrew@gmail.com", "test", "test");
+        authenticationManager.register("Kevin", "Kinnebrew", "kevin.kinnebrew@gmail.com", "test", "test");
 
         AccountCategory assetCategory = accountingManager.createAccountCategory("Asset", true);
         AccountCategory liabilityCategory = accountingManager.createAccountCategory("Liability", false);

@@ -1,6 +1,5 @@
 package com.orangelit.stocktracker.accounting.models;
 
-import java.util.Date;
 import java.util.UUID;
 
 public class TransactionType {
@@ -9,7 +8,6 @@ public class TransactionType {
 
     private String _transactionTypeId;
     private String _name;
-    private Date _created;
 
     // Constructors
 

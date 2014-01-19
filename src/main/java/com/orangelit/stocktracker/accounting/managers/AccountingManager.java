@@ -11,23 +11,25 @@ import java.util.List;
 
 public interface AccountingManager {
 
+    // Account Categories
+
     public List<AccountCategory> getAccountCategories();
 
     public AccountCategory createAccountCategory(String name, Boolean direction) throws PersistenceException;
 
-    public List<Transaction> getTransactions(String accountId) throws InvalidInputException;
-
-    public List<Transaction> getTransactionsForAccountType(String accountTypeId) throws InvalidInputException;
+    // Account Types
 
     public List<AccountType> getAccountTypes();
 
-    public AccountType getAccountType(String accountId)  throws ItemNotFoundException;
+    public AccountType getAccountType(String accountTypeId) throws ItemNotFoundException;
 
     public AccountType createAccountType(String accountTypeName, String accountCategoryId, String parentAccountTypeId) throws InvalidInputException, PersistenceException;
 
     public AccountType updateAccountType(String accountTypeId, String accountTypeName, String accountCategoryId, String parentAccountTypeId) throws InvalidInputException, PersistenceException;
 
     public void removeAccountType(String accountTypeId) throws InvalidInputException, PersistenceException;
+
+    // Transaction Types
 
     public List<TransactionType> getTransactionTypes();
 
@@ -36,6 +38,8 @@ public interface AccountingManager {
     public TransactionType updateTransactionType(String transactionTypeId, String transactionTypeName) throws InvalidInputException, PersistenceException;
 
     public void removeTransactionType(String transactionTypeId) throws InvalidInputException, PersistenceException;
+
+    // Accounts
 
     public List<Account> getAccounts(String userId);
 
@@ -47,16 +51,18 @@ public interface AccountingManager {
 
     public void removeAccount(String accountId) throws InvalidInputException, PersistenceException;
 
+    // Transactions
+
+    public List<Transaction> getTransactions(String accountId) throws InvalidInputException;
+
     public void createTransfer(String fromAccountId, String toAccountId, String transactionTypeId, Date transactionDate, BigDecimal amount, String description) throws InvalidInputException, PersistenceException;
 
     public void removeTransaction(String transactionId) throws InvalidInputException, ItemNotFoundException, PersistenceException;
 
+    // Balances
+
     public BigDecimal getBalanceForAccount(String accountId) throws ItemNotFoundException, InvalidInputException;
 
     public BigDecimal getBalanceForAccount(Account account) throws ItemNotFoundException, InvalidInputException;
-
-    public BigDecimal getBalanceForAccountType(String accountTypeId) throws ItemNotFoundException, InvalidInputException;
-
-    public BigDecimal getBalanceForAccountType(AccountType accountType) throws ItemNotFoundException, InvalidInputException;
 
 }

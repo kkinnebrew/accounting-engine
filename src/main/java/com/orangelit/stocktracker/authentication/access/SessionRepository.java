@@ -19,6 +19,8 @@ public class SessionRepository extends AbstractRepository {
         sessionEntity.setHostname(hostname);
         sessionEntity.setExpires(expiration);
 
+        System.out.println("Session generated for " + sessionEntity.getHostname());
+
         getEntityManager().persist(sessionEntity);
 
         return sessionEntity.getSessionId();
@@ -27,11 +29,7 @@ public class SessionRepository extends AbstractRepository {
 
     public Boolean validateSession(String sessionId) {
         SessionEntity sessionEntity = getEntityManager().find(SessionEntity.class, sessionId);
-        if (sessionEntity != null) {
-            return sessionEntity.getExpires().compareTo(new Date()) > 0;
-        } else {
-            return false;
-        }
+        return sessionEntity != null && sessionEntity.getExpires().compareTo(new Date()) > 0;
     }
 
     @Transactional

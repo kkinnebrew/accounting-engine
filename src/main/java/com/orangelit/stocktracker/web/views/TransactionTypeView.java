@@ -8,5 +8,4 @@ import java.util.List;
 public class TransactionTypeView {
     public User user;
     public List<TransactionType> transactionTypes;
-    public String errorMessage;
 }

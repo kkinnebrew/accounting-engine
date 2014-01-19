@@ -18,12 +18,6 @@ public class Account {
 
     // Constructors
 
-    /**
-     * @param accountId
-     * @param userId
-     * @param accountType
-     * @param accountName
-     */
     public Account(String accountId, String userId, AccountType accountType, String accountName) {
 
         _accountId = accountId;
@@ -33,11 +27,6 @@ public class Account {
 
     }
 
-    /**
-     * @param userId
-     * @param accountType
-     * @param accountName
-     */
     public Account(String userId, AccountType accountType, String accountName) {
         this(UUID.randomUUID().toString(), userId, accountType, accountName);
     }

@@ -27,7 +27,7 @@ public abstract class BaseRepository<E extends TimestampedEntity, M> {
         getEntityManager().clear();
         Query query = getEntityManager().createNativeQuery("SELECT * FROM " + tableName, getEntityClass());
         List<E> results = query.getResultList();
-        List<M> mappedResults = new ArrayList<M>();
+        List<M> mappedResults = new ArrayList<>();
         for (E entity : results) {
             mappedResults.add(mapResult(entity));
         }
@@ -77,9 +77,9 @@ public abstract class BaseRepository<E extends TimestampedEntity, M> {
         String tableName = getEntityClass().getAnnotation(Table.class).name();
         Field[] fields = getEntityClass().getDeclaredFields();
         String tableIdField = null;
-        for (int i = 0; i < fields.length; i++) {
-            if (fields[i].isAnnotationPresent(Id.class)) {
-                tableIdField = fields[i].getName();
+        for (Field field : fields) {
+            if (field.isAnnotationPresent(Id.class)) {
+                tableIdField = field.getName();
             }
         }
         if (tableIdField == null) {
