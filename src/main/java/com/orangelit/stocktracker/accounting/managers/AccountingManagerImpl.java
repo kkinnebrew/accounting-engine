@@ -38,6 +38,12 @@ public class AccountingManagerImpl implements AccountingManager {
         return accountCategoryRepository.getAll();
     }
 
+    public AccountCategory createAccountCategory(String name, Boolean direction) throws PersistenceException {
+        AccountCategory model = new AccountCategory(name, direction);
+        return accountCategoryRepository.create(model);
+    }
+
+
     public List<Transaction> getTransactions(String accountId) throws InvalidInputException {
 
         if (StringUtils.isEmpty(accountId)) {

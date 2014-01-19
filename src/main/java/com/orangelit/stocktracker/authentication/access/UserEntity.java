@@ -1,6 +1,7 @@
 package com.orangelit.stocktracker.authentication.access;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -18,6 +19,7 @@ public class UserEntity {
     @Column(nullable = false)
     public String lastName;
 
+    @NaturalId
     @Column(nullable = false)
     public String email;
 

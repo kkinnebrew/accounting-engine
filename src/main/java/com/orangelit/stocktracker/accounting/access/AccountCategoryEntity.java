@@ -1,6 +1,7 @@
 package com.orangelit.stocktracker.accounting.access;
 
 import com.orangelit.stocktracker.common.access.TimestampedEntity;
+import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -20,6 +21,7 @@ public class AccountCategoryEntity extends TimestampedEntity {
         this.accountCategoryId = accountCategoryId;
     }
 
+    @NaturalId
     @Column(nullable = false)
     private String name;
 
