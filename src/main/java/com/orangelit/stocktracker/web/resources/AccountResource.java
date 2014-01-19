@@ -38,7 +38,7 @@ public class AccountResource
 
         AccountAdminView model = new AccountAdminView();
 
-        List<AccountDTO> accountDTOs = new ArrayList<AccountDTO>();
+        List<AccountDTO> accountDTOs = new ArrayList<>();
 
         for (Account account : accountingManager.getAccounts(user.getUserId()))
         {

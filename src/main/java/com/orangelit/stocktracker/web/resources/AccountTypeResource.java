@@ -37,7 +37,7 @@ public class AccountTypeResource
 
         AccountTypeAdminView model = new AccountTypeAdminView();
 
-        List<AccountTypeDTO> accountTypeDTOs = new ArrayList<AccountTypeDTO>();
+        List<AccountTypeDTO> accountTypeDTOs = new ArrayList<>();
 
         for (AccountType accountType : accountingManager.getAccountTypes()) {
             try {
@@ -61,7 +61,7 @@ public class AccountTypeResource
             @Override
             public int compare(AccountTypeDTO o1, AccountTypeDTO o2) {
                 String o1Type = o1.getAccountTypeName() != null ? o1.getAccountTypeName() : "";
-                String o2Type = o1.getAccountTypeName() != null ? o1.getAccountTypeName() : "";
+                String o2Type = o2.getAccountTypeName() != null ? o2.getAccountTypeName() : "";
                 return o1Type.compareTo(o2Type);
             }
         });

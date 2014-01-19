@@ -15,5 +15,4 @@ public class TransactionAdminView {
     public List<AccountTransactionDTO> transactions;
     public List<TransactionType> transactionTypes;
     public List<Account> accounts;
-    public String errorMessage;
 }

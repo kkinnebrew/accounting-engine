@@ -22,34 +22,20 @@ public class Transaction {
 
     // Constructors
 
-    /**
-     * @param transactionDate
-     * @param transactionType
-     * @param description
-     */
     public Transaction(Date transactionDate, TransactionType transactionType, String description) {
         this(UUID.randomUUID().toString(), transactionDate, transactionType, description);
     }
 
-    /**
-     * @param transactionDate
-     * @param transactionType
-     * @param description
-     */
     public Transaction(String transactionId, Date transactionDate, TransactionType transactionType, String description) {
 
         _transactionId = transactionId;
         _transactionDate = transactionDate;
         _transactionType = transactionType;
         _description = description;
-        _transactionLines = new ArrayList<TransactionLine>();
+        _transactionLines = new ArrayList<>();
 
     }
 
-    /**
-     * Adds a line to the transaction
-     * @param transactionLine
-     */
     public void addLine(TransactionLine transactionLine) {
         _transactionLines.add(transactionLine);
     }
@@ -78,10 +64,6 @@ public class Transaction {
 
     // Public Methods
 
-    /**
-     * Validates the transaction for accounting purposes
-     * @return
-     */
     public Boolean isValid() {
 
         if (_transactionLines.size() == 0) {

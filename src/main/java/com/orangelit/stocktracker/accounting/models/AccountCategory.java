@@ -1,6 +1,5 @@
 package com.orangelit.stocktracker.accounting.models;
 
-import java.util.Date;
 import java.util.UUID;
 
 public class AccountCategory {
@@ -10,14 +9,9 @@ public class AccountCategory {
     private String _accountCategoryId;
     private String _name;
     private Boolean _direction;
-    private Date _created;
 
     // Constructors
 
-    /**
-     * @param accountCategoryId
-     * @param name
-     */
     public AccountCategory(String accountCategoryId, String name, Boolean direction) {
 
         _accountCategoryId = accountCategoryId;
@@ -26,9 +20,6 @@ public class AccountCategory {
 
     }
 
-    /**
-     * @param name
-     */
     public AccountCategory(String name, Boolean direction) {
         this(UUID.randomUUID().toString(), name, direction);
     }

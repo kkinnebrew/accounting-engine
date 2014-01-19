@@ -38,10 +38,6 @@ public class AccountDTO {
         return balance;
     }
 
-    public String getAccountCategoryId() {
-        return accountCategoryId;
-    }
-
     public String getAccountCategoryName() {
         return accountCategoryName;
     }

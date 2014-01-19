@@ -21,13 +21,6 @@ public class TransactionLine {
 
     // Constructors
 
-    /**
-     * @param transactionLineId
-     * @param transaction
-     * @param account
-     * @param debitAmount
-     * @param creditAmount
-     */
     public TransactionLine(String transactionLineId, Transaction transaction, Account account, BigDecimal debitAmount, BigDecimal creditAmount) {
 
         _transactionLineId = transactionLineId;
@@ -38,12 +31,6 @@ public class TransactionLine {
 
     }
 
-    /**
-     * @param transaction
-     * @param account
-     * @param debitAmount
-     * @param creditAmount
-     */
     public TransactionLine(Transaction transaction, Account account, BigDecimal debitAmount, BigDecimal creditAmount) {
         this(UUID.randomUUID().toString(), transaction, account, debitAmount, creditAmount);
     }

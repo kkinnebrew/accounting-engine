@@ -41,11 +41,6 @@ public class UserRepository extends AbstractRepository {
         return query.getResultList().size() > 0;
     }
 
-    public User getUser(String userId) {
-        UserEntity userEntity =  getEntityManager().find(UserEntity.class, userId);
-        return mapUser(userEntity);
-    }
-
     public User getUserByCredentials(String email, String password) {
 
         Query query = getEntityManager().createNativeQuery("select * from Users WHERE email = ? AND password = ?", UserEntity.class);

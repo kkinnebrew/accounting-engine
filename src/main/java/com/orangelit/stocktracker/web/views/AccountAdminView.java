@@ -10,5 +10,4 @@ public class AccountAdminView {
     public User user;
     public List<AccountDTO> accounts;
     public List<AccountType> accountTypes;
-    public String errorMessage;
 }
