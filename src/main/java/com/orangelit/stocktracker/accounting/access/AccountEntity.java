@@ -3,14 +3,28 @@ package com.orangelit.stocktracker.accounting.access;
 import com.orangelit.stocktracker.common.access.TimestampedEntity;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Table(name = "Accounts")
 public class AccountEntity extends TimestampedEntity {
 
+    // Private Fields
+
     @Id
     private String accountId;
+
+    @Column(nullable = false)
+    private String accountName;
+
+    @Column(nullable = false)
+    private String userId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "accountTypeId")
+    private AccountTypeEntity accountType;
+
+
+    // Getters & Setters
 
     public String getAccountId() {
         return accountId;
@@ -20,9 +34,6 @@ public class AccountEntity extends TimestampedEntity {
         this.accountId = accountId;
     }
 
-    @Column(nullable = false)
-    private String accountName;
-
     public String getAccountName() {
         return accountName;
     }
@@ -30,9 +41,6 @@ public class AccountEntity extends TimestampedEntity {
     public void setAccountName(String accountName) {
         this.accountName = accountName;
     }
-
-    @Column(nullable = false)
-    private String userId;
 
     public String getUserId() {
         return userId;
@@ -42,42 +50,12 @@ public class AccountEntity extends TimestampedEntity {
         this.userId = userId;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "accountTypeId")
-    private AccountTypeEntity accountType;
-
     public AccountTypeEntity getAccountType() {
         return accountType;
     }
 
     public void setAccountType(AccountTypeEntity accountType) {
         this.accountType = accountType;
-    }
-
-    @Column(nullable = true)
-    private Date created;
-
-    @PrePersist
-    protected void onCreate() {
-        created = new Date();
-    }
-
-    @Override
-    public Date getCreated() {
-        return created;
-    }
-
-    @Override
-    public void setCreated(Date created) {
-        this.created = created;
-    }
-
-    @Column(nullable = true)
-    private Date updated;
-
-    @PreUpdate
-    protected void onUpdate() {
-        updated = new Date();
     }
 
 }

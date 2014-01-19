@@ -7,6 +7,7 @@ import com.orangelit.stocktracker.accounting.managers.AccountingManager;
 import com.orangelit.stocktracker.accounting.models.Account;
 import com.orangelit.stocktracker.accounting.models.Transaction;
 import com.orangelit.stocktracker.accounting.models.TransactionLine;
+import com.orangelit.stocktracker.accounting.models.TransactionType;
 import com.orangelit.stocktracker.authentication.models.User;
 import com.orangelit.stocktracker.common.exceptions.InvalidInputException;
 import com.orangelit.stocktracker.common.exceptions.ItemNotFoundException;
@@ -36,11 +37,18 @@ public class TransactionResource {
             throw new RedirectException("/auth/login");
         }
 
+        User user = (User)request.getSession().getAttribute("user");
+
         TransactionAdminView model = new TransactionAdminView();
-        model.accounts = accountingManager.getAccounts();
+        model.accounts = accountingManager.getAccounts(user.getUserId());
+        model.user = (User)request.getSession().getAttribute("user");
+        model.transactions = new LinkedList<AccountTransactionDTO>();
+        model.transactionTypes = new LinkedList<TransactionType>();
 
         if (StringUtils.isEmpty(accountId) && model.accounts.size() > 0) {
             throw new RedirectException("/transactions?accountId=" + model.accounts.get(0).getAccountId());
+        } else if (StringUtils.isEmpty(accountId)) {
+            return new View("/transactions.jsp", model);
         }
 
         Account account = accountingManager.getAccount(accountId);
@@ -48,8 +56,6 @@ public class TransactionResource {
         model.balance = accountingManager.getBalanceForAccount(accountId);
         model.account = account;
         model.transactionTypes = accountingManager.getTransactionTypes();
-        model.user = (User)request.getSession().getAttribute("user");
-        model.transactions = new LinkedList<AccountTransactionDTO>();
 
         List<Transaction> transactions = accountingManager.getTransactions(accountId);
 

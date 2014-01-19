@@ -34,11 +34,13 @@ public class AccountResource
             throw new RedirectException("/auth/login");
         }
 
+        User user = (User)request.getSession().getAttribute("user");
+
         AccountAdminView model = new AccountAdminView();
 
         List<AccountDTO> accountDTOs = new ArrayList<AccountDTO>();
 
-        for (Account account : accountingManager.getAccounts())
+        for (Account account : accountingManager.getAccounts(user.getUserId()))
         {
             try
             {

@@ -169,8 +169,8 @@ public class AccountingManagerImpl implements AccountingManager {
         transactionTypeRepository.remove(transactionTypeId);
     }
 
-    public List<Account> getAccounts() {
-        List<Account> accounts = accountRepository.getAll();
+    public List<Account> getAccounts(String userId) {
+        List<Account> accounts = accountRepository.getAccountsForUser(userId);
         Collections.sort(accounts, new Comparator<Account>() {
             @Override
             public int compare(Account o1, Account o2) {

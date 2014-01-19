@@ -3,6 +3,11 @@ package com.orangelit.stocktracker.accounting.access;
 import com.orangelit.stocktracker.accounting.models.Account;
 import com.orangelit.stocktracker.common.access.BaseRepository;
 
+import javax.persistence.Query;
+import javax.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
+
 public class AccountRepository extends BaseRepository<AccountEntity, Account> {
 
     @Override
@@ -32,6 +37,19 @@ public class AccountRepository extends BaseRepository<AccountEntity, Account> {
         entity.setUserId(model.getUserId());
         entity.setAccountType(AccountTypeRepository.mapInputStatic(model.getAccountType()));
         return entity;
+    }
+
+    public List<Account> getAccountsForUser(String userId) {
+        String tableName = getEntityClass().getAnnotation(Table.class).name();
+        getEntityManager().clear();
+        Query query = getEntityManager().createNativeQuery("SELECT * FROM " + tableName + " WHERE userId = ?", getEntityClass());
+        query.setParameter(1, userId);
+        List<AccountEntity> results = query.getResultList();
+        List<Account> mappedResults = new ArrayList<Account>();
+        for (AccountEntity entity : results) {
+            mappedResults.add(mapResult(entity));
+        }
+        return mappedResults;
     }
 
 }

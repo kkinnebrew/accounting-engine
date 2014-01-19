@@ -13,7 +13,7 @@
 
   <listener>
     <listener-class>
-      org.jboss.resteasy.plugins.guice.GuiceResteasyBootstrapServletContextListener
+        org.jboss.resteasy.plugins.guice.GuiceResteasyBootstrapServletContextListener
     </listener-class>
   </listener>
 

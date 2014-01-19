@@ -37,7 +37,7 @@ public interface AccountingManager {
 
     public void removeTransactionType(String transactionTypeId) throws InvalidInputException, PersistenceException;
 
-    public List<Account> getAccounts();
+    public List<Account> getAccounts(String userId);
 
     public Account getAccount(String accountId) throws ItemNotFoundException;
 

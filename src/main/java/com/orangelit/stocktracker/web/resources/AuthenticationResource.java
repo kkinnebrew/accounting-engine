@@ -68,7 +68,7 @@ public class AuthenticationResource
 
         try {
             User registeredUser = authenticationManager.register(firstName, lastName, username, password, confirmPassword);
-            User user = authenticationManager.getToken(registeredUser.email, password, request.getRemoteAddr());
+            User user = authenticationManager.getToken(registeredUser.getEmail(), password, request.getRemoteAddr());
             request.getSession().setAttribute("user", user);
         } catch (InvalidInputException ex) {
             return Response.status(400).build();

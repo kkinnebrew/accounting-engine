@@ -1,4 +1,5 @@
 <%@page import="com.orangelit.stocktracker.authentication.models.User" %>
+<% User model = (User)request.getAttribute("model"); %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,7 +39,7 @@
         </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#"><%=((User)request.getAttribute("model")).firstName %> <%=((User)request.getAttribute("model")).lastName %></a></li>
+        <li><a href="#"><%=model.getFullName()%></a></li>
         <li><a href="/api/auth/logout">Logout</a></li>
       </ul>
     </div>

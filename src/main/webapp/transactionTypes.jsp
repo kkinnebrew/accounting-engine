@@ -43,7 +43,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li><a
-            href="#"><%=model.user.firstName%> <%=model.user.lastName%>
+            href="#"><%=model.user.getFullName()%>
         </a></li>
         <li><a href="/api/auth/logout">Logout</a></li>
       </ul>
