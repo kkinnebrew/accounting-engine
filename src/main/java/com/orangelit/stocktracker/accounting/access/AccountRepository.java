@@ -26,8 +26,12 @@ public class AccountRepository extends BaseRepository<AccountEntity, Account> {
     }
 
     protected static Account mapResultStatic(AccountEntity entity) {
-        return new Account(entity.getAccountId(), entity.getUserId(),
+        Account account = new Account(entity.getAccountId(), entity.getUserId(),
                 AccountTypeRepository.mapResultStatic(entity.getAccountType()), entity.getAccountName());
+        for (TransactionLineEntity line : entity.getTransactionLines()) {
+            account.addTransactionLine(TransactionLineRepository.mapResultStatic(line, false));
+        }
+        return account;
     }
 
     protected static AccountEntity mapInputStatic(Account model) {

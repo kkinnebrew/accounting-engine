@@ -1,8 +1,12 @@
 package com.orangelit.stocktracker.accounting.access;
 
 import com.orangelit.stocktracker.common.access.TimestampedEntity;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import java.util.List;
 
 @Entity
 @Table(name = "Accounts")
@@ -22,6 +26,10 @@ public class AccountEntity extends TimestampedEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "accountTypeId")
     private AccountTypeEntity accountType;
+
+    @OneToMany(mappedBy = "account")
+    @Cascade({org.hibernate.annotations.CascadeType.REFRESH})
+    private List<TransactionLineEntity> transactionLines;
 
 
     // Getters & Setters
@@ -56,6 +64,10 @@ public class AccountEntity extends TimestampedEntity {
 
     public void setAccountType(AccountTypeEntity accountType) {
         this.accountType = accountType;
+    }
+
+    public List<TransactionLineEntity> getTransactionLines() {
+        return transactionLines;
     }
 
 }

@@ -1,5 +1,8 @@
 package com.orangelit.stocktracker.accounting.models;
 
+import java.math.BigDecimal;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -15,6 +18,7 @@ public class Account {
     private String _userId;
     private AccountType _accountType;
     private String _accountName;
+    private List<TransactionLine> transactionLines;
 
     // Constructors
 
@@ -24,6 +28,7 @@ public class Account {
         _userId = userId;
         _accountType = accountType;
         _accountName = accountName;
+        transactionLines = new LinkedList<>();
 
     }
 
@@ -47,6 +52,37 @@ public class Account {
 
     public String getAccountName() {
         return _accountName;
+    }
+
+    public BigDecimal getBalance() {
+
+        BigDecimal balance = BigDecimal.ONE;
+
+        if (_accountType.getAccountCategory().getDirection()) {
+
+            for (TransactionLine line : transactionLines) {
+                balance = balance.add(line.getDebitAmount());
+                balance = balance.subtract(line.getCreditAmount());
+            }
+
+        } else {
+
+            for (TransactionLine line : transactionLines) {
+                balance = balance.subtract(line.getDebitAmount());
+                balance = balance.add(line.getCreditAmount());
+            }
+
+        }
+
+        return balance;
+    }
+
+    public void addTransactionLine(TransactionLine line) {
+        transactionLines.add(line);
+    }
+
+    public List<TransactionLine> getTransactionLines() {
+        return transactionLines;
     }
 
 }

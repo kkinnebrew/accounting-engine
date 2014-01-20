@@ -20,18 +20,28 @@ public class TransactionLineRepository extends BaseRepository<TransactionLineEnt
         return TransactionLineEntity.class;
     }
 
-    protected static TransactionLine mapResultStatic(TransactionLineEntity entity) {
-        return new TransactionLine(entity.getTransactionLineId(), TransactionRepository.mapResultStatic(entity.getTransaction(), false), AccountRepository.mapResultStatic(entity.getAccount()), entity.getDebitAmount(), entity.getCreditAmount());
+    protected static TransactionLine mapResultStatic(TransactionLineEntity entity, Boolean mapChildren) {
+        return new TransactionLine(entity.getTransactionLineId(), TransactionRepository.mapResultStatic(entity.getTransaction(), false), mapChildren ? AccountRepository.mapResultStatic(entity.getAccount()) : null, entity.getDebitAmount(), entity.getCreditAmount());
     }
 
-    protected static TransactionLineEntity mapInputStatic(TransactionLine model) {
+    protected static TransactionLine mapResultStatic(TransactionLineEntity entity) {
+        return mapResultStatic(entity, true);
+    }
+
+    protected static TransactionLineEntity mapInputStatic(TransactionLine model, Boolean mapChildren) {
         TransactionLineEntity entity = new TransactionLineEntity();
         entity.setTransactionLineId(model.getTransactionLineId());
         entity.setTransaction(TransactionRepository.mapInputStatic(model.getTransaction(), false));
-        entity.setAccount(AccountRepository.mapInputStatic(model.getAccount()));
+        if (mapChildren) {
+            entity.setAccount(AccountRepository.mapInputStatic(model.getAccount()));
+        }
         entity.setDebitAmount(model.getDebitAmount());
         entity.setCreditAmount(model.getCreditAmount());
         return entity;
+    }
+
+    protected static TransactionLineEntity mapInputStatic(TransactionLine model) {
+        return mapInputStatic(model, true);
     }
 
 }

@@ -9,17 +9,15 @@ public class AccountDTO {
     private String accountId;
     private String accountName;
     private BigDecimal balance;
-    private String accountCategoryId;
     private String accountCategoryName;
     private String accountTypeId;
     private String accountTypeName;
     private String userId;
 
-    public AccountDTO(Account account, BigDecimal balance) {
+    public AccountDTO(Account account) {
         this.accountId = account.getAccountId();
         this.accountName = account.getAccountName();
-        this.balance = balance;
-        this.accountCategoryId = account.getAccountType().getAccountCategory().getAccountCategoryId();
+        this.balance = account.getBalance();
         this.accountCategoryName = account.getAccountType().getAccountCategory().getName();
         this.accountTypeId = account.getAccountType().getAccountTypeId();
         this.accountTypeName = account.getAccountType().getName();

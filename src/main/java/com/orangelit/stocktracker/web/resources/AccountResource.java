@@ -6,8 +6,6 @@ import com.googlecode.htmleasy.View;
 import com.orangelit.stocktracker.accounting.managers.AccountingManager;
 import com.orangelit.stocktracker.accounting.models.Account;
 import com.orangelit.stocktracker.authentication.models.User;
-import com.orangelit.stocktracker.common.exceptions.InvalidInputException;
-import com.orangelit.stocktracker.common.exceptions.ItemNotFoundException;
 import com.orangelit.stocktracker.web.dtos.AccountDTO;
 import com.orangelit.stocktracker.web.views.AccountAdminView;
 import org.apache.commons.lang.StringUtils;
@@ -40,20 +38,10 @@ public class AccountResource
 
         List<AccountDTO> accountDTOs = new ArrayList<>();
 
-        for (Account account : accountingManager.getAccounts(user.getUserId()))
-        {
-            try
-            {
-                accountDTOs.add(new AccountDTO(account, accountingManager.getBalanceForAccount(account)));
-            }
-            catch (InvalidInputException e)
-            {
-                System.out.println("Invalid input");
-            }
-            catch (ItemNotFoundException e)
-            {
-                System.out.println("Item not found");
-            }
+        for (Account account : accountingManager.getAccounts(user.getUserId())) {
+            try {
+                accountDTOs.add(new AccountDTO(account));
+            } catch (Exception ignored) {}
         }
 
         model.accountTypes = accountingManager.getAccountTypes();

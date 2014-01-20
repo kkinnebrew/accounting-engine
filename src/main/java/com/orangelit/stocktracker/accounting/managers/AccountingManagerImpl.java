@@ -2,6 +2,7 @@ package com.orangelit.stocktracker.accounting.managers;
 
 import com.google.inject.Inject;
 import com.orangelit.stocktracker.accounting.access.*;
+import com.orangelit.stocktracker.accounting.engine.AccountingEngine;
 import com.orangelit.stocktracker.accounting.models.*;
 import com.orangelit.stocktracker.common.exceptions.InvalidInputException;
 import com.orangelit.stocktracker.common.exceptions.ItemNotFoundException;
@@ -9,10 +10,7 @@ import com.orangelit.stocktracker.common.exceptions.PersistenceException;
 import org.apache.commons.lang.StringUtils;
 
 import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class AccountingManagerImpl implements AccountingManager {
 
@@ -36,9 +34,13 @@ public class AccountingManagerImpl implements AccountingManager {
     @Inject
     private AccountCategoryRepository accountCategoryRepository;
 
+    @Inject
+    private AccountingEngine accountingEngine;
+
     // Implementation
 
     public List<AccountCategory> getAccountCategories() {
+
         return accountCategoryRepository.getAll();
     }
 
@@ -151,6 +153,9 @@ public class AccountingManagerImpl implements AccountingManager {
     }
 
     public List<Account> getAccounts(String userId) {
+
+        accountingEngine.generate(userId);
+
         List<Account> accounts = accountRepository.getAccountsForUser(userId);
         Collections.sort(accounts, new Comparator<Account>() {
             @Override
@@ -245,27 +250,7 @@ public class AccountingManagerImpl implements AccountingManager {
     }
 
     public BigDecimal getBalanceForAccount(Account account) throws ItemNotFoundException, InvalidInputException {
-
-        List<Transaction> transactions = getTransactions(account.getAccountId());
-
-        BigDecimal balance = BigDecimal.ZERO;
-
-        for (Transaction transaction : transactions) {
-            for (TransactionLine transactionLine : transaction.getTransactionLines()) {
-                if (!transactionLine.getAccount().getAccountId().equals(account.getAccountId())) {
-                    continue;
-                }
-                if (account.getAccountType().getAccountCategory().getDirection()) {
-                    balance = balance.add(transactionLine.getDebitAmount());
-                    balance = balance.subtract(transactionLine.getCreditAmount());
-                } else {
-                    balance = balance.subtract(transactionLine.getDebitAmount());
-                    balance = balance.add(transactionLine.getCreditAmount());
-                }
-            }
-        }
-
-        return balance;
+        return account.getBalance();
     }
 
 }
