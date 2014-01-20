@@ -4,8 +4,12 @@ import com.orangelit.stocktracker.common.access.TimestampedEntity;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "Security")
 public class SecurityEntity extends TimestampedEntity {
 
     // Private Fields

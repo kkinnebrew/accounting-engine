@@ -26,7 +26,7 @@
           </ul>
         </li>
         <li>
-          <a href="#">Holdings</a>
+          <a href="/api/portfolios">Portfolios</a>
         </li>
         <li>
           <a href="#">Transactions</a>

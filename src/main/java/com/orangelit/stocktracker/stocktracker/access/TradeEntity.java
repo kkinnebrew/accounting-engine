@@ -5,6 +5,8 @@ import com.orangelit.stocktracker.common.access.TimestampedEntity;
 
 import javax.persistence.*;
 
+@Entity
+@Table(name = "Trades")
 public class TradeEntity extends TimestampedEntity {
 
     // Private Fields

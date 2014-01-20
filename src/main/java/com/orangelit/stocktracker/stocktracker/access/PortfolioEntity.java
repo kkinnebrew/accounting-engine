@@ -1,13 +1,14 @@
 package com.orangelit.stocktracker.stocktracker.access;
 
-import com.orangelit.stocktracker.authentication.access.UserEntity;
-import com.orangelit.stocktracker.authentication.models.User;
 import com.orangelit.stocktracker.common.access.TimestampedEntity;
-import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "Portfolios")
 public class PortfolioEntity extends TimestampedEntity {
 
     // Private Fields
