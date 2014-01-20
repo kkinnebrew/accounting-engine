@@ -10,6 +10,9 @@ import com.orangelit.stocktracker.accounting.managers.AccountingManagerImpl;
 import com.orangelit.stocktracker.authentication.managers.AuthenticationManager;
 import com.orangelit.stocktracker.authentication.managers.AuthenticationManagerImpl;
 import com.orangelit.stocktracker.authentication.generators.UserPopulator;
+import com.orangelit.stocktracker.stocktracker.managers.InvestmentManager;
+import com.orangelit.stocktracker.stocktracker.managers.InvestmentManagerImpl;
+import com.orangelit.stocktracker.stocktracker.models.Portfolio;
 import com.orangelit.stocktracker.web.config.PersistenceInitializer;
 import com.orangelit.stocktracker.web.resources.*;
 
@@ -35,6 +38,7 @@ public class WebAppModule implements Module
 
         binder.bind(AuthenticationManager.class).to(AuthenticationManagerImpl.class);
         binder.bind(AccountingManager.class).to(AccountingManagerImpl.class);
+        binder.bind(InvestmentManager.class).to(InvestmentManagerImpl.class);
 
         binder.bind(AuthenticationResource.class);
         binder.bind(DashboardResource.class);
@@ -43,6 +47,7 @@ public class WebAppModule implements Module
         binder.bind(AccountTypeResource.class);
         binder.bind(TransactionTypeResource.class);
         binder.bind(TransactionResource.class);
+        binder.bind(PortfolioResource.class);
 
     }
 }
