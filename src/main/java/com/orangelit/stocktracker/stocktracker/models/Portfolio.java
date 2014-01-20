@@ -1,6 +1,5 @@
 package com.orangelit.stocktracker.stocktracker.models;
 
-import com.orangelit.stocktracker.accounting.models.Account;
 import com.orangelit.stocktracker.stocktracker.models.accounts.*;
 
 import java.util.Date;
@@ -79,23 +78,23 @@ public class Portfolio {
         return null;
     }
 
-    public InvestmentCashAccount getInvestmentCashAccount() {
+    public InvestmentAccount getInvestmentCashAccount() {
         return null;
     }
 
-    public LongTermGainsTaxExpenseAccount getLongTermGainsTaxExpenseAccount() {
+    public InvestmentAccount getLongTermGainsTaxExpenseAccount() {
         return null;
     }
 
-    public ShortTermGainsTaxExpenseAccount getShortTermGainsTaxExpenseAccount() {
+    public InvestmentAccount getShortTermGainsTaxExpenseAccount() {
         return null;
     }
 
-    public RealizedLongTermGainsAccount getRealizedLongTermGainsAccount() {
+    public InvestmentAccount getRealizedLongTermGainsAccount() {
         return null;
     }
 
-    public RealizedShortTermGainsAccount getRealizedShortTermGainsAccount() {
+    public InvestmentAccount getRealizedShortTermGainsAccount() {
         return null;
     }
 

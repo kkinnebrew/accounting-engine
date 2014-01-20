@@ -1,5 +1,7 @@
 package com.orangelit.stocktracker.stocktracker.models.accounts;
 
+import com.orangelit.stocktracker.accounting.models.AccountType;
+
 import java.math.BigDecimal;
 
 /**
@@ -8,6 +10,14 @@ import java.math.BigDecimal;
  * @author kkinnebrew
  */
 public class AccruedLongTermGainsTaxAccount extends InvestmentAccount {
+
+    public AccruedLongTermGainsTaxAccount(String accountId, String userId, AccountType accountType, String accountName) {
+        super(accountId, userId, accountType, accountName);
+    }
+
+    public AccruedLongTermGainsTaxAccount(String userId, AccountType accountType, String accountName) {
+        super(userId, accountType, accountName);
+    }
 
     @Override
     public BigDecimal getBalance() {
