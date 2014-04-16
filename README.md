@@ -1,4 +1,4 @@
-stocktracker
+accounting-engine
 ============
 
-A stock tracking system for individual investors
+A basic accounting system for transaction management.
